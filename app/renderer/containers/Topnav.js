@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import LeftDrawer from '../components/LeftDrawer'
 import RightDrawer from '../components/RightDrawer'
 
+import CreateChain from '../Modals/CreateChain'
+
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
 

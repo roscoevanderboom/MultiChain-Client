@@ -22,7 +22,7 @@ module.exports = {
   startMultichain: (chainName) => {
     return new Promise((resolve, reject) => {
       execFile(mcd, [chainName, 'daemon'], (err, res) => {
-        if (err) {
+               if (err) {
           reject(err);
         }
         resolve(res);

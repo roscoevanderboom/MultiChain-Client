@@ -1,9 +1,9 @@
 //
 import { app, crashReporter } from 'electron';
 
-import BrowserWindows from './BowserWindows'
-import LocalChains from '../renderer/constants/LocalChains'
-import Daemons from '../renderer/constants/Daemons'
+import BrowserWindows from './BowserWindows';
+import LocalChains from '../renderer/constants/LocalChains';
+import Daemons from '../renderer/constants/Daemons';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -21,8 +21,8 @@ const installExtensions = async () => {
 };
 
 crashReporter.start({
-  productName: 'YourName',
-  companyName: 'YourCompany',
+  productName: 'Multichain Manager',
+  companyName: 'Grentrac',
   submitURL: 'https://your-domain.com/url-to-submit',
   uploadToServer: false,
 });
@@ -32,19 +32,16 @@ app.on('ready', async () => {
   if (isDevelopment) {
     await installExtensions();
   }
-
+  BrowserWindows.main();
   LocalChains()
-  .then(localchains => {
-    localchains.forEach(chain => {
-      Daemons.startMultichain(chain);
-    });
-  })
-  .then(()=> {
-    BrowserWindows.main();
-  })
-  .catch(() => {
-    console.log('No local chains');
-  })
+    .then(localchains => {
+      localchains.forEach(chain => {
+        Daemons.startMultichain(chain);
+      });
+    })
+    .catch(() => {
+      console.log('No local chains');
+    })
 });
 
 

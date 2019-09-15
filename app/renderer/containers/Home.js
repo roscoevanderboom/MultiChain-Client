@@ -9,6 +9,9 @@ import Platform from '../constants/Platform'
 import Feedback from '../constants/Feedback'
 import GetCreds from '../constants/GetCreds'
 
+// Modals
+import CreateChain from '../Modals/CreateChain'
+
 // Containers
 import Topnav from './Topnav'
 import TabToolbar from './TabToolbar'
@@ -29,11 +32,15 @@ class App extends React.Component {
       streams: [],
       addresses: [],
       assets: [],
-      peers: []
+      peers: [],
+      modals: {
+        CreateChain: false
+      }
     }
     // Global functions to open modal or give feedback
     this.snackFeedback = this.snackFeedback.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     // General info functions
     this.getLocalInfo = this.getLocalInfo.bind(this);
     // Multichain functions
@@ -44,8 +51,9 @@ class App extends React.Component {
     this.getChainAssets = this.getChainAssets.bind(this);
     this.getPeerInfo = this.getPeerInfo.bind(this);
     this.setChain = this.setChain.bind(this);
+    this.stopChain = this.stopChain.bind(this);
   }
-   // General info functions
+  // General info functions
   getLocalInfo() {
     LocalChains()
       .then((chains) => {
@@ -55,12 +63,19 @@ class App extends React.Component {
           localchains: chains,
         });
       })
+      .catch(() => {
+        this.setState({
+          modals: {
+            CreateChain: true
+          }
+        });
+      })
   }
-    // Multichain functions
+  // Multichain functions
   getChainParams() {
     this.state.multichain.getBlockchainParams((err, info) => {
       if (err) {
-        this.snackFeedback('error', err.message);
+        this.snackFeedback('error', 'Cannot retreive parameters');
         return;
       }
       this.setState({
@@ -71,7 +86,7 @@ class App extends React.Component {
   getChainInfo() {
     this.state.multichain.getInfo((err, info) => {
       if (err) {
-        this.snackFeedback('error', err.message);
+        this.snackFeedback('error', 'Cannot retreive info');
         return;
       }
       this.setState({
@@ -82,7 +97,7 @@ class App extends React.Component {
   getChainAddresses() {
     this.state.multichain.getAddresses((err, info) => {
       if (err) {
-        this.snackFeedback('error', err.message);
+        this.snackFeedback('error', 'Cannot retreive Adsresses');
         return;
       }
       this.setState({
@@ -93,7 +108,7 @@ class App extends React.Component {
   getChainStreams() {
     this.state.multichain.listStreams((err, info) => {
       if (err) {
-        this.snackFeedback('error', err.message);
+        this.snackFeedback('error', 'Cannot retreive streams');
         return;
       }
       this.setState({
@@ -104,7 +119,7 @@ class App extends React.Component {
   getChainAssets() {
     this.state.multichain.listAssets((err, info) => {
       if (err) {
-        this.snackFeedback('error', err.message);
+        this.snackFeedback('error', 'Cannot retreive assets');
         return;
       }
       this.setState({
@@ -115,7 +130,7 @@ class App extends React.Component {
   getPeerInfo() {
     this.state.multichain.getPeerInfo((err, info) => {
       if (err) {
-        this.snackFeedback('error', err.message);
+        this.snackFeedback('error', 'Cannot retreive peers');
         return;
       }
       this.setState({
@@ -140,11 +155,26 @@ class App extends React.Component {
         this.getChainStreams();
         this.getChainAssets();
         this.getPeerInfo();
+
       })
       .catch(err => {
         this.snackFeedback('error', err);
       });
-      this.snackFeedback('success', 'Connected to ' + chain);
+  }
+  stopChain() {
+    this.setState({
+      currentChain: false,
+      multichain: false,
+      chainInfo: false,
+      chainParams: false,
+      streams: [],
+      addresses: [],
+      assets: [],
+      peers: [],
+      modals: {
+        CreateChain: false
+      }
+    })
   }
 
 
@@ -158,6 +188,7 @@ class App extends React.Component {
       this.snackFeedback('error', 'Not connected to any chains');
       return;
     }
+
   }
 
   render() {
@@ -167,7 +198,17 @@ class App extends React.Component {
         state: this.state,
         functions: {
           feedback: this.snackFeedback,
-          setChain: this.setChain
+          setChain: this.setChain,
+          stopChain: this.stopChain,
+          openModal: this.openModal
+        }
+      },
+      TabToolbar: {
+        state: this.state,
+        functions: {
+          feedback: this.snackFeedback,
+          openModal: this.openModal,
+          getChainStreams: this.getChainStreams
         }
       },
       Body: {
@@ -176,13 +217,18 @@ class App extends React.Component {
           feedback: this.snackFeedback,
         }
       },
+      CreateChainModal: {
+        state: this.state.modals.CreateChain,
+        close: this.closeModal
+      }
     }
 
     return (
       <React.Fragment>
         <Windowbar />
         <Topnav props={componentProps.Topnav} />
-        <TabToolbar props={componentProps.Topnav} />
+        <TabToolbar props={componentProps.TabToolbar} />
+        <CreateChain props={componentProps.CreateChainModal} />
       </React.Fragment>
     );
   }

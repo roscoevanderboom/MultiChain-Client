@@ -25,7 +25,6 @@ export default function Assets({ props }) {
   const { state } = props;
   const { assets } = state;
 
-
   return (
     <React.Fragment>
       <Paper className={classes.root}>

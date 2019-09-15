@@ -2,6 +2,7 @@
 import React from 'react';
 
 // Constants
+import consensus from '../constants/Consensus';
 
 // Components
 import Paper from '@material-ui/core/Paper';
@@ -25,16 +26,6 @@ export default function ChainParams({ props }) {
 
   const { state } = props;
   const { chainParams } = state;
-
-  const consensus = [
-    'consensus-activate',
-    'consensus-admin',
-    'consensus-create',
-    'consensus-issue',
-    'consensus-mine',
-    'consensus-upgrade'
-  ]
-
 
   return (
     <React.Fragment>

@@ -25,7 +25,6 @@ export default function Addresses({ props }) {
   const { state } = props;
   const { addresses } = state;
 
-
   return (
     <React.Fragment>
       <Paper className={classes.root}>

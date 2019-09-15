@@ -26,8 +26,6 @@ export default function ChainInfo({ props }) {
   const { state } = props;
   const { chainInfo } = state;
 
-
-
   return (
     <React.Fragment>
       <Paper className={classes.root}>

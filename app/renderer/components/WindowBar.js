@@ -15,7 +15,7 @@ const hideApp = () => {
 
 export default function Windowbar() {
 
-  let str = `Multichain Manager on ${platform}`
+  const str = `Multichain Manager on ${platform}`
   return (
     <div className='windowbar' position="static">
       <span className='windowbarTitle'>{str}</span>

@@ -75,8 +75,7 @@ export default function ScrollableTabsButtonAuto({props}) {
           textColor="primary"
           variant="scrollable"
           scrollButtons="auto"
-          aria-label="scrollable auto tabs example"
-        >
+          aria-label="scrollable auto tabs example">
           <Tab label="ChainInfo" {...a11yProps(0)} />
           <Tab label="Parameters" {...a11yProps(1)} />
           <Tab label="Streams" {...a11yProps(2)} />

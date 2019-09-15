@@ -2,6 +2,7 @@
 import React from 'react';
 
 // Constants
+import params from '../constants/Parameters'
 
 // Components
 import Paper from '@material-ui/core/Paper';
@@ -25,18 +26,6 @@ export default function ChainParams({ props }) {
 
   const { state } = props;
   const { chainParams } = state;
-
-  const params = [
-    'anyone-can-activate',
-    'anyone-can-admin',
-    'anyone-can-connect',
-    'anyone-can-create',
-    'anyone-can-issue',
-    'anyone-can-mine',
-    'anyone-can-receive',
-    'anyone-can-receive-empty',
-    'anyone-can-send'
-  ]
 
   return (
     <React.Fragment>
