@@ -38,17 +38,40 @@ export default function Streams({ props }) {
 
   const classes = useStyles();
 
-  const { state } = props;
+  const { state, functions } = props;
   const { streams } = state;
 
-  console.log(streams)
-
-  if (streams.length !== 0) {
-    const names = streams.map(stream => stream.name);
-    const details = streams.map(stream => stream.details.text);
-    const restrictions = streams.map(stream => stream.restrict);
-    console.log(restrictions);
+  const subscribe = (stream, subscribed) => {
+    if (subscribed) {
+      state.multichain.unsubscribe({
+        stream: stream
+      }, (err) => {
+        if (err) {
+          functions.feedback('error', err.message);
+          return
+        }
+        functions.feedback('success', 'Unsubscribed from ' + stream);
+        functions.getChainStreams()
+      });
+      return;
+    }
+    state.multichain.subscribe({
+      stream: stream
+    }, (err) => {
+      if (err) {
+        functions.feedback('error', err.message);
+        return
+      }
+      functions.feedback('success', 'Subscribed to ' + stream);
+      functions.getChainStreams()
+    });
   }
+
+  // if (streams.length !== 0) {
+  //   const names = streams.map(stream => stream.name);
+  //   const details = streams.map(stream => stream.details.text);
+  //   const restrictions = streams.map(stream => stream.restrict);
+  // }
 
 
   return (
@@ -70,7 +93,7 @@ export default function Streams({ props }) {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" variant='outlined'>
+                <Button onClick={() => subscribe(stream.name, stream.subscribed)} size="small" variant='outlined'>
                   {stream.subscribed ? 'Unsubscribe' : 'Subscribe'}
                 </Button>
               </CardActions>
