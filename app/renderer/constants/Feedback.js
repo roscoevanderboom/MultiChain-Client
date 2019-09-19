@@ -1,12 +1,12 @@
-// 
-// 
+//
+//
 //
 const styles = {
     snackbars: {
         error: {
             variant: 'error',
             anchorOrigin: { vertical: 'bottom', horizontal: 'right', },
-            autoHideDuration: 2000,
+            autoHideDuration: 3000,
         },
         success: {
             variant: 'success',

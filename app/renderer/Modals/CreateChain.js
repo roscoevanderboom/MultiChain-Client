@@ -1,18 +1,16 @@
 // Services
 import React, { useState } from 'react';
-import { remote } from 'electron';
 
-// Constants
-import Daemons from '../constants/Daemons'
-
-// Styles and Components
-import { withStyles } from '@material-ui/core/styles';
+// Components
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import CreateChainTabs from '../containers/CreateChainTabs'
+
+// Styles
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   root: {
@@ -44,41 +42,11 @@ const DialogTitle = withStyles(styles)(props => {
   );
 });
 
-export default function CustomizedDialogs({ props }) {
-
-  const [chainName, setChainName] = useState('');
-  const [params, setParams] = useState('');
-  const [consensus, setConsensus] = useState('');
+export default function CreateChainModal({ props }) {
 
   const handleClose = () => {
-    props.close('CreateChain');
+    props.functions.close('CreateChain');
   };
-
-  const nameInput = (e) => {
-    const name = e.target.value;
-    setChainName(name)
-  }
-
-  const genericChain = () => {
-    if (!(chainName)) {
-      alert('No name given');
-      return;
-    }
-    Daemons.createChain(chainName)
-      .then(() => {
-        console.log('Success')
-        remote.app.relaunch();
-        remote.app.quit();
-      })
-      .catch(() => {
-        console.log('Fail ')
-      })
-  };
-
-  const tabProps = {
-    nameInput: nameInput,
-    genericChain: genericChain
-  }
 
   return (
     <div>
@@ -86,8 +54,7 @@ export default function CustomizedDialogs({ props }) {
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Create new blockchain
         </DialogTitle>
-
-        <CreateChainTabs props={tabProps}/>
+        <CreateChainTabs props={props} />
       </Dialog>
     </div>
   );

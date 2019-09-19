@@ -8,7 +8,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import CreateAsset from '../Modals/NewAsset'
+import Button from '@material-ui/core/Button';
+
+// Modals
+import Multisig from '../Modals/MulticSigAddress'
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,30 +34,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Assets({ props }) {
+export default function Permissions({ props }) {
 
   const classes = useStyles();
 
-  const { state } = props;
-  const { assets } = state;
+  const { state, functions } = props;
+
 
   return (
     <React.Fragment>
       <Paper className={classes.root}>
         <Typography variant="h5" component="h3">
-          Assets
+          Permissions
         </Typography>
-        <CreateAsset props={props}/>
+        <Typography className={classes.buttons}>
+          Actions
+        </Typography>
+
       </Paper>
       <Divider />
       <Paper className={classes.body}>
         <Typography variant="h5" component="h3">
-          {assets.map((stream, i) =>
-            <ListItemText key={i} primary={stream.name} />
-          )}
+          details
         </Typography>
       </Paper>
-
     </React.Fragment>
   );
 }

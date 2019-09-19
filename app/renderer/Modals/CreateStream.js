@@ -68,7 +68,7 @@ export default function FormDialog({ props }) {
   }
 
   return (
-    <div>
+    <React.Fragment>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         New Stream
       </Button>
@@ -118,6 +118,6 @@ export default function FormDialog({ props }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </React.Fragment>
   );
 }

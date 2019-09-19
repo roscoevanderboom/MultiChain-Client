@@ -95,7 +95,7 @@ class App extends React.Component {
     });
   }
   getChainAddresses() {
-    this.state.multichain.getAddresses((err, info) => {
+    this.state.multichain.listAddresses((err, info) => {
       if (err) {
         this.snackFeedback('error', 'Cannot retreive Adsresses');
         return;
@@ -177,20 +177,6 @@ class App extends React.Component {
     })
   }
 
-
-  // Async functions to load once component has been mounted
-  componentDidMount() {
-    this.getLocalInfo();
-  }
-  // User feedback once data has changed
-  componentDidUpdate() {
-    if (!(this.state.multichain)) {
-      this.snackFeedback('error', 'Not connected to any chains');
-      return;
-    }
-
-  }
-
   render() {
     // Props for child elements
     const componentProps = {
@@ -208,7 +194,8 @@ class App extends React.Component {
         functions: {
           feedback: this.snackFeedback,
           openModal: this.openModal,
-          getChainStreams: this.getChainStreams
+          getChainStreams: this.getChainStreams,
+          getChainAddresses: this.getChainAddresses
         }
       },
       Body: {
@@ -219,7 +206,10 @@ class App extends React.Component {
       },
       CreateChainModal: {
         state: this.state.modals.CreateChain,
-        close: this.closeModal
+        functions: {
+          feedback: this.snackFeedback,
+          close: this.closeModal
+        }
       }
     }
 
@@ -231,6 +221,36 @@ class App extends React.Component {
         <CreateChain props={componentProps.CreateChainModal} />
       </React.Fragment>
     );
+  }
+
+   // Async functions to load once component has been mounted
+   componentDidMount() {
+    this.getLocalInfo();
+  }
+  // User feedback once data has changed
+  componentDidUpdate() {
+    if (!(this.state.multichain)) {
+      this.snackFeedback('error', 'Not connected to any chains');
+      return;
+    }
+    // Show create chain modal on first load
+    if (this.state.localchains.length === 0) {
+      this.setState({
+        modals: {
+          CreateChain: true
+        }
+      })
+    }
+
+    if (this.state.multichain) {
+      this.state.multichain.listPermissions((err, info) => {
+        if (err) {
+          console.log(err)
+          return;
+        }
+       console.log(info)
+      });
+    }
   }
 
   // DOM element functions

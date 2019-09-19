@@ -27,13 +27,15 @@ export default function ChainParams({ props }) {
   const { state } = props;
   const { chainParams } = state;
 
+  const keys = Object.keys(consensus)
+
   return (
     <React.Fragment>
       <Paper className={classes.root}>
         <Typography variant="h5" component="h3">
           Consensus:
       <List>
-            {consensus.map(con =>
+            {keys.map(con =>
               <ListItemText key={con} primary={chainParams ? `admin-${con}: ` + chainParams[`admin-${con}`] : `admin-${con}: `} />
             )}
           </List>

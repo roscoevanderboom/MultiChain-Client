@@ -27,13 +27,15 @@ export default function ChainParams({ props }) {
   const { state } = props;
   const { chainParams } = state;
 
+  const keys = Object.keys(params)
+
   return (
     <React.Fragment>
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
         Parameters:
         <List>
-          {params.map(param =>
+          {keys.map(param =>
             <ListItemText key={param} primary={chainParams ? `${param}: ` + chainParams[`${param}`] : `${param}: `} />
           )}
         </List>

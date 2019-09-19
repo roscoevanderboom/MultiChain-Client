@@ -8,7 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import UserIcon from '@material-ui/icons/AccountBox';
 
 
 const useStyles = makeStyles({
@@ -61,7 +61,7 @@ export default function Drawers() {
   return (
     <React.Fragment>
       <Button onClick={toggleDrawer('right', true)}>
-        <HelpOutlineIcon className={classes.barIcon}/>
+        <UserIcon className={classes.barIcon}/>
       </Button>
       <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
         {rightMenu('right')}

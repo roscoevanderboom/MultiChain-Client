@@ -15,6 +15,7 @@ import Addresses from '../components/Addresses';
 import Consensus from '../components/Consensus';
 import Assets from '../components/Assets';
 import Peers from '../components/Peers';
+import Permissions from '../components/Permissions';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,7 +40,7 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
+function tabProps(index) {
   return {
     id: `scrollable-auto-tab-${index}`,
     'aria-controls': `scrollable-auto-tabpanel-${index}`,
@@ -76,13 +77,14 @@ export default function ScrollableTabsButtonAuto({props}) {
           variant="scrollable"
           scrollButtons="auto"
           aria-label="scrollable auto tabs example">
-          <Tab label="ChainInfo" {...a11yProps(0)} />
-          <Tab label="Parameters" {...a11yProps(1)} />
-          <Tab label="Streams" {...a11yProps(2)} />
-          <Tab label="Addresses" {...a11yProps(3)} />
-          <Tab label="Assets" {...a11yProps(4)} />
-          <Tab label="Consensus" {...a11yProps(5)} />
-          <Tab label="Peers" {...a11yProps(6)} />
+          <Tab label="ChainInfo" {...tabProps(0)} />
+          <Tab label="Parameters" {...tabProps(1)} />
+          <Tab label="Streams" {...tabProps(2)} />
+          <Tab label="Addresses" {...tabProps(3)} />
+          <Tab label="Assets" {...tabProps(4)} />
+          <Tab label="Consensus" {...tabProps(5)} />
+          <Tab label="Peers" {...tabProps(6)} />
+          <Tab label="Permissions" {...tabProps(7)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -105,6 +107,9 @@ export default function ScrollableTabsButtonAuto({props}) {
       </TabPanel>
       <TabPanel value={value} index={6}>
         <Peers props={props} />
+      </TabPanel>
+      <TabPanel value={value} index={7}>
+        <Permissions props={props} />
       </TabPanel>
     </div>
   );

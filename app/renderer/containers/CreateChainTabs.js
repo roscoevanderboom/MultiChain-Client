@@ -7,11 +7,10 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Input from '@material-ui/core/Input';
-import Add from '@material-ui/icons/NoteAddOutlined';
 
-
-import IconButton from '@material-ui/core/IconButton';
+import Generic from '../components/createchains/Generic'
+import Presets from '../components/createchains/Presets'
+import Custom from '../components/createchains/Custom'
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -24,7 +23,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
-     >
+    >
       <Box className={classes.tabPanel} p={3}>{children}</Box>
     </Typography>
   );
@@ -36,7 +35,7 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
+function tabProps(index) {
   return {
     id: `scrollable-auto-tab-${index}`,
     'aria-controls': `scrollable-auto-tabpanel-${index}`,
@@ -69,25 +68,18 @@ export default function ScrollableTabsButtonAuto({ props }) {
         variant="scrollable"
         scrollButtons="auto"
         aria-label="scrollable auto tabs example">
-        <Tab label="Generic" {...a11yProps(0)} />
-        <Tab label="Preset" {...a11yProps(1)} />
-        <Tab label="Custom" {...a11yProps(2)} />
+        <Tab label="Generic" {...tabProps(0)} />
+        <Tab label="Preset" {...tabProps(1)} />
+        <Tab label="Custom" {...tabProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Input onChange={props.nameInput} placeholder="Chain name" />
-        <IconButton onClick={props.genericChain}>
-          <Add />
-        </IconButton>
-        <Typography gutterBottom>
-          A generic chain will be created with default settings. This is a secure chain with most permissions
-          set to  false.
-        </Typography>
+        <Generic props={props} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        preset
+        <Presets props={props} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Custom chain configs
+        <Custom props={props} />
       </TabPanel>
     </div>
   );

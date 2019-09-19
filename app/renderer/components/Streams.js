@@ -1,17 +1,12 @@
 // Services
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Constants
 
 // Components
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
-
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+import StreamBrowser from './streams/StreamBrowser'
 
 // Modal
 import CreateStream from '../Modals/CreateStream'
@@ -22,9 +17,18 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
+    marginBottom: 12
   },
-  body: {
-
+  actions: {
+    width: 400,
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  select: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontFamily: 'monospace',
+    fontSize: 'large'
   },
   newStreamBtn: {
     marginLeft: 30
@@ -35,73 +39,79 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Streams({ props }) {
-
+  // Style
   const classes = useStyles();
+  const [streamDetails, setStreamDetails] = useState(false);
 
+  // State
   const { state, functions } = props;
   const { streams } = state;
 
-  const subscribe = (stream, subscribed) => {
-    if (subscribed) {
-      state.multichain.unsubscribe({
-        stream: stream
-      }, (err) => {
-        if (err) {
-          functions.feedback('error', err.message);
-          return
-        }
-        functions.feedback('success', 'Unsubscribed from ' + stream);
-        functions.getChainStreams()
-      });
-      return;
-    }
+  // Functions
+  const subscribe = () => {
     state.multichain.subscribe({
-      stream: stream
+      stream: streamDetails.name
     }, (err) => {
       if (err) {
         functions.feedback('error', err.message);
         return
       }
-      functions.feedback('success', 'Subscribed to ' + stream);
-      functions.getChainStreams()
+      functions.feedback('success', 'Subscribed to ' + streamDetails.name);
+      functions.getChainStreams();
+      selectStream(streamDetails.name)
+    });
+  }
+  const unsubscribe = () => {
+    state.multichain.unsubscribe({
+      stream: streamDetails.name
+    }, (err) => {
+      if (err) {
+        functions.feedback('error', err.message);
+        return
+      }
+      functions.feedback('success', 'Unsubscribed from ' + streamDetails.name);
+      functions.getChainStreams();
+      selectStream(streamDetails.name)
     });
   }
 
-  // if (streams.length !== 0) {
-  //   const names = streams.map(stream => stream.name);
-  //   const details = streams.map(stream => stream.details.text);
-  //   const restrictions = streams.map(stream => stream.restrict);
-  // }
+  const selectStream = (name) => {
+    streams.forEach(stream => {
+      if (name === stream.name) {
+        setStreamDetails(stream)
+      }
+    });
+  }
+
+  // Child props
+  const StreamBrowserProps = {
+    streams: streams,
+    streamDetails: streamDetails,
+    selectStream: selectStream,
+    subscribe: subscribe,
+    unsubscribe: unsubscribe
+  }
 
 
   return (
     <React.Fragment>
       <Paper className={classes.root}>
-        <Typography variant="h5" component="h3">
+        <Typography className={classes.actions} variant="h5" component="h3">
           Streams
           <CreateStream props={props} />
+          <select onChange={(e) => selectStream(e.target.value)} className={classes.select}>
+            <option>Current</option>
+            {streams.map(stream =>
+              <option key={stream.name} value={stream.name}>{stream.name}</option>)}
+          </select>
         </Typography>
-        <div className={classes.body}>
-          {streams.map((stream) =>
-            <Card className={classes.card} key={stream.name}>
-              <CardContent>
-                <Typography gutterBottom>
-                  Name: {stream.name}
-                </Typography>
-                <Typography variant="body2" component="p">
-                  Details: {stream.details.text}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button onClick={() => subscribe(stream.name, stream.subscribed)} size="small" variant='outlined'>
-                  {stream.subscribed ? 'Unsubscribe' : 'Subscribe'}
-                </Button>
-              </CardActions>
-            </Card>
-          )}
-        </div>
       </Paper>
-      <Divider />
+      <Paper className={classes.root}>
+        <StreamBrowser props={StreamBrowserProps} />
+      </Paper>
     </React.Fragment>
   );
 }
+
+
+
