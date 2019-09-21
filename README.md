@@ -1,4 +1,4 @@
-<h1>Multichain Explorer</h1>
+<h1>Multichain Manager</h1>
 A general management tools for Multichain blockchains<h3>
     Security notice:
 </h3>
