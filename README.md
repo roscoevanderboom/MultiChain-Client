@@ -32,6 +32,9 @@ A general management tools for Multichain blockchains<h3>
     <li>
        <a href="https://yarnpkg.com/lang/en/" target="blank">Yarn</a>
     </li>
+     <li>
+       <a href="https://www.npmjs.com/" target="blank">NPM</a>
+    </li>
     <li>
         <a href="https://nodejs.org/en/" target="blank">Node v12</a>
     </li>
@@ -41,9 +44,17 @@ A general management tools for Multichain blockchains<h3>
 
 clone repo
 
-yarn install
+<h4>Yarn: </h4>
+
+yarn install 
 
 yarn develop -- IMPORTANT. Not yarn start.
+
+<h4>NPM: </h4>
+
+npm install
+
+npm run develop
 
 <h3>
     Current features:
