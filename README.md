@@ -69,6 +69,8 @@ npm run develop -- IMPORTANT. Not npm start.
             <li>Detect existing Multichain blockchains.</li>
             <li>Automatically start all local chains on app start. Shutdown chains on app quit.</li>
             <li>Display blockchain details</li>
+            <li>Create chains with custom parameters.</li>
+            <li>Create generic streams ( open/closed ) and add a description. Designed for generic text input.</li>
         </ul>
     </li>
 </ul>
@@ -83,10 +85,8 @@ npm run develop -- IMPORTANT. Not npm start.
             Multichain:
         </h3>
         <ul>
-            <li>Create chains with preset parameters.</li>
-            <li>Create chains with custom parameters.</li>
-            <li>Delete chains.</li>
-            <li>Create generic streams ( open/closed ) and add a description. Designed for generic text input.</li>
+            <li>Create chains with preset parameters.</li>           
+            <li>Delete chains.</li>           
             <li>Create premade streams with pre-set data inputs ( IPFS ).</li>
             <li>Filter stream items by publisher or key</li>
             <li>Set stream item display count</li>
