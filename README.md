@@ -1,5 +1,5 @@
 <h1>Multichain Manager</h1>
-A general management tools for Multichain blockchains<h3>
+A general management tool for Multichain blockchains<h3>
     Security notice:
 </h3>
 
@@ -28,33 +28,44 @@ A general management tools for Multichain blockchains<h3>
 <h3>
     Requirements:
 </h3>
-<ul>
+<ul> 
     <li>
-       <a href="https://yarnpkg.com/lang/en/" target="blank">Yarn</a>
-    </li>
-     <li>
-       <a href="https://www.npmjs.com/" target="blank">NPM</a>
+        <a href="https://nodejs.org/en/" target="blank">Node.JS</a>
     </li>
     <li>
-        <a href="https://nodejs.org/en/" target="blank">Node v12</a>
+       <a href="https://yarnpkg.com/lang/en/" target="blank">Yarn</a> or <a href="https://www.npmjs.com/" target="blank">NPM</a>
     </li>
 </ul>
 
-<h3>Install: </h3>
+<h3>Setup: ( Linux ) </h3>
 
-clone repo
+1.)  Clone repo
 
-<h4>Yarn: </h4>
+2.)  npm install or yarn install
 
-yarn install 
+3.)  Download the latest <a href="https://www.multichain.com/download/multichain-2.0-latest.tar.gz" target="blank">multichain.tar.gz</a>
 
-yarn develop -- IMPORTANT. Not yarn start.
+4.)  Extract files and move them to ./multichain folder WITHIN the project.
 
-<h4>NPM: </h4>
+5.)  npm run develop or yarn develop
 
-npm install
 
-npm run develop -- IMPORTANT. Not npm start.
+<h3>Setup: ( Windows ) </h3>
+
+1.)  Clone repo
+
+2.)  npm install or yarn install
+
+3.)  Download the latest <a href="https://www.multichain.com/download/multichain-windows-2.0.3.zip" target="blank">multichain.zip</a>
+
+4.)  Extract files and move them to ./multichain folder WITHIN the project.
+
+5.)  npm run develop or yarn develop
+
+
+<h3>Setup: ( Mac ) </h3>
+
+Coming soon...
 
 <h3>
     Current features:
