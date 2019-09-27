@@ -1,5 +1,13 @@
 <h1>Multichain Manager</h1>
-A general management tool for Multichain blockchains<h3>
+<p>
+    A general management tool for Multichain blockchains
+ </p>
+    
+<p>
+   This project was started from <a href="https://github.com/electron/electron-quick-start" target="blank">Electron-React-Redux-boilerplate
+</p>
+    
+ <h3>   
     Security notice:
 </h3>
 
@@ -13,17 +21,6 @@ A general management tool for Multichain blockchains<h3>
     content from being loaded. Remote content will be loaded in default browsers like Chrome or Firefox.
 </p>
 
-
-<h3>
-    Disclaimer:
-</h3>
-<p>
-    The Multichain executable files in this repo were not create by me. They come from the official <a href="https://www.multichain.com/download-install/" target="blank">Multichain</a> site.
-</p>
-
-<p>
-   This project was started from <a href="https://github.com/electron/electron-quick-start" target="blank">Electron-React-Redux-boilerplate
-</p>
 
 <h3>
     Requirements:
