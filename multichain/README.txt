@@ -1,5 +1,5 @@
 #
-# MultiChain 2.0.2 Community Edition
+# MultiChain 2.0.3 Community Edition
 #
 # Copyright (c) Coin Sciences Ltd - www.multichain.com
 #
@@ -39,6 +39,16 @@ WINDOWS NOTES
 
 CHANGELOG
 ---------
+
+Version 2.0.3 - 16 September 2019
+* Added -retryinittime runtime parameter to keep retrying chain initialization
+* Added getinitstatus API command to check chain initialization status
+* Added new multichain protocols 10012 and 20011 with the following changes:
+- Allowed spending of very large UTXOs containing 100s+ of assets
+- Removed size limit on transaction and stream filter JavaScript code
+* Fixed nodeaddress in getinfo output if -externalip runtime parameter used
+* Fixed miner thread CPU usage if -offline runtime parameter used
+* Fixed HTTP header sent by multichain-cli if -rpcconnect parameter used
 
 Version 2.0.2 - 21 May 2019
 * Added storeruntimeparams runtime parameter to store setruntimeparam changes
