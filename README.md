@@ -54,7 +54,7 @@ yarn develop -- IMPORTANT. Not yarn start.
 
 npm install
 
-npm run develop
+npm run develop -- IMPORTANT. Not npm start.
 
 <h3>
     Current features:
