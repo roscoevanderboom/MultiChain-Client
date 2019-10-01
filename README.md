@@ -26,23 +26,13 @@ Binaries included in this project ( app/main/muiltichain/ ) were downloaded from
     </li>
 </ul>
 
-<h3>Setup: ( Linux ) </h3>
+<h3>Setup: ( Windows / Linux )</h3>
 
 1.)  Clone repo
 
 2.)  npm install or yarn install
 
 3.)  npm run develop or yarn develop
-
-
-<h3>Setup: ( Windows ) </h3>
-
-1.)  Clone repo
-
-2.)  npm install or yarn install
-
-3.)  npm run develop or yarn develop
-
 
 <h3>Setup: ( Mac ) </h3>
 
