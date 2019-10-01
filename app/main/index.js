@@ -2,8 +2,8 @@
 import { app, crashReporter } from 'electron';
 
 import main from './BowserWindows';
-import LocalChains from './multichain/LocalChains';
-import { stopMultichain } from './multichain/Daemons';
+import LocalChains from '../../multichain/LocalChains';
+import { stopMultichain } from '../../multichain/Daemons';
 
 let mainWindow = null;
 const isDevelopment = process.env.NODE_ENV === 'development';

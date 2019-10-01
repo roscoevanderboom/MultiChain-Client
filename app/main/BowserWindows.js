@@ -3,10 +3,12 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
 import contextMenu from './ContextMenu';
-import LocalChains from './multichain/LocalChains';
-import GetCreds from './multichain/GetCreds';
-import Chainpaths from './multichain/Chainpaths';
-import { startMultichain, stopMultichain, createChain } from './multichain/Daemons';
+import LocalChains from '../../multichain/LocalChains';
+import GetCreds from '../../multichain/GetCreds';
+import Chainpaths from '../../multichain/Chainpaths';
+import { startMultichain, stopMultichain, createChain } from '../../multichain/Daemons';
+
+console.log(startMultichain)
 
 let mainWindow = null;
 let forceQuit = false;
@@ -45,7 +47,9 @@ module.exports = (isDevelopment) => {
         chains.forEach(chain => {
           if (chain === selectedChain) {
             startMultichain(chain)
-              .catch(err => mainWindow.webContents.send('chain-start:fail', `${selectedChain} is already running`))
+              .catch(err => {
+                console.log(err)
+                mainWindow.webContents.send('chain-start:fail', err.message)})
           }
         });
       })
