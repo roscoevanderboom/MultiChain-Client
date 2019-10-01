@@ -21,7 +21,10 @@
     content from being loaded. Remote content will be loaded in default browsers like Chrome or Firefox.
 </p>
 
-
+<p>
+    Binaries included in this project ( app/main/muiltichain/ ) were downloaded from the official Multichain website. 
+    Running these exec on Windows will trigger an alert from firewall and anti-virus. If you don't trust me, delete the files and           download them directly from Multichain site and place in the appropriate folder for your OS.
+</p>
 <h3>
     Requirements:
 </h3>
@@ -40,11 +43,7 @@
 
 2.)  npm install or yarn install
 
-3.)  Download the latest <a href="https://www.multichain.com/download/multichain-2.0-latest.tar.gz" target="blank">multichain.tar.gz</a>
-
-4.)  Extract files and move them to ./multichain folder WITHIN the project.
-
-5.)  npm run develop or yarn develop
+3.)  npm run develop or yarn develop
 
 
 <h3>Setup: ( Windows ) </h3>
@@ -53,11 +52,7 @@
 
 2.)  npm install or yarn install
 
-3.)  Download the latest <a href="https://www.multichain.com/download/multichain-windows-2.0.3.zip" target="blank">multichain.zip</a>
-
-4.)  Extract files and move them to ./multichain folder WITHIN the project.
-
-5.)  npm run develop or yarn develop
+3.)  npm run develop or yarn develop
 
 
 <h3>Setup: ( Mac ) </h3>
