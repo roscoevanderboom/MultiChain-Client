@@ -1,10 +1,11 @@
 //
 import { app, crashReporter } from 'electron';
 
-import BrowserWindows from './BowserWindows';
-import LocalChains from '../renderer/constants/LocalChains';
-import Daemons from '../renderer/constants/Daemons';
+import main from './BowserWindows';
+import LocalChains from './multichain/LocalChains';
+import { stopMultichain } from './multichain/Daemons';
 
+let mainWindow = null;
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const installExtensions = async () => {
@@ -29,19 +30,10 @@ crashReporter.start({
 
 
 app.on('ready', async () => {
-  if (isDevelopment) {
-    await installExtensions();
-  }
-  BrowserWindows.main();
-  LocalChains()
-    .then(localchains => {
-      localchains.forEach(chain => {
-        Daemons.startMultichain(chain);
-      });
-    })
-    .catch(() => {
-      console.log('No local chains');
-    })
+  // if (isDevelopment) {
+  //   await installExtensions();
+  // }
+  mainWindow = main(isDevelopment);
 });
 
 
@@ -52,3 +44,13 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+app.on('quit', () => {
+  LocalChains()
+    .then(chains => {
+      chains.forEach(chain => stopMultichain(chain))
+    })
+    .catch(()=> {
+      console.log('no chains')
+    })
+})

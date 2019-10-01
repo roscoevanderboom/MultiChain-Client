@@ -5,22 +5,25 @@ const assets = require('./assets');
 const scripts = require('./scripts');
 
 function watchMainScripts() {
-  return watch(['app/main/**/*.js'], series(scripts.developBuild, electron.stop, electron.start));
+  return watch(['app/main/**/*.js'],
+    series(scripts.developBuild, electron.stop, electron.start));
 }
 
 function watchRendererScripts() {
-  return watch(['app/renderer/**/*.js'], series(scripts.developBuild, hotreload.reload));
+  return watch(['app/renderer/**/*.js'],
+    series(scripts.developBuild, hotreload.reload));
 }
 
 function watchHtml() {
   return watch(
-    ['app/renderer/**.html'],
+    ['app/renderer/**/**.html'],
     series(assets.copyHtml, hotreload.inject, hotreload.reload),
   );
 }
 
 function watchCss() {
-  return watch(['app/renderer/**/*.css'], series(assets.copyCss, hotreload.reload));
+  return watch(['app/renderer/**/*.css'],
+    series(assets.copyCss, hotreload.reload));
 }
 
 watchMainScripts.displayName = 'watch-main-scripts';
@@ -31,8 +34,13 @@ watchHtml.displayName = 'watch-html';
 exports.start = series(
   assets.copyHtml,
   assets.copyCss,
+  assets.copyMultichain,
   scripts.developBuild,
   hotreload.start,
   electron.start,
-  parallel(watchMainScripts, watchRendererScripts, watchCss, watchHtml),
+  parallel(
+    watchMainScripts,
+    watchRendererScripts,
+    watchCss,
+    watchHtml),
 );

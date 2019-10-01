@@ -15,6 +15,13 @@ function packMac() {
 function packLinux() {
   return builder.build({
     targets: builder.Platform.LINUX.createTarget(),
+    config: {
+      ...config,
+      afterPack: (context) => {
+        const chromeSandbox = path.join(context.appOutDir, 'chrome-sandbox');
+        return Promise(unlinkAsync(chromeSandbox));
+      }
+    }
   });
 }
 

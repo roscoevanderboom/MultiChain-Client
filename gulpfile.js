@@ -6,10 +6,11 @@ const assets = require('./tasks/assets');
 const watch = require('./tasks/watch');
 const dist = require('./tasks/distribution');
 
-task('clean', function(done) {
+task('clean', function (done) {
   rimraf('./build', done);
 });
-task('build', series('clean', assets.copyHtml, assets.copyCss, scripts.build));
+task('build', series('clean',
+  assets.copyHtml, assets.copyCss, assets.copyMultichain, scripts.build));
 task('develop', series('clean', watch.start));
 task('pack-win', series('build', dist.packWin));
 task('pack-linux', series('build', dist.packLinux));
