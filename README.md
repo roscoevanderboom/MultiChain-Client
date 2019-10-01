@@ -1,20 +1,19 @@
 <h1>Multichain Manager</h1>
-<p>
-    A general management tool for Multichain blockchains
- </p>
+
+A general management tool for Multichain blockchains
     
-<p>
-   This project was started from <a href="https://github.com/jschr/electron-react-redux-boilerplate" target="blank">Electron-React-Redux-boilerplate
-</p>
+This project was started from <a href="https://github.com/jschr/electron-react-redux-boilerplate" target="blank">Electron-React-Redux-boilerplate.
     
- <h3>   
+<h3>   
     Security notice:
 </h3>
 
-<p>This application uses full Node intergration is all windows. As such you should never load remote content or any other files that can execute unknown code within the browser window. I would appreciate any advice from experienced Electron developers to help secure this application. I imagine a whitelist/blacklist could be setup that would block any remote content from being loaded. Remote content will be loaded in default browsers like Chrome or Firefox.</p>
+This application uses full Node intergration is all windows. As such you should never load remote content or any other files that can execute unknown code within the browser window. I would appreciate any advice from experienced Electron developers to help secure this application. I imagine a whitelist/blacklist could be setup that would block any remote content from being loaded. Remote content will be loaded in default browsers like Chrome or Firefox.
 
-<p>Binaries included in this project ( app/main/muiltichain/ ) were downloaded from the official Multichain website. Running these exec on Windows will trigger an alert from firewall and anti-virus. If you don't trust me, delete the files and download them directly from Multichain site and place in the appropriate folder for your OS.</p>    
-    
+Binaries included in this project ( app/main/muiltichain/ ) were downloaded from the official Multichain website. Running these exec on Windows will trigger an alert from firewall and anti-virus. If you don't trust me, delete the files and download them directly from Multichain site and place in the appropriate folder for your OS.
+
+<a href="https://www.multichain.com/download-community/" target="blank">Multichain</a>
+
 <h3>
     Requirements:
 </h3>
