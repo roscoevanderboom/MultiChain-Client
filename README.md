@@ -4,7 +4,7 @@
  </p>
     
 <p>
-   This project was started from <a href="https://github.com/electron/electron-quick-start" target="blank">Electron-React-Redux-boilerplate
+   This project was started from <a href="https://github.com/jschr/electron-react-redux-boilerplate" target="blank">Electron-React-Redux-boilerplate
 </p>
     
  <h3>   
