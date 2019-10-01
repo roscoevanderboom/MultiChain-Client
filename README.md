@@ -12,7 +12,7 @@ This application uses full Node intergration is all windows. As such you should 
 
 Binaries included in this project ( app/main/muiltichain/ ) were downloaded from the official Multichain website. Running these exec on Windows will trigger an alert from firewall and anti-virus. If you don't trust me, delete the files and download them directly from Multichain site and place in the appropriate folder for your OS.
 
-<a href="https://www.multichain.com/download-community/" target="blank">Multichain</a>
+<a href="https://www.multichain.com/download-community/" target="blank">Multichain</a> download page.
 
 <h3>
     Requirements:
