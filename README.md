@@ -49,7 +49,7 @@ Coming soon...
         </h3>
         <ul>
             <li>Detect existing Multichain blockchains.</li>
-            <li>Automatically start all local chains on app start. Shutdown chains on app quit.</li>
+            <li>Manually start / stop local nodes. Shutdown nodes on app quit.</li>
             <li>Display blockchain details</li>
             <li>Create chains with custom parameters.</li>
             <li>Create generic streams ( open/closed ) and add a description. Designed for generic text input.</li>
