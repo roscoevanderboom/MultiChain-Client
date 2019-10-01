@@ -11,20 +11,10 @@
     Security notice:
 </h3>
 
-<p>
-    This application uses full Node intergration is all windows. As such you should never load remote content or any
-    other
-    files that can execute unknown code within the browser window. I would appreciate any advice from experienced
-    Electron
-    developers to help secure this application. I imagine a whitelist/blacklist could be setup that would block any
-    remote
-    content from being loaded. Remote content will be loaded in default browsers like Chrome or Firefox.
-</p>
+<p>This application uses full Node intergration is all windows. As such you should never load remote content or any other files that can execute unknown code within the browser window. I would appreciate any advice from experienced Electron developers to help secure this application. I imagine a whitelist/blacklist could be setup that would block any remote content from being loaded. Remote content will be loaded in default browsers like Chrome or Firefox.</p>
 
-<p>
-    Binaries included in this project ( app/main/muiltichain/ ) were downloaded from the official Multichain website. 
-    Running these exec on Windows will trigger an alert from firewall and anti-virus. If you don't trust me, delete the files and           download them directly from Multichain site and place in the appropriate folder for your OS.
-</p>
+<p>Binaries included in this project ( app/main/muiltichain/ ) were downloaded from the official Multichain website. Running these exec on Windows will trigger an alert from firewall and anti-virus. If you don't trust me, delete the files and download them directly from Multichain site and place in the appropriate folder for your OS.</p>    
+    
 <h3>
     Requirements:
 </h3>
