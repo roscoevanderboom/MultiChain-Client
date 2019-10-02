@@ -10,9 +10,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 export default function FormDialog({ props }) {
   const [open, setOpen] = React.useState(false);
+  const [count, setCount] = React.useState(0);
 
-
-  // const { state, functions } = props;
+  const { multichain } = props.state;
+  const { feedback } = props.functions;
 
   function handleClickOpen() {
     setOpen(true);
@@ -21,20 +22,23 @@ export default function FormDialog({ props }) {
   function handleClose() {
     setOpen(false);
   }
-  function hanleSetCount() {
-    console.log('set count')
+  function hanleSetCount(e) {
+    setCount(e.target.value);
   }
+
   function addAddress() {
     console.log('set Address')
   }
 
   const newMultisig = () => {
-    if (!(state.multichain)) {
-      functions.feedback('error', 'You are not connected');
+    if (!(multichain)) {
+      feedback('error', 'You are not connected');
       return;
     }
     console.log('set newMultisig')
   }
+
+
 
   return (
     <React.Fragment>
@@ -45,28 +49,18 @@ export default function FormDialog({ props }) {
         <DialogTitle id="form-dialog-title">Multi signiture address</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Create an address that is linked to multiple addresses
+            Create an address that is linked to multiple addresses.
+            This doesn't work yet. Address fields will added depending on
+            user input.
           </DialogContentText>
           <TextField
             autoFocus
+            type="number"
             margin="dense"
             label="How many addresses?"
             id="count"
             onChange={hanleSetCount}
             fullWidth />
-          <TextField
-            margin="dense"
-            label="Address 1"
-            id="a1"
-            onChange={addAddress}
-            fullWidth />
-          <TextField
-            margin="dense"
-            label="Address 2"
-            id="a2"
-            onChange={addAddress}
-            fullWidth />
-
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

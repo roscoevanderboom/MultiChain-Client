@@ -1,21 +1,27 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import MenuItem from '@material-ui/core/MenuItem';
 
-export default function FormDialog({ props }) {
+// Components
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  MenuItem
+} from '@material-ui/core';
+
+
+export default function NewStreamModal({ props, listStreams }) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [value, setValue] = React.useState('Closed');
   const [details, setDetails] = React.useState(false);
 
-  const { state, functions } = props;
+  const { multichain } = props.state;
+  const { feedback } = props.functions;
 
   const options = ['Open', 'Closed']
 
@@ -46,11 +52,11 @@ export default function FormDialog({ props }) {
   }
 
   const newStream = () => {
-    if (!(state.multichain)) {
-      functions.feedback('error', 'You are not connected');
+    if (!(multichain)) {
+      feedback('error', 'You are not connected');
       return;
     }
-    state.multichain.create({
+    multichain.create({
       type: 'stream',
       name: name,
       open: isOpen,
@@ -59,11 +65,11 @@ export default function FormDialog({ props }) {
       }
     }, (err, res) => {
       if (err) {
-        functions.feedback('error', err.message)
+        feedback('error', err.message)
         return;
       }
-      functions.feedback('success', name + ' created');
-      functions.getChainStreams()
+      feedback('success', name + ' created');
+      listStreams()
     });
   }
 

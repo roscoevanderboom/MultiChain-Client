@@ -3,8 +3,6 @@ const path = require('path');
 
 let BinaryPath;
 
-
-
 switch (process.platform) {
   case 'win32':
     BinaryPath = path.join(__dirname, 'windows/');
@@ -16,5 +14,4 @@ switch (process.platform) {
     BinaryPath = path.join(__dirname, 'mac/');
     break;
 }
-console.log(BinaryPath)
 module.exports = BinaryPath;

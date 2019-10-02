@@ -13,13 +13,15 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(1, 1),
+
   },
   list: {
     display: 'flex',
     flexWrap: 'wrap',
+
   },
   text: {
-    width: '30%'
+    width: '45%'
   }
 }));
 
@@ -36,7 +38,6 @@ export default function ChainParams({ props }) {
           console.log(err);
           return;
         }
-        console.log(res)
         setKeys(Object.keys(res));
         setValues(Object.values(res));
       });

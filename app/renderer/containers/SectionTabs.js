@@ -54,6 +54,10 @@ const useStyles = makeStyles(theme => ({
     top: 100,
     zIndex: '800'
   },
+  scroll: {
+    overflow: 'scroll',
+    height: '85vh'
+  }
 }));
 
 export default function SectionTabs({ props }) {
@@ -84,25 +88,25 @@ export default function SectionTabs({ props }) {
           <Tab label="Permissions" {...tabProps(6)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel className={classes.scroll} value={value} index={0}>
         <ChainInfo props={props} />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel className={classes.scroll} value={value} index={1}>
         <Parameters props={props} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel className={classes.scroll} value={value} index={2}>
         <Streams props={props} />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel className={classes.scroll} value={value} index={3}>
         <Addresses props={props} />
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel className={classes.scroll} value={value} index={4}>
         <Assets props={props} />
       </TabPanel>
-      <TabPanel value={value} index={5}>
+      <TabPanel className={classes.scroll} value={value} index={5}>
         <Peers props={props} />
       </TabPanel>
-      <TabPanel value={value} index={6}>
+      <TabPanel className={classes.scroll} value={value} index={6}>
         <Permissions props={props} />
       </TabPanel>
     </div>

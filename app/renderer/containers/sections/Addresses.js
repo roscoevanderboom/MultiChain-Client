@@ -1,14 +1,18 @@
 // Services
 import React, { useState, useEffect } from 'react';
 
-// Constants
+// Actions
+import listAddresses from '../../actions/Addresses';
 
 // Components
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import {
+  Typography,
+  List,
+  ListItemText,
+  Toolbar,
+  Button,
+  Paper
+} from '@material-ui/core';
 
 // Modals
 import Multisig from '../Modals/addresses/MulticSigAddress'
@@ -20,50 +24,73 @@ const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(1, 1),
   },
-  list: {
-    display: 'flex',
-    flexWrap: 'wrap',
+  paper: {
+    padding: theme.spacing(1, 1),
+    cursor: 'pointer',
+    border: 'solid black 1px',
+    marginBottom: 10,
   },
   text: {
     width: '30%'
+  },
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 }));
 
 export default function Addresses({ props }) {
   const classes = useStyles();
-  const [keys, setKeys] = useState([]);
-  const [values, setValues] = useState([]);
+  const [addressList, setAddressList] = useState([]);
+
   const { multichain } = props.state;
+  const { feedback } = props.functions;
+
+  const list = () => {
+    listAddresses(multichain, setAddressList)
+  }
+
+  const newAddress = () => {
+    if (multichain) {
+      multichain.getNewAddress()
+        .then(() => {
+          list();
+        })
+        .catch(err => console.log(err.message));
+      return;
+    }
+    feedback('error', 'Multichain not connected');
+  }
 
   useEffect(() => {
     if (multichain) {
-      multichain.listAddresses((err, res) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-
-        setKeys(Object.keys(res));
-        setValues(Object.values(res));
-      });
+      list();
     }
   }, [multichain])
 
   return (
     <React.Fragment>
-      <Typography variant="h5" component="h3">
-        Addresses:
-        <List className={classes.list}>
-          {keys.map((key, i) =>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h5" component="h3">
+          Addresses:
+        </Typography>
+        <div>
+          <Button onClick={newAddress} variant="outlined" >New Address</Button>
+          <Multisig props={props} />
+        </div>
+      </Toolbar>
+
+
+      <List className={classes.list}>
+        {addressList.map(address =>
+          <Paper className={classes.paper} key={address.address}>
             <ListItemText
-              className={classes.text}
-              key={key}
-              primary={`${key}`}
-              secondary={`${values[i]}`} />
-          )}
-        </List>
-      </Typography>
-      <Divider />
+              primary={address.address}
+              secondary={`isMine: ${address.ismine}`} />
+          </Paper>
+        )}
+      </List>
+
     </React.Fragment>
   );
 }

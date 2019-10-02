@@ -28,7 +28,8 @@ class Root extends React.Component {
       activeChain: false,
       modals: {
         CreateChain: false,
-        ConnectRemoteChain: false
+        ConnectRemoteChain: false,
+        NewStreamModal: false
       }
     };
     // Global functions to open modal or give feedback

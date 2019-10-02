@@ -42,7 +42,6 @@ export default function Permissions({ props }) {
           console.log(err);
           return;
         }
-        console.log(res);
         setKeys(Object.keys(res));
         setValues(Object.values(res));
       });

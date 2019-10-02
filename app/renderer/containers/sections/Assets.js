@@ -1,14 +1,21 @@
 // Services
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect } from 'react';
 
-// Constants
+// Actions
+import listAssets from '../../actions/Assets';
 
 // Components
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import {
+  Typography,
+  List,
+  ListItemText,
+  Toolbar,
+  Button,
+  Paper
+} from '@material-ui/core';
+
+// Modals
+import NewAsset from '../Modals/assets/NewAsset'
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,43 +31,46 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     width: '30%'
+  },
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 }))
 
 export default function Assets({ props }) {
   const classes = useStyles();
-  const [keys, setKeys] = useState([]);
-  const [values, setValues] = useState([]);
+  const [assetList, setAssetList] = useState([]);
+
+
   const { multichain } = props.state;
+
+  const list = () => {
+    listAssets(multichain, setAssetList)
+  }
 
   useEffect(() => {
     if (multichain) {
-      multichain.listAssets((err, res) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-
-        setKeys(Object.keys(res));
-        setValues(Object.values(res));
-      });
+      list()
     }
   }, [multichain])
 
+  console.log(assetList);
+
   return (
     <React.Fragment>
-    <Typography variant="h5" component="h3">
-     Assets:
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h5" component="h3">
+          Assets:
+        </Typography>
+        <NewAsset props={props}/>
+      </Toolbar>
+
       <List className={classes.list}>
-        {keys.map((key, i)=>
-          <ListItemText
-          className={classes.text}
-          key={key}
-          primary={`${key}`}
-          secondary={`${values[i]}`}/>
-          )}
-      </List>
-    </Typography>
-  </React.Fragment>
+        assets
+    </List>
+
+
+    </React.Fragment>
   );
 }

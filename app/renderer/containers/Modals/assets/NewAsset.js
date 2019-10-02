@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MenuItem from '@material-ui/core/MenuItem';
+
 
 export default function FormDialog({ props }) {
   const [open, setOpen] = React.useState(false);
@@ -20,6 +20,18 @@ export default function FormDialog({ props }) {
   function handleClose() {
     setOpen(false);
   }
+
+
+  const issue = (add, ass, qty) => {
+    multichain.issue({
+      address: add,
+      asset: ass,
+      qty: qty,
+    }, (err, info) => {
+      if (err) throw err;
+      console.log(info);
+    });
+  };
 
   const createAsset = () => {
     if (!(state.multichain)) {

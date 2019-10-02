@@ -8,8 +8,6 @@ import GetCreds from '../../multichain/GetCreds';
 import Chainpaths from '../../multichain/Chainpaths';
 import { startMultichain, stopMultichain, createChain } from '../../multichain/Daemons';
 
-console.log(startMultichain)
-
 let mainWindow = null;
 let forceQuit = false;
 
@@ -39,6 +37,10 @@ module.exports = (isDevelopment) => {
     loadChains();
   });
 
+  //
+  // *********** IPC BEHAVIOUR **************
+  //
+
 
   // Request to start a chain
   ipcMain.on('chain:start', (e, selectedChain) => {
@@ -49,7 +51,8 @@ module.exports = (isDevelopment) => {
             startMultichain(chain)
               .catch(err => {
                 console.log(err)
-                mainWindow.webContents.send('chain-start:fail', err.message)})
+                mainWindow.webContents.send('chain-start:fail', err.message)
+              })
           }
         });
       })
@@ -107,7 +110,9 @@ module.exports = (isDevelopment) => {
 
   })
 
-
+  //
+  // *********** WINDOW BEHAVIOUR **************
+  //
 
   mainWindow.loadFile(path.resolve(path.join(__dirname, '../renderer/index.html')));
 
