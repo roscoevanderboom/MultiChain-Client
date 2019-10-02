@@ -1,45 +1,87 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React, { useState, useEffect } from 'react';
+
+// Actions
+import listAddresses from '../../../actions/Addresses';
+
+// Components
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  MenuItem
+} from '@material-ui/core';
+
 
 
 export default function FormDialog({ props }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [issueAddress, setIssueAddress] = useState('Select Issue Address');
+  const [assetName, setAssetName] = useState(false);
+  const [quantity, setQuantity] = useState(false);
+  const [details, setDetails] = useState(false);
+  const [addresses, setAddresses] = useState([]);
 
-  const { state, functions } = props;
+  const { multichain } = props.state;
+  const { feedback } = props.functions;
 
-  function handleClickOpen() {
-    setOpen(true);
+  const list = () => {
+    listAddresses(multichain, setAddresses)
   }
 
-  function handleClose() {
+  const handleClickOpen = () => {
+    setOpen(true);
+    list();
+  }
+
+  const handleClose = () => {
     setOpen(false);
   }
+  const handleDetails = (e) => {
+    setDetails(e.target.value);
+  }
 
-
-  const issue = (add, ass, qty) => {
-    multichain.issue({
-      address: add,
-      asset: ass,
-      qty: qty,
-    }, (err, info) => {
-      if (err) throw err;
-      console.log(info);
-    });
-  };
+  const handleIssueAddress = (e) => {
+    setIssueAddress(e.target.value)
+  }
+  const handleAssetName = (e) => {
+    setAssetName(e.target.value)
+  }
+  const handleQuantity = (e) => {
+    setQuantity(e.target.value)
+  }
 
   const createAsset = () => {
-    if (!(state.multichain)) {
-      functions.feedback('error', 'You are not connected');
+    if (!(multichain)) {
+      feedback('error', 'You are not connected');
       return;
     }
-    console.log('set createAsset')
+    issue();
   }
+
+  const issue = () => {
+    if (!issueAddress || !assetName || !quantity) {
+      feedback('error', 'Some inputs are empty');
+      return;
+    }
+    multichain.issue({
+      address: issueAddress,
+      asset: assetName,
+      qty: Number(quantity),
+      details: {
+        text: details
+      }
+    }, (err, info) => {
+      if (err) {
+        feedback('error', err.message);
+      };
+      console.log(info);
+      feedback('success', "Asset created");
+    });
+  };
 
   return (
     <React.Fragment>
@@ -52,7 +94,41 @@ export default function FormDialog({ props }) {
           <DialogContentText>
             Create new native assets
           </DialogContentText>
-          form
+          <TextField
+            autoFocus
+            type='text'
+            margin="dense"
+            label="Asset Name"
+            id="assetName"
+            onChange={handleAssetName}
+            fullWidth />
+            <TextField
+            id="issueAddress"
+            select
+            value={issueAddress}
+            helperText='Select Issue Address'
+            onChange={handleIssueAddress}
+            margin="normal"
+            fullWidth>
+            {addresses.map(add => (
+              <MenuItem key={add.address} value={add.address}>
+                {add.address}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            type='number'
+            margin="dense"
+            label="Quantity"
+            id="assetQuantity"
+            onChange={handleQuantity} />
+          <TextField
+            type='text'
+            margin="dense"
+            label="Asset details"
+            id="details"
+            onChange={handleDetails}
+            fullWidth />
 
         </DialogContent>
         <DialogActions>

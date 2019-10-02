@@ -65,7 +65,7 @@ const ChainList = ({ props }) => {
     ipcRenderer.on('chain-stop:fail', (e, response) => {
       feedback('error', response);
     });
-  }, [])
+  }, [ipcRenderer, feedback])
 
   return (
     <React.Fragment>

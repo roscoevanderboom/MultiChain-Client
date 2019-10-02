@@ -38,7 +38,7 @@ module.exports = (isDevelopment) => {
   });
 
   //
-  // *********** IPC BEHAVIOUR **************
+  // *********** IPC **************
   //
 
 

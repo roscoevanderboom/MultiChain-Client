@@ -92,21 +92,18 @@ export default function NewStreamModal({ props, listStreams }) {
             onChange={handleName}
             fullWidth />
           <TextField
-            autoFocus
             margin="dense"
             label="Details"
             id="Details"
             onChange={handleDetails}
             fullWidth />
-
           <TextField
             id="selectIsOpen"
             select
             value={value}
             onChange={handleIsOpen}
-            helperText="Is stream open or closed"
-            margin="normal"
-          >
+            helperText="Is stream open or closed?"
+            margin="normal" >
             {options.map((option, i) => (
               <MenuItem key={i} value={option}>
                 {option}

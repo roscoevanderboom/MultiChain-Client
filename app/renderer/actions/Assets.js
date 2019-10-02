@@ -1,7 +1,7 @@
 //
 //
 export default (multichain, setState) => {
-  multichain.listAddresses((err, res) => {
+  multichain.listAssets((err, res) => {
     if (err) {
       console.log(err);
       return;

@@ -16,6 +16,7 @@ import {
 
 // Modals
 import NewAsset from '../Modals/assets/NewAsset'
+import AssetBrowser from '../Modals/assets/AssetBrowser'
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,20 +56,20 @@ export default function Assets({ props }) {
     }
   }, [multichain])
 
-  console.log(assetList);
-
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Assets:
         </Typography>
-        <NewAsset props={props}/>
+        <NewAsset props={props} />
       </Toolbar>
 
       <List className={classes.list}>
-        assets
-    </List>
+        {assetList.map(asset =>
+          <AssetBrowser key={asset.name} props={asset} multichain={multichain}/>
+        )}
+      </List>
 
 
     </React.Fragment>

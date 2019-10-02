@@ -39,12 +39,12 @@ export default function CreateChain({ props }) {
     ipcRenderer.on('chain-create:fail', (e, response) => {
       feedback('error', response);
     });
-  }, [])
+  }, [ipcRenderer])
 
 
 
   return (
-    <div>
+    <React.Fragment>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -64,6 +64,6 @@ export default function CreateChain({ props }) {
           </div>
         </Fade>
       </Modal>
-    </div>
+    </React.Fragment>
   );
 }

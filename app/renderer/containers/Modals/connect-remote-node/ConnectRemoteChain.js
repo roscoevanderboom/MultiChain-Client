@@ -31,7 +31,7 @@ export default function CreateChain({ props }) {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -51,6 +51,6 @@ export default function CreateChain({ props }) {
           </div>
         </Fade>
       </Modal>
-    </div>
+    </React.Fragment>
   );
 }
