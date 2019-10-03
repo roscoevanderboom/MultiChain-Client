@@ -8,10 +8,7 @@ import listAssets from '../../actions/Assets';
 import {
   Typography,
   List,
-  ListItemText,
   Toolbar,
-  Button,
-  Paper
 } from '@material-ui/core';
 
 // Modals
@@ -46,15 +43,18 @@ export default function Assets({ props }) {
 
   const { multichain } = props.state;
 
-  const list = () => {
-    listAssets(multichain, setAssetList)
+  const getAssetlist = () => {
+    listAssets(multichain, setAssetList);
   }
 
   useEffect(() => {
     if (multichain) {
-      list()
+      getAssetlist()
     }
-  }, [multichain])
+  }, [multichain]);
+
+  const newProps = props;
+  newProps.functions.getAssetlist = getAssetlist;
 
   return (
     <React.Fragment>

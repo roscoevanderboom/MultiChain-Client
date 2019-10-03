@@ -19,22 +19,22 @@ import {
 
 export default function FormDialog({ props }) {
   const [open, setOpen] = useState(false);
-  const [issueAddress, setIssueAddress] = useState('Select Issue Address');
   const [assetName, setAssetName] = useState(false);
   const [quantity, setQuantity] = useState(false);
   const [details, setDetails] = useState(false);
+  const [issueAddress, setIssueAddress] = useState('Select Issue Address');
   const [addresses, setAddresses] = useState([]);
 
   const { multichain } = props.state;
-  const { feedback } = props.functions;
+  const { feedback,getAssetlist } = props.functions;
 
-  const list = () => {
+  const getAddressList = () => {
     listAddresses(multichain, setAddresses)
   }
 
   const handleClickOpen = () => {
     setOpen(true);
-    list();
+    getAddressList();
   }
 
   const handleClose = () => {
@@ -78,8 +78,8 @@ export default function FormDialog({ props }) {
       if (err) {
         feedback('error', err.message);
       };
-      console.log(info);
       feedback('success', "Asset created");
+      getAssetlist();
     });
   };
 
