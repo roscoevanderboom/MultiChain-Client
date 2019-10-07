@@ -39,11 +39,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Addresses({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
   const [addressList, setAddressList] = useState([]);
 
-  const { multichain } = props.state;
+  const { multichain, activeChain } = props.state;
   const { feedback } = props.functions;
 
   const list = () => {
@@ -51,16 +51,23 @@ export default function Addresses({ props }) {
   }
 
   const newAddress = () => {
-    if (multichain) {
-      multichain.getNewAddress()
-        .then(() => {
-          list();
-        })
-        .catch(err => console.log(err.message));
+    if (!(multichain)) {
+      feedback('You are not connected', 'error');
       return;
     }
-    feedback('error', 'Multichain not connected');
+    multichain.getNewAddress()
+    .then(res => {
+      console.log(res);
+      list();
+    })
+    .catch(err => console.log(err.message));
   }
+
+  useEffect(() => {
+    if (!activeChain) {
+      setAddressList([]);
+    }
+  }, [activeChain])
 
   useEffect(() => {
     if (multichain) {

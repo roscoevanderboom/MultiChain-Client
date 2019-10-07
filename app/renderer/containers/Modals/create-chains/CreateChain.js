@@ -21,27 +21,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CreateChain({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
 
   const { CreateChain } = props.state.modals;
-  const { closeModal, feedback } = props.functions;
+  const { closeModal } = props.functions;
 
   const handleClose = () => {
     closeModal('CreateChain');
   };
-
-  useEffect(() => {
-    // Create Chains
-    ipcRenderer.on('chain-create:success', (e, response) => {
-      feedback('success', response);
-    });
-    ipcRenderer.on('chain-create:fail', (e, response) => {
-      feedback('error', response);
-    });
-  }, [ipcRenderer])
-
-
 
   return (
     <React.Fragment>
@@ -60,7 +48,7 @@ export default function CreateChain({ props }) {
         <Fade in={CreateChain}>
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Create Chain</h2>
-            <Tabs />
+            <Tabs props={props}/>
           </div>
         </Fade>
       </Modal>

@@ -4,93 +4,55 @@ import { ipcRenderer } from 'electron';
 
 // Components
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-// Icons
-import Link from '@material-ui/icons/Link';
-import Close from '@material-ui/icons/Close';
+import ChainButton from './ChainButton';
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  active: {
-    border: '2px solid green',
-    borderRadius: '8px'
-  },
-  stopBtn: {
-    justifyContent: 'flex-end'
-  }
-});
-
-
-const ChainList = ({ props }) => {
-  const classes = useStyles();
-  const { localChains, activeChain, multichain } = props.state;
-  const { feedback, setActiveChain, setMultiChain } = props.functions;
-
-
-  const connect = (chain) => {
-    ipcRenderer.send('chain:connect', chain);
-  }
-  const start = (chain) => {
-    ipcRenderer.send('chain:start', chain);
-  }
-  const stop = (chain) => {
-    ipcRenderer.send('chain:stop', chain);
-  }
+export default ({ props, classes }) => {
+  const { localChains } = props.state;
+  const { connectNode, feedback, setCurrentChain } = props.functions;
 
   useEffect(() => {
     // Response to connect request
     ipcRenderer.on('chain-connect:success', (e, creds) => {
-      setMultiChain(creds);
+      connectNode(creds);
     });
     ipcRenderer.on('chain-connect:fail', (e, response) => {
       feedback(response);
     });
 
     // Response to start request
-    //  No response for start success
-    // Need to figure out how to get a response from start promise
+    ipcRenderer.on('chain-start:success', (e, response) => {
+      console.log(response);
+    });
     ipcRenderer.on('chain-start:fail', (e, response) => {
-      feedback('error', response);
+      let error = response.slice(response.indexOf('ERROR:'))
+      feedback(error, 'error');
     });
 
     // Response to stop request
     ipcRenderer.on('chain-stop:success', (e, response) => {
-      feedback('success', response);
-      setActiveChain(false);
+      feedback(response, 'success');
+      setCurrentChain(false);
     });
     ipcRenderer.on('chain-stop:fail', (e, response) => {
-      feedback('error', response);
+      feedback(response, 'error');
     });
-  }, [ipcRenderer, feedback])
+    return () => {
+      ipcRenderer.removeAllListeners('chain-connect:success');
+      ipcRenderer.removeAllListeners('chain-connect:fail');
+      ipcRenderer.removeAllListeners('chain-start:success');
+      ipcRenderer.removeAllListeners('chain-start:fail');
+      ipcRenderer.removeAllListeners('chain-stop:success');
+      ipcRenderer.removeAllListeners('chain-stop:fail');
+    };
+  }, [])
 
   return (
     <React.Fragment>
-      <List>
+      <List className={classes.list}>
         {localChains.map(chain => (
-          <ListItem
-            className={chain === activeChain ? classes.active : ' '}
-            button key={chain}>
-            <ListItemIcon
-              onClick={() => start(chain)}>
-              <Link />
-            </ListItemIcon>
-            <ListItemText
-              onClick={() => connect(chain)}
-              primary={chain} />
-            <ListItemIcon
-              onClick={() => stop(chain)}
-              className={classes.stopBtn}>
-              <Close />
-            </ListItemIcon>
-          </ListItem>
+          <ChainButton key={chain} props={props} chain={chain} />
         ))}
       </List>
     </React.Fragment>
   )
-}
-
-export default ChainList;
+};

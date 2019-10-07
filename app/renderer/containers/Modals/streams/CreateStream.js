@@ -26,6 +26,10 @@ export default function NewStreamModal({ props, listStreams }) {
   const options = ['Open', 'Closed']
 
   function handleClickOpen() {
+    if (!(multichain)) {
+      feedback('You are not connected', 'error');
+      return;
+    }
     setOpen(true);
   }
 
@@ -53,7 +57,7 @@ export default function NewStreamModal({ props, listStreams }) {
 
   const newStream = () => {
     if (!(multichain)) {
-      feedback('error', 'You are not connected');
+      feedback('You are not connected', 'error');
       return;
     }
     multichain.create({
@@ -65,10 +69,10 @@ export default function NewStreamModal({ props, listStreams }) {
       }
     }, (err, res) => {
       if (err) {
-        feedback('error', err.message)
+        feedback(err.message, 'error')
         return;
       }
-      feedback('success', name + ' created');
+      feedback(name + ' created', 'success' );
       listStreams()
     });
   }

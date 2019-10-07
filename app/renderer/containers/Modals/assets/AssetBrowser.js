@@ -1,5 +1,6 @@
 // Services
 import React, { useState, useEffect } from 'react';
+import { ipcRenderer } from 'electron';
 
 // Components
 import {
@@ -47,40 +48,47 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ props, multichain }) => {
+export default ({ props, asset }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
+  const { multichain, activeChain } = props.state;
+  const { feedback } = props.functions;
+
   function handleClickOpen() {
-    if (props.subscribed) {
-      setOpen(true);
-      return
+    if (!subscribed) {
+      feedback('You have not yet subscribed to this asset', 'warning');
     }
-    alert('You are not subscribed to this asset')
+    // alert('You are not subscribed to this asset');
+
+    setOpen(true);
   }
 
   function handleClose() {
     setOpen(false);
   }
 
-  const subscribeToAsset = (txid) => event => {
-    console.log(txid);
-    multichain.subscribe({
-      asset: `${txid}`,
-    }, (err, info) => {
-      if (err) {
-        console.log(err.message);
-        return;
-      }
-      setSubscribed(true)
-      console.log(info);
-    });
+  const subscribeToAsset = () => {
+    ipcRenderer.send('asset:subscribe', { activeChain, asset });
   }
 
   useEffect(() => {
-    setSubscribed(props.subscribed);
-  }, [props])
+    setSubscribed(asset.subscribed);
+  }, [asset])
+
+  useEffect(() => {
+    ipcRenderer.on('subscribe:success', (e, res) => {
+      setSubscribed(true);
+    });
+    ipcRenderer.on('subscribe:fail', (e, res) => {
+      console.log(res)
+    });
+    return () => {
+      ipcRenderer.removeAllListeners('subscribe:success');
+      ipcRenderer.removeAllListeners('subscribe:fail');
+    }
+  }, [])
 
 
   return (
@@ -89,16 +97,16 @@ export default ({ props, multichain }) => {
         <ListItemText
           onClick={handleClickOpen}
           primary='Name:'
-          secondary={props.name} />
+          secondary={asset.name} />
         <ListItemText
           onClick={handleClickOpen}
           primary='Open:'
-          secondary={`${props.open}`} />
+          secondary={`${asset.open}`} />
         <ListItemText
           primary='Subscribed:' />
         <Switch
           checked={subscribed}
-          onChange={subscribeToAsset(props.issuetxid)}
+          onChange={subscribeToAsset}
           value="subscribed"
           color="primary"
           inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -118,11 +126,11 @@ export default ({ props, multichain }) => {
         }}>
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">{props.details.text}</h2>
+            <h2 id="transition-modal-title">{asset.details.text}</h2>
             <ListItemText
               primary='Issuetxid'
-              secondary={`${props.issuetxid}`} />
-            <List classes={classes} props={props} />
+              secondary={`${asset.issuetxid}`} />
+            <List classes={classes} asset={asset} />
           </div>
         </Fade>
       </Modal>

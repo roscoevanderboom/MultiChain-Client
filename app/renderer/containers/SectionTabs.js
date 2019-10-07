@@ -49,18 +49,18 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     width: '100%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#c5c3c3',
     position: 'fixed',
     top: 100,
-    zIndex: '800'
+    zIndex: '800',
   },
   scroll: {
     overflow: 'scroll',
-    height: '85vh'
+    height: '86.5vh'
   }
 }));
 
-export default function SectionTabs({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 

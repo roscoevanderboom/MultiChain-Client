@@ -9,9 +9,6 @@ import { List, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(1, 1),
-  },
   list: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -22,19 +19,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function PeerList({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
   const [peerInfo, setPeerInfo] = useState([])
-
-  if (props.length > 0) {
-    console.log(props)
-  }
-  console.log(props)
 
   useEffect(() => {
     setPeerInfo(props)
   }, [props])
-
 
   return (
     <React.Fragment>
@@ -43,7 +34,7 @@ export default function PeerList({ props }) {
           <ListItemText
             key={peer.address}
             className={classes.text}
-            primary={peer.address}/>
+            primary={peer.address} />
         )}
       </List>
     </React.Fragment>

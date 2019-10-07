@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { ipcRenderer } from 'electron';
+
 
 // Components
 import Tabs from '@material-ui/core/Tabs';
@@ -12,6 +13,15 @@ import Generic from './components/Generic';
 import Presets from './components/Presets';
 import Custom from './components/Custom';
 
+// Styles
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -43,20 +53,37 @@ function tabProps(index) {
   };
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-export default function ScrollableTabsButtonAuto({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+
+  const { feedback } = props.functions;
 
   function handleChange(event, newValue) {
     setValue(newValue);
   }
+
+  const createChain = (data) => {
+    // Send request to create new chain
+    ipcRenderer.send('chain:create', (data));
+  }
+
+  useEffect(() => {
+    // Receive success / fail response
+    ipcRenderer.on('chain-create:success', (e, response) => {
+      feedback(response, 'success');
+      ipcRenderer.send('localChains:get');
+    });
+    ipcRenderer.on('chain-create:fail', (e, response) => {
+      feedback(response, 'error');
+    });
+    return () => {
+      ipcRenderer.removeAllListeners('chain-create:success');
+      ipcRenderer.removeAllListeners('chain-create:fail');
+    };
+  }, []);
+
+  props.functions.createChain = createChain;
 
   return (
     <div className={classes.root}>
@@ -73,13 +100,13 @@ export default function ScrollableTabsButtonAuto({ props }) {
         <Tab label="Custom" {...tabProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Generic />
+        <Generic props={props} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Presets />
+        <Presets props={props} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Custom />
+        <Custom props={props} />
       </TabPanel>
     </div>
   );

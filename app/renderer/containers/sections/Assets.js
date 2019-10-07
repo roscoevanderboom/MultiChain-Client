@@ -36,12 +36,11 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Assets({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
   const [assetList, setAssetList] = useState([]);
 
-
-  const { multichain } = props.state;
+  const { multichain, activeChain } = props.state;
 
   const getAssetlist = () => {
     listAssets(multichain, setAssetList);
@@ -53,8 +52,14 @@ export default function Assets({ props }) {
     }
   }, [multichain]);
 
-  const newProps = props;
-  newProps.functions.getAssetlist = getAssetlist;
+
+  useEffect(() => {
+    if (!activeChain) {
+      setAssetList([]);
+    }
+  }, [activeChain])
+
+  props.functions.getAssetlist = getAssetlist;
 
   return (
     <React.Fragment>
@@ -67,7 +72,7 @@ export default function Assets({ props }) {
 
       <List className={classes.list}>
         {assetList.map(asset =>
-          <AssetBrowser key={asset.name} props={asset} multichain={multichain}/>
+          <AssetBrowser key={asset.name} props={props} asset={asset} />
         )}
       </List>
 

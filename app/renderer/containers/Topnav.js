@@ -27,8 +27,8 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     padding: '0',
   },
-  title: {
-
+  barIcon: {
+    color: 'white'
   }
 }));
 
@@ -37,6 +37,8 @@ export default function Topnav({ props }) {
   const { activeChain } = props.state
 
   const classes = useStyles();
+
+  props.classes = classes;
 
 
   return (
@@ -47,11 +49,9 @@ export default function Topnav({ props }) {
           <Typography variant="h6" className={classes.title}>
             {activeChain ? activeChain : 'No chain loaded'}
           </Typography>
-          <RightDrawer />
+          <RightDrawer props={props} />
         </Toolbar>
       </AppBar>
     </div>
   );
 }
-
-

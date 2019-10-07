@@ -31,14 +31,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Streams({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
   const [streamList, setStreamList] = useState([]);
-  const { multichain } = props.state;
+  const { multichain, activeChain } = props.state;
 
   const list = () => {
     listStreams(multichain, setStreamList);
   }
+
+  useEffect(() => {
+    if (!activeChain) {
+      setStreamList([]);
+    }
+  }, [activeChain])
 
   useEffect(() => {
     if (multichain) {
@@ -59,7 +65,7 @@ export default function Streams({ props }) {
 
       <List>
         {streamList.map((stream, i) =>
-          <StreamBrowser key={i} props={stream} />
+          <StreamBrowser key={i} stream={stream} props={props} />
         )}
       </List>
     </React.Fragment>

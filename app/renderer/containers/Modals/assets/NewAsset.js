@@ -25,14 +25,20 @@ export default function FormDialog({ props }) {
   const [issueAddress, setIssueAddress] = useState('Select Issue Address');
   const [addresses, setAddresses] = useState([]);
 
+  const [assetDetails, setAssetDetails] = useState({})
+
   const { multichain } = props.state;
-  const { feedback,getAssetlist } = props.functions;
+  const { feedback, getAssetlist } = props.functions;
 
   const getAddressList = () => {
     listAddresses(multichain, setAddresses)
   }
 
   const handleClickOpen = () => {
+    if (!(multichain)) {
+      feedback('You are not connected', 'error');
+      return;
+    }
     setOpen(true);
     getAddressList();
   }
@@ -41,47 +47,59 @@ export default function FormDialog({ props }) {
     setOpen(false);
   }
   const handleDetails = (e) => {
-    setDetails(e.target.value);
+    setAssetDetails({
+      ...assetDetails,
+      details: e.target.value
+    })
   }
 
   const handleIssueAddress = (e) => {
-    setIssueAddress(e.target.value)
+    setAssetDetails({
+      ...assetDetails,
+      address: e.target.value
+    })
   }
   const handleAssetName = (e) => {
-    setAssetName(e.target.value)
+    setAssetDetails({
+      ...assetDetails,
+      name: e.target.value
+    })
   }
   const handleQuantity = (e) => {
-    setQuantity(e.target.value)
+    setAssetDetails({
+      ...assetDetails,
+      quantity: e.target.value
+    })
   }
-
-  const createAsset = () => {
-    if (!(multichain)) {
-      feedback('error', 'You are not connected');
-      return;
-    }
-    issue();
-  }
-
   const issue = () => {
-    if (!issueAddress || !assetName || !quantity) {
-      feedback('error', 'Some inputs are empty');
+    const { address, name, details, quantity } = assetDetails;
+
+    if (address === undefined || name === undefined || quantity === undefined || details === undefined) {
+      feedback('Some inputs are empty', 'error');
       return;
     }
+
+
     multichain.issue({
-      address: issueAddress,
-      asset: assetName,
+      address: address,
+      asset: name,
       qty: Number(quantity),
       details: {
         text: details
       }
     }, (err, info) => {
       if (err) {
-        feedback('error', err.message);
+        feedback(err.message, 'error');
+        return;
       };
-      feedback('success', "Asset created");
+      feedback("Asset created", 'success');
       getAssetlist();
     });
   };
+
+  useEffect(() => {
+    console.log(assetDetails);
+  }, [assetDetails])
 
   return (
     <React.Fragment>
@@ -102,10 +120,10 @@ export default function FormDialog({ props }) {
             id="assetName"
             onChange={handleAssetName}
             fullWidth />
-            <TextField
+          <TextField
             id="issueAddress"
             select
-            value={issueAddress}
+            value={assetDetails.address}
             helperText='Select Issue Address'
             onChange={handleIssueAddress}
             margin="normal"
@@ -135,7 +153,7 @@ export default function FormDialog({ props }) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={createAsset} color="primary">
+          <Button onClick={issue} color="primary">
             Create
           </Button>
         </DialogActions>

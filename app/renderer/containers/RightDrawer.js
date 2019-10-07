@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function Drawers() {
+export default ({ props }) => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -61,7 +61,7 @@ export default function Drawers() {
   return (
     <React.Fragment>
       <Button onClick={toggleDrawer('right', true)}>
-        <UserIcon className={classes.barIcon}/>
+        <UserIcon className={classes.barIcon} />
       </Button>
       <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
         {rightMenu('right')}

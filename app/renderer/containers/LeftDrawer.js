@@ -7,17 +7,7 @@ import Button from '@material-ui/core/Button';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import leftMenu from './components/LeftDrawer/LeftMenu';
 
-
-// Styles
-import { makeStyles } from '@material-ui/core/styles';
-const useStyles = makeStyles({
-  barIcon: {
-    color: 'white'
-  }
-});
-
 export default function Drawers({ props }) {
-  const classes = useStyles();
   const [state, setState] = React.useState({ left: false, });
 
   const toggleDrawer = (side, open) => event => {
@@ -30,7 +20,7 @@ export default function Drawers({ props }) {
   return (
     <React.Fragment>
       <Button onClick={toggleDrawer('left', true)}>
-        <FingerprintIcon className={classes.barIcon} />
+        <FingerprintIcon className={props.classes.barIcon} />
       </Button>
       <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
         {leftMenu('left', toggleDrawer, props)}
@@ -38,3 +28,6 @@ export default function Drawers({ props }) {
     </React.Fragment>
   );
 }
+
+
+//

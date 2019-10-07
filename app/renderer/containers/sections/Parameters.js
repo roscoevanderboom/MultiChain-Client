@@ -1,64 +1,59 @@
 // Services
 import React, { useState, useEffect } from 'react';
 
+// Actions
+import getBlockchainParams from '../../actions/Parameters';
+
 // Components
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import MainParams from './components/parameters/Params';
+import Consensus from './components/parameters/Consensus';
+import Genesis from './components/parameters/Genesis';
+import Network from './components/parameters/Network';
+import Mining from './components/parameters/Mining';
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(1, 1),
-
-  },
   list: {
     display: 'flex',
     flexWrap: 'wrap',
-
   },
   text: {
-    width: '45%'
+    width: '47%'
   }
 }));
 
-export default function ChainParams({ props }) {
+
+export default ({ props }) => {
   const classes = useStyles();
-  const [keys, setKeys] = useState([]);
-  const [values, setValues] = useState([]);
-  const { multichain } = props.state;
+  const [params, setParams] = useState([]);
+  const { multichain, activeChain } = props.state;
+
+  const listParameters = () => {
+    getBlockchainParams(multichain, setParams)
+  }
+
+
+  useEffect(() => {
+    if (!activeChain) {
+      setParams([]);
+    }
+  }, [activeChain])
 
   useEffect(() => {
     if (multichain) {
-      multichain.getBlockchainParams((err, res) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        setKeys(Object.keys(res));
-        setValues(Object.values(res));
-      });
-    }
+      listParameters();
+    };
   }, [multichain])
 
   return (
     <React.Fragment>
-      <Typography variant="h5" component="h3">
-        Parameters:
-        <List className={classes.list}>
-          {keys.map((key, i) =>
-            <ListItemText
-              className={classes.text}
-              key={key}
-              primary={`${key}`}
-              secondary={`${values[i]}`} />
-          )}
-        </List>
-      </Typography>
-      <Divider />
+      <MainParams props={params} classes={classes} />
+      <Consensus props={params} classes={classes} />
+      <Genesis props={params} classes={classes} />
+      <Network props={params} classes={classes} />
+      <Mining props={params} classes={classes} />
     </React.Fragment>
   );
 }

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { ipcRenderer } from 'electron';
 
 // Components
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-export default function GenericChain({ props }) {
+export default ({ props }) => {
   const [chainName, setChainName] = useState('');
+  const { createChain } = props.functions;
 
   const nameInput = (e) => {
     const name = e.target.value;
@@ -18,7 +18,7 @@ export default function GenericChain({ props }) {
       alert('No name given');
       return;
     }
-    ipcRenderer.send('chain:create-generic', chainName);
+    createChain({ chainName, option: 'generic' });
   };
 
 

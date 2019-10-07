@@ -11,50 +11,36 @@ module.exports = {
   createChain: (chainName) => {
     return new Promise((resolve, reject) => {
       execFile(mcUtil, ['create', chainName], (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
+        err ? reject(err) : resolve(res);
       });
     });
   },
   startMultichain: (chainName) => {
     return new Promise((resolve, reject) => {
       execFile(mcd, [chainName, 'daemon'], (err, res) => {
-        if (err) {
-          reject(err.message)
-        }
-        resolve(res)
+        err ? reject(err.message) : resolve(res);
       });
+
     });
   },
   stopMultichain: (chainName) => {
     return new Promise((resolve, reject) => {
       execFile(mcCLI, [chainName, 'stop'], (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
+        err ? reject(err) : resolve(res);
       });
     });
   },
   startIPFS: () => {
     return new Promise((resolve, reject) => {
       execFile('ipfs', ['daemon'], (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
+        err ? reject(err) : resolve(res);
       });
     });
   },
   stopIPFS: () => {
     return new Promise((resolve, reject) => {
       execFile('ipfs', ['shutdown'], (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
+        err ? reject(err) : resolve(res);
       });
     });
   },

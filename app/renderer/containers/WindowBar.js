@@ -4,8 +4,6 @@ import { remote } from 'electron';
 // Constants
 import platform from '../constants/Platform'
 
-// Styles
-
 const quitApp = () => {
   remote.app.quit()
 }
@@ -13,7 +11,8 @@ const hideApp = () => {
   remote.BrowserWindow.getFocusedWindow().minimize();
 }
 
-export default function Windowbar({ props }) {
+export default () =>{
+
   const str = `Multichain Manager on ${platform}`;
 
   return (

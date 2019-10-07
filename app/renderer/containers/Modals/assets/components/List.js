@@ -7,9 +7,9 @@ import {
   List,
 } from '@material-ui/core';
 
-export default ({ props, classes }) => {
+export default ({ asset, classes }) => {
 
-  console.log(props)
+  console.log(asset)
 
 
   return (
@@ -17,32 +17,32 @@ export default ({ props, classes }) => {
       <ListItemText
         className={classes.text}
         primary={`Issue quantity`}
-        secondary={`${props.issueqty}`} />
+        secondary={`${asset.issueqty}`} />
 
       <ListItemText
         className={classes.text}
         primary={`Asset reference`}
-        secondary={`${props.assetref}`} />
+        secondary={`${asset.assetref}`} />
 
       <ListItemText
         className={classes.text}
         primary={`Asset units`}
-        secondary={`${props.units}`} />
+        secondary={`${asset.units}`} />
 
       <ListItemText
         className={classes.text}
         primary={`Asset multiple`}
-        secondary={`${props.multiple}`} />
+        secondary={`${asset.multiple}`} />
 
       <ListItemText
         className={classes.text}
         primary={`Restrict send`}
-        secondary={`${props.restrict.send}`} />
+        secondary={`${asset.restrict.send}`} />
 
       <ListItemText
         className={classes.text}
         primary={`Restrict receive`}
-        secondary={`${props.restrict.receive}`} />
+        secondary={`${asset.restrict.receive}`} />
     </List>
   )
 }

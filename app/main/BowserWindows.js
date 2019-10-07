@@ -7,14 +7,14 @@ import LocalChains from '../../multichain/LocalChains';
 import GetCreds from '../../multichain/GetCreds';
 import Chainpaths from '../../multichain/Chainpaths';
 import { startMultichain, stopMultichain, createChain } from '../../multichain/Daemons';
+import { subscribe } from '../../multichain/MultichainFunctions';
 
 let mainWindow = null;
 let forceQuit = false;
 
 module.exports = (isDevelopment) => {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    fullscreen: true,
     minWidth: 640,
     minHeight: 480,
     show: false,
@@ -27,12 +27,11 @@ module.exports = (isDevelopment) => {
 
   const loadChains = () => {
     LocalChains()
-      .then(chains => mainWindow.webContents.send('localChains', chains))
-      .catch(chains => mainWindow.webContents.send('localChains', chains));
+      .then(chains => mainWindow.webContents.send('localChains:send', chains))
+      .catch(chains => mainWindow.webContents.send('localChains:send', chains));
   }
 
   // Get current chain list on window load
-  // && Start all chains
   mainWindow.webContents.on('did-finish-load', () => {
     loadChains();
   });
@@ -41,74 +40,74 @@ module.exports = (isDevelopment) => {
   // *********** IPC **************
   //
 
-
+  // Request to get local chain list
+  mainWindow.webContents.on('localChains:get', () => {
+    loadChains();
+  });
   // Request to start a chain
   ipcMain.on('chain:start', (e, selectedChain) => {
-    LocalChains()
-      .then(chains => {
-        chains.forEach(chain => {
-          if (chain === selectedChain) {
-            startMultichain(chain)
-              .catch(err => {
-                console.log(err)
-                mainWindow.webContents.send('chain-start:fail', err.message)
-              })
-          }
-        });
+    startMultichain(selectedChain)
+      .then(res => {
+        console.log('Start success');
+        mainWindow.webContents.send('chain-start:success', 'Start success');
       })
-      .catch(chains => mainWindow.webContents.send('localChains', chains));
+      .catch(err => {
+        mainWindow.webContents.send('chain-start:fail', err);
+      });
   });
   // Request to stop a chain
   ipcMain.on('chain:stop', (e, selectedChain) => {
-    LocalChains()
-      .then(chains => {
-        chains.forEach(chain => {
-          if (chain === selectedChain) {
-            stopMultichain(chain)
-              .then(res => mainWindow.webContents.send('chain-stop:success', `${selectedChain} stopped`))
-              .catch(err => mainWindow.webContents.send('chain-stop:fail', `${selectedChain} is not running`))
-          }
-        });
-      })
-      .catch(chains => mainWindow.webContents.send('localChains', chains));
+    stopMultichain(selectedChain)
+      .then(res => mainWindow.webContents.send('chain-stop:success', res))
+      .catch(err => mainWindow.webContents.send('chain-stop:fail', err.message))
   });
   // Request to get credantials for a chain
   ipcMain.on('chain:connect', (e, chain) => {
     GetCreds(chain)
       .then(creds => mainWindow.webContents.send('chain-connect:success', creds))
-      .catch(err => mainWindow.webContents.send('chain-connect:fail', 'Falied to connect'));
+      .catch(err => mainWindow.webContents.send('chain-connect:fail', 'That chain does not exist'));
   });
   // Request to create a new chain
-  ipcMain.on('chain:create-generic', (e, chainName) => {
-    console.log(`Create ${chainName}`);
-    createChain(chainName)
-      .then(() => {
-        mainWindow.webContents.send('chain-create:success', `${chainName} created`);
-        loadChains();
-      })
-      .catch(err => mainWindow.webContents.send('chain-create:fail', err.message))
-  });
-  // Request to open params.dat for custom chain
-  ipcMain.on('chain:create-custom', (e, chainName) => {
-    createChain(chainName)
-      .then(() => {
-        mainWindow.webContents.send('chain-create:success', `${chainName} created`);
-        shell.openItem(path.join(Chainpaths, chainName, 'params.dat'));
-        loadChains();
-      })
-      .catch(err => mainWindow.webContents.send('chain-create:fail', err.message))
-  })
-  // Request to load preset configs to params.dat
-  ipcMain.on('chain:create-preset', (e, chainName) => {
-    createChain(chainName)
-      .then(() => {
-        mainWindow.webContents.send('chain-create:success', `${chainName} created`);
-        console.log('Apply presets to params.dat')
-        loadChains();
-      })
-      .catch(err => mainWindow.webContents.send('chain-create:fail', err.message))
+  ipcMain.on('chain:create', (e, data) => {
+    const { chainName, option } = data;
+    const success = () => { mainWindow.webContents.send('chain-create:success', `${chainName} created`) };
+    const fail = (err) => { mainWindow.webContents.send('chain-create:fail', err.message) };
 
-  })
+    createChain(chainName)
+      .then(() => {
+        switch (option) {
+          case 'generic':
+            success();
+            loadChains();
+            break;
+          case 'preset':
+            success();
+            console.log('Apply presets to params.dat')
+            loadChains();
+            break;
+          default:
+            success();
+            shell.openItem(path.join(Chainpaths, chainName, 'params.dat'));
+            loadChains();
+            break;
+        }
+      })
+      .catch(err => fail(err));
+  });
+
+  // Request to get credantials for a chain
+  ipcMain.on('asset:subscribe', (e, data) => {
+    const { activeChain, asset } = data;
+    subscribe(activeChain, asset)
+      .then(res => {
+        console.log(res)
+        mainWindow.webContents.send('subscribe:success', res)
+      })
+      .catch(err => {
+        console.log(err)
+        mainWindow.webContents.send('subscribe:fail', err)
+      });
+  });
 
   //
   // *********** WINDOW BEHAVIOUR **************

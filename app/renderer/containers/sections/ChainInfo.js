@@ -1,14 +1,11 @@
 // Services
 import React, { useState, useEffect } from 'react';
 
-// Constants
+// Actions
+import ChainInfo from '../../actions/ChainInfo';
 
 // Components
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import { Typography, Toolbar, List, ListItemText } from '@material-ui/core';
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,43 +19,57 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
   },
   text: {
-    width: '30%'
-  }
+    width: '30%',
+  },
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
 }));
 
-export default function ChainInfo({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
-  const { multichain } = props.state;
+  const { multichain, activeChain } = props.state;
+  const { clearState } = props.functions;
+
+  const getInfo = () => {
+    ChainInfo(multichain, setKeys, setValues);
+  }
+
+  useEffect(() => {
+    if (!activeChain) {
+      setKeys([]);
+      setValues([]);
+    }
+  }, [activeChain])
 
   useEffect(() => {
     if (multichain) {
-      multichain.getInfo((err, res) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        setKeys(Object.keys(res));
-        setValues(Object.values(res));
-      });
+      getInfo();
     }
   }, [multichain])
 
   return (
     <React.Fragment>
-      <Typography variant="h5" component="h3">
-        Chain Details:
-        <List className={classes.list}>
-          {keys.map((key, i)=>
-            <ListItemText
+
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h5" component="h3">
+          Chain Details:
+          </Typography>
+      </Toolbar>
+
+      <List className={classes.list}>
+        {keys.map((key, i) =>
+          <ListItemText
             className={classes.text}
             key={key}
             primary={`${key}`}
-            secondary={`${values[i]}`}/>
-            )}
-        </List>
-      </Typography>
+            secondary={`${values[i]}`} />
+        )}
+      </List>
+
     </React.Fragment>
   );
 }

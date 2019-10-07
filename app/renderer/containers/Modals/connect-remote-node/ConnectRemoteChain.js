@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CreateChain({ props }) {
+export default ({ props }) => {
   const classes = useStyles();
 
   const { ConnectRemoteChain } = props.state.modals;

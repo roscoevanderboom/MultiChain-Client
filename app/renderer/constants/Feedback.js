@@ -31,10 +31,29 @@ const styles = {
 
 
 let { error, success, comingSoon, completeAddToIPFS, addToIPFS } = styles.snackbars
-export default {
+const presets = {
     success: (enqueueSnackbar, text) => enqueueSnackbar(text, success),
     error: (enqueueSnackbar, text) => enqueueSnackbar(text, error),
     comingSoon: (enqueueSnackbar, text) => enqueueSnackbar(text, comingSoon),
     addToIPFS: (enqueueSnackbar, text) => enqueueSnackbar(text, addToIPFS),
     completeAddToIPFS: (enqueueSnackbar, text) => enqueueSnackbar(text, completeAddToIPFS),
 }
+
+export default (varient, message) => {
+  switch (varient) {
+    case 'success':
+      presets.success(this.props.enqueueSnackbar, message)
+      break;
+    case 'error':
+      presets.error(this.props.enqueueSnackbar, message)
+      break;
+    case 'addToIPFS':
+      presets.addToIPFS(this.props.enqueueSnackbar, message)
+      break;
+    default:
+      presets.comingSoon(this.props.enqueueSnackbar, message)
+      break;
+  }
+}
+
+

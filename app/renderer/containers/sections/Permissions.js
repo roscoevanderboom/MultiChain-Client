@@ -5,20 +5,34 @@ import React, { useState, useEffect } from 'react';
 import listPermissions from '../../actions/Permissions';
 
 // Components
-import { Typography } from '@material-ui/core';
+import { Typography, Toolbar } from '@material-ui/core';
 import List from './components/permissions/List';
 
-// Modals
+// Styles
+import { makeStyles } from '@material-ui/core/styles';
 
-export default function Permissions({ props }) {
+const useStyles = makeStyles(theme => ({
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
+}));
 
+export default ({ props }) => {
+  const classes = useStyles();
   const [permissions, setPermissions] = useState(false);
 
-  const { multichain } = props.state;
+  const { multichain, activeChain } = props.state;
 
   const list = () => {
     listPermissions(multichain, setPermissions)
   }
+
+  useEffect(() => {
+    if (!activeChain) {
+      setPermissions(false);
+    }
+  }, [activeChain])
 
   useEffect(() => {
     if (multichain) {
@@ -28,9 +42,11 @@ export default function Permissions({ props }) {
 
   return (
     <React.Fragment>
-      <Typography variant="h5" component="h3">
-        Permissions:
-      </Typography>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h5" component="h3">
+          Permissions:
+        </Typography>
+      </Toolbar>
       <List props={permissions} />
     </React.Fragment>
   );
