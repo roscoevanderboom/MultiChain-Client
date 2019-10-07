@@ -26,8 +26,8 @@ const getCreds = (chain) => {
       if (err) { reject(err) };
       let x = data.indexOf('default-rpc-port = ');
       let start = x + 19;
-      let stop = start + 4;
-      creds.port = data.slice(start, stop);
+      let stop = start + 10;
+      creds.port = data.slice(start, stop).trim();
       resolve(creds);
     });
   })
