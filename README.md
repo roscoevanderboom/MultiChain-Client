@@ -32,7 +32,7 @@ Binaries included in this project ( app/main/muiltichain/ ) were downloaded from
 
 2.)  npm install or yarn install
 
-3.)  npm run develop or yarn develop
+3.)  npm run start or yarn start
 
 <h3>Setup: ( Mac ) </h3>
 
