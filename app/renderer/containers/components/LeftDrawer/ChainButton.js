@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ipcRenderer } from 'electron';
 
@@ -32,13 +32,14 @@ const useStyles = makeStyles({
   },
   actionsDiv: {
     display: 'flex'
+  },
+  connected: {
+    backgroundColor: 'steelblue'
   }
 });
 
-export default ({ props, chain }) => {
+export default ({ chain, activeChain }) => {
   const classes = useStyles();
-
-  const { activeChain } = props.state;
 
   const connect = () => {
     ipcRenderer.send(`chain:connect`, chain)
@@ -50,6 +51,10 @@ export default ({ props, chain }) => {
   const stop = () => {
     ipcRenderer.send('chain:stop', chain);
   }
+
+  useEffect(() => {
+
+  }, []);
 
   return (
     <ListItem

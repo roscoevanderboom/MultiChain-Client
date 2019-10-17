@@ -53,11 +53,9 @@ function tabProps(index) {
   };
 }
 
-export default ({ props }) => {
+export default ({ feedback }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
-  const { feedback } = props.functions;
 
   function handleChange(event, newValue) {
     setValue(newValue);
@@ -70,20 +68,14 @@ export default ({ props }) => {
 
   useEffect(() => {
     // Receive success / fail response
-    ipcRenderer.on('chain-create:success', (e, response) => {
-      feedback(response, 'success');
+    ipcRenderer.once('chain-create:success', (e, response) => {
+      feedback('success', response);
       ipcRenderer.send('localChains:get');
     });
-    ipcRenderer.on('chain-create:fail', (e, response) => {
-      feedback(response, 'error');
+    ipcRenderer.once('chain-create:fail', (e, response) => {
+      feedback('error', response);
     });
-    return () => {
-      ipcRenderer.removeAllListeners('chain-create:success');
-      ipcRenderer.removeAllListeners('chain-create:fail');
-    };
   }, []);
-
-  props.functions.createChain = createChain;
 
   return (
     <div className={classes.root}>
@@ -100,13 +92,13 @@ export default ({ props }) => {
         <Tab label="Custom" {...tabProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Generic props={props} />
+        <Generic createChain={createChain} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Presets props={props} />
+        <Presets createChain={createChain} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Custom props={props} />
+        <Custom createChain={createChain} />
       </TabPanel>
     </div>
   );

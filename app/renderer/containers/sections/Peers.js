@@ -1,8 +1,11 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../state/state';
 
 // Actions
-import listPeers from '../../actions/Peers';
+import { getPeerInfo } from '../../actions/Peers';
 
 // Components
 import { Typography, Toolbar } from '@material-ui/core';
@@ -20,37 +23,30 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default ({ props }) => {
+export default () => {
   const classes = useStyles();
-  const [peers, setPeers] = useState(false);
-
-  const { multichain, activeChain } = props.state;
-
-  const list = () => {
-    listPeers(multichain, setPeers)
-  }
+  const { state, methods } = useContext(GlobalState);
+  const { multichain, peers } = state;
+  const { setPeers } = methods;
 
   useEffect(() => {
-    if (!activeChain) {
-      setPeers(false);
+    if (!multichain) {
+      setPeers([]);
+      return;
     }
-  }, [activeChain])
-
-  useEffect(() => {
-    if (multichain) {
-      list()
-    }
+    getPeerInfo(multichain)
+      .then(res => setPeers(res))
+      .catch(err => console.log(err))
   }, [multichain])
 
-  return (
+  return (multichain &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Peers:
         </Typography>
       </Toolbar>
-
-      {!peers ? 'No connected peers' : <List props={peers} />}
+      {peers.length === 0 ? 'No peers' : <List peers={peers} />}
     </React.Fragment>
   );
 }

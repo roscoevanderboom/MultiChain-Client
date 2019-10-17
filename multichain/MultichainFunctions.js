@@ -31,5 +31,20 @@ module.exports = {
         resolve(res);
       });
     });
-  }
+  },
+  unSubscribe: (chainName, asset) => {
+    console.log(asset)
+    return new Promise((resolve, reject) => {
+      execFile(mcCLI, [
+        chainName,
+        'unsubscribe',
+        `${asset.name}`
+      ], (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(res);
+      });
+    });
+  },
 }

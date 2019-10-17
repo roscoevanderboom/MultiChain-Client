@@ -1,6 +1,9 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ipcRenderer } from 'electron';
+
+// State
+import { GlobalState } from '../../../state/state';
 
 // Components
 import {
@@ -48,29 +51,27 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ props, asset }) => {
+export default ({ asset }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const { state, methods } = useContext(GlobalState);
+  const { activeChain } = state;
+  const { feedback } = methods;
 
-  const { multichain, activeChain } = props.state;
-  const { feedback } = props.functions;
-
-  function handleClickOpen() {
+  const handleModal = () => {
     if (!subscribed) {
-      feedback('You have not yet subscribed to this asset', 'warning');
+      feedback('info', 'You have not yet subscribed to this asset', );
     }
-    // alert('You are not subscribed to this asset');
-
-    setOpen(true);
-  }
-
-  function handleClose() {
-    setOpen(false);
+    open ? setOpen(false) : setOpen(true);
   }
 
   const subscribeToAsset = () => {
-    ipcRenderer.send('asset:subscribe', { activeChain, asset });
+    if (!asset.subscribed) {
+      ipcRenderer.send('asset:subscribe', { activeChain, asset });
+      return;
+    }
+    ipcRenderer.send('asset:unsubscribe', { activeChain, asset });
   }
 
   useEffect(() => {
@@ -78,15 +79,15 @@ export default ({ props, asset }) => {
   }, [asset])
 
   useEffect(() => {
-    ipcRenderer.on('subscribe:success', (e, res) => {
-      setSubscribed(true);
+    ipcRenderer.on('subscribe:response', (e, res) => {
+      setSubscribed(res);
     });
-    ipcRenderer.on('subscribe:fail', (e, res) => {
-      console.log(res)
+    ipcRenderer.on('unsubscribe:response', (e, res) => {
+      setSubscribed(res);
     });
     return () => {
-      ipcRenderer.removeAllListeners('subscribe:success');
-      ipcRenderer.removeAllListeners('subscribe:fail');
+      ipcRenderer.removeAllListeners('subscribe:response');
+      ipcRenderer.removeAllListeners('unsubscribe:response');
     }
   }, [])
 
@@ -95,11 +96,11 @@ export default ({ props, asset }) => {
     <React.Fragment>
       <Paper className={classes.root} key={'Paper'}>
         <ListItemText
-          onClick={handleClickOpen}
+          onClick={handleModal}
           primary='Name:'
           secondary={asset.name} />
         <ListItemText
-          onClick={handleClickOpen}
+          onClick={handleModal}
           primary='Open:'
           secondary={`${asset.open}`} />
         <ListItemText
@@ -118,7 +119,7 @@ export default ({ props, asset }) => {
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
-        onClose={handleClose}
+        onClose={handleModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{

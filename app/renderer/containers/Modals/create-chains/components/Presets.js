@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
 // Components
-import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import {Input, Button, Typography} from '@material-ui/core';
 
-export default ({ props }) => {
-  const [chainName, setChainName] = useState('');
-  const { createChain } = props.functions;
+export default ({ createChain }) => {
+  const [chainName, setChainName] = useState(''); ;
 
   const nameInput = (e) => {
     const name = e.target.value;

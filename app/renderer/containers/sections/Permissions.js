@@ -1,8 +1,11 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../state/state';
 
 // Actions
-import listPermissions from '../../actions/Permissions';
+import { listPermissions } from '../../actions/Permissions';
 
 // Components
 import { Typography, Toolbar } from '@material-ui/core';
@@ -18,36 +21,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ props }) => {
+export default () => {
   const classes = useStyles();
-  const [permissions, setPermissions] = useState(false);
-
-  const { multichain, activeChain } = props.state;
-
-  const list = () => {
-    listPermissions(multichain, setPermissions)
-  }
+  const { state, methods } = useContext(GlobalState);
+  const { multichain, permissions } = state;
+  const { setPermissions } = methods;
 
   useEffect(() => {
-    if (!activeChain) {
-      setPermissions(false);
+    if (!multichain) {
+      setPermissions([]);
+      return;
     }
-  }, [activeChain])
-
-  useEffect(() => {
-    if (multichain) {
-      list()
-    }
+    listPermissions(multichain)
+      .then(res => setPermissions(res))
+      .catch(err => console.log(err))
   }, [multichain])
 
-  return (
+  return (multichain &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Permissions:
         </Typography>
       </Toolbar>
-      <List props={permissions} />
+      <List permissions={permissions} />
     </React.Fragment>
   );
 }

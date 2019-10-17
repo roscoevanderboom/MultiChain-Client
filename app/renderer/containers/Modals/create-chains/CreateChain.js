@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
-import { ipcRenderer } from 'electron';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import React, { useContext } from 'react';
+// State
+import { GlobalState } from '../../../state/state';
+
+// Components
+import { Modal, Backdrop, Fade } from '@material-ui/core';
 import Tabs from './CreateChainTabs';
 
+import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   modal: {
     display: 'flex',
@@ -21,11 +22,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ props }) => {
+export default () => {
   const classes = useStyles();
-
-  const { CreateChain } = props.state.modals;
-  const { closeModal } = props.functions;
+  const { state, methods } = useContext(GlobalState);
+  const { CreateChain } = state.modals;
+  const { closeModal, feedback } = methods;
 
   const handleClose = () => {
     closeModal('CreateChain');
@@ -48,7 +49,7 @@ export default ({ props }) => {
         <Fade in={CreateChain}>
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Create Chain</h2>
-            <Tabs props={props}/>
+            <Tabs feedback={feedback} />
           </div>
         </Fade>
       </Modal>

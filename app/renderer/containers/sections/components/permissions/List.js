@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function PermissionsList({ props }) {
+export default ({ permissions }) => {
   const classes = useStyles();
 
   const keys = [
@@ -37,7 +37,7 @@ export default function PermissionsList({ props }) {
   ];
   const values = [1, 2, 3, 7, 4, 5, 6, 0];
 
-  return (
+  return (permissions.length !== 0 &&
     <React.Fragment>
       <List className={classes.list}>
         {keys.map((key, i) =>
@@ -45,7 +45,7 @@ export default function PermissionsList({ props }) {
             key={key}
             className={classes.text}
             primary={key}
-            secondary={props ? props[values[i]].address : ''} />
+            secondary={permissions ? permissions[values[i]].address : ''} />
         )}
       </List>
     </React.Fragment>

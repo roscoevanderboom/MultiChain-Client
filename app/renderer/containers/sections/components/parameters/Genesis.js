@@ -1,5 +1,5 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // Components
 import {
@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 
-export default ({ props, classes }) => {
+export default ({ params, classes }) => {
 
   const keys = [
     'genesis-hash',
@@ -31,10 +31,10 @@ export default ({ props, classes }) => {
       <List className={classes.list}>
         {keys.map(key =>
           <ListItemText
-            className={classes.text}
+            className={classes.paramsText}
             key={key}
             primary={`${key}`}
-            secondary={`${props[key]}`} />
+            secondary={`${params[key]}`} />
         )}
       </List>
     </React.Fragment>

@@ -1,10 +1,20 @@
-import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Button from '@material-ui/core/Button';
+import React, { useState, useContext } from 'react';
+// State
+import { GlobalState } from '../../../state/state';
+// IPC
+import { ipcRenderer, remote } from 'electron';
 
+// Components
+import {
+  Modal,
+  Backdrop,
+  Fade,
+  Button,
+  TextField
+} from '@material-ui/core';
+
+// Styles
+import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   modal: {
     display: 'flex',
@@ -20,15 +30,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ props }) => {
+export default () => {
   const classes = useStyles();
-
-  const { ConnectRemoteChain } = props.state.modals;
-  const { closeModal } = props.functions;
+  const [address, setAddress] = useState(false);
+  const { state, methods } = useContext(GlobalState);
+  const { ConnectRemoteChain } = state.modals;
+  const { closeModal } = methods;
 
   const handleClose = () => {
     closeModal('ConnectRemoteChain');
   };
+  function handleName(e) {
+    setAddress(e.target.value);
+  }
+  function connect() {
+    if (!address) {
+      alert('No address given');
+      return;
+    }
+    ipcRenderer.send('chain:start', address);
+    setTimeout(() => {
+      remote.app.relaunch();
+      remote.app.quit();
+    }, 3000);
+  }
 
   return (
     <React.Fragment>
@@ -42,12 +67,18 @@ export default ({ props }) => {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}
-      >
+        }}>
+
         <Fade in={ConnectRemoteChain}>
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Connect Remote Chain</h2>
-            <p id="transition-modal-description">Tabs go here</p>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Remote node address"
+              onChange={handleName}
+              fullWidth />
+            <Button onClick={connect}>Connect</Button>
           </div>
         </Fade>
       </Modal>

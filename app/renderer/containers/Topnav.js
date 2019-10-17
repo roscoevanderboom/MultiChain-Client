@@ -1,15 +1,11 @@
 import React from 'react';
-import { ipcRenderer } from 'electron';
 
 // Containers
 import LeftDrawer from './LeftDrawer';
 import RightDrawer from './RightDrawer';
 
 // Components
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,29 +23,22 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     padding: '0',
   },
-  barIcon: {
-    color: 'white'
-  }
+
 }));
 
-export default function Topnav({ props }) {
-
-  const { activeChain } = props.state
+export default ({ activeChain }) => {
 
   const classes = useStyles();
-
-  props.classes = classes;
-
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <LeftDrawer props={props} />
+          <LeftDrawer />
           <Typography variant="h6" className={classes.title}>
             {activeChain ? activeChain : 'No chain loaded'}
           </Typography>
-          <RightDrawer props={props} />
+          <RightDrawer />
         </Toolbar>
       </AppBar>
     </div>

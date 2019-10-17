@@ -1,22 +1,39 @@
 //
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { ipcRenderer } from 'electron';
+
+// State
+import { GlobalState } from '../../../state/state';
 
 // Components
 import List from '@material-ui/core/List';
 import ChainButton from './ChainButton';
 
-export default ({ props, classes }) => {
-  const { localChains } = props.state;
-  const { connectNode, feedback, setCurrentChain } = props.functions;
+// Styles
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles({
+  list: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10
+  }
+});
+
+export default () => {
+  const classes = useStyles();
+  const { state, methods } = useContext(GlobalState);
+  const { localChains, activeChain } = state;
+  const { feedback, setActiveChain, setMultichain } = methods;
 
   useEffect(() => {
     // Response to connect request
     ipcRenderer.on('chain-connect:success', (e, creds) => {
-      connectNode(creds);
+      setMultichain(require("multichain-node")(creds));
     });
     ipcRenderer.on('chain-connect:fail', (e, response) => {
-      feedback(response);
+      feedback('error', response);
     });
 
     // Response to start request
@@ -25,16 +42,17 @@ export default ({ props, classes }) => {
     });
     ipcRenderer.on('chain-start:fail', (e, response) => {
       let error = response.slice(response.indexOf('ERROR:'))
-      feedback(error, 'error');
+      feedback('error', error);
     });
 
     // Response to stop request
     ipcRenderer.on('chain-stop:success', (e, response) => {
-      feedback(response, 'success');
-      setCurrentChain(false);
+      feedback('success', response);
+      setActiveChain(false);
+      setMultichain(false);
     });
     ipcRenderer.on('chain-stop:fail', (e, response) => {
-      feedback(response, 'error');
+      feedback('error', response);
     });
     return () => {
       ipcRenderer.removeAllListeners('chain-connect:success');
@@ -50,7 +68,7 @@ export default ({ props, classes }) => {
     <React.Fragment>
       <List className={classes.list}>
         {localChains.map(chain => (
-          <ChainButton key={chain} props={props} chain={chain} />
+          <ChainButton key={chain} chain={chain} activeChain={activeChain} />
         ))}
       </List>
     </React.Fragment>

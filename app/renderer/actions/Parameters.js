@@ -1,10 +1,12 @@
 //
 //
-export default (multichain, setState) => {
-  multichain.getBlockchainParams((err, res) => {
-    if (err) {
-      return;
-    }
-    setState(res);
-  });
+module.exports = {
+  blockchainParams: (multichain) => {
+    return new Promise((resolve, reject) => {
+      multichain.getBlockchainParams((err, res) => {
+        err ? reject(err) : resolve(res);
+      });
+    })
+  },
 }
+

@@ -1,8 +1,11 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../state/state';
 
 // Actions
-import ChainInfo from '../../actions/ChainInfo';
+import { getInfo } from '../../actions/ChainInfo';
 
 // Components
 import { Typography, Toolbar, List, ListItemText } from '@material-ui/core';
@@ -11,9 +14,6 @@ import { Typography, Toolbar, List, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(1, 1),
-  },
   list: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -27,37 +27,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ props }) => {
+export default () => {
   const classes = useStyles();
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
-  const { multichain, activeChain } = props.state;
-  const { clearState } = props.functions;
-
-  const getInfo = () => {
-    ChainInfo(multichain, setKeys, setValues);
-  }
+  const { state } = useContext(GlobalState);
+  const { multichain, chainInfo } = state;
 
   useEffect(() => {
-    if (!activeChain) {
+    if (!multichain) {
       setKeys([]);
       setValues([]);
-    }
-  }, [activeChain])
+      return;
+    };
+    setKeys(Object.keys(chainInfo));
+    setValues(Object.values(chainInfo));
+  }, [chainInfo, multichain])
 
-  useEffect(() => {
-    if (multichain) {
-      getInfo();
-    }
-  }, [multichain])
-
-  return (
+  return (multichain &&
     <React.Fragment>
-
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Chain Details:
-          </Typography>
+        </Typography>
       </Toolbar>
 
       <List className={classes.list}>
@@ -69,7 +61,6 @@ export default ({ props }) => {
             secondary={`${values[i]}`} />
         )}
       </List>
-
     </React.Fragment>
   );
 }

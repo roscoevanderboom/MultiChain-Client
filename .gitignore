@@ -14,12 +14,8 @@
 /dist-assets
 /test
 
-# multichain binaries
-/multichain/multichain-cli.exe
-/multichain/multichaind.exe
-/multichain/multichain-util.exe
-/multichain/multichaind-cold.exe
-/multichain/multichain-v8.dll
+# .vscode
+/.vscode
 
 # misc
 .DS_Store

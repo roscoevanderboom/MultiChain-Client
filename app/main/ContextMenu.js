@@ -1,13 +1,18 @@
 const { Menu } = require('electron');
+const appWindow = require('./BowserWindows');
+
+function name(e) {
+  console.log(e)
+}
 
 
-module.exports = (mainWindow) => {
-    Menu.buildFromTemplate([
-        {
-            label: 'Inspect element',
-            click() {
-                mainWindow.inspectElement(props.x, props.y);
-            },
-        },
-    ]).popup(mainWindow);
+module.exports = (e, mainWindow) => {
+  Menu.buildFromTemplate([
+    {
+      label: 'Inspect element',
+      click() {
+        appWindow();
+      },
+    },
+  ]).popup(mainWindow);
 }

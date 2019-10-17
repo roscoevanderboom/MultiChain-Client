@@ -1,8 +1,11 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../state/state';
 
 // Actions
-import listAddresses from '../../actions/Addresses';
+import { listAddresses, getNewAddress } from '../../actions/Addresses';
 
 // Components
 import {
@@ -17,65 +20,41 @@ import {
 // Modals
 import Multisig from '../Modals/addresses/MulticSigAddress'
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(1, 1),
-  },
-  paper: {
-    padding: theme.spacing(1, 1),
+const style = {
+  addressCard: {
+    padding: 12,
+    width: '50%',
     cursor: 'pointer',
     border: 'solid black 1px',
     marginBottom: 10,
-  },
-  text: {
-    width: '30%'
-  },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between'
   }
-}));
+}
 
-export default ({ props }) => {
-  const classes = useStyles();
-  const [addressList, setAddressList] = useState([]);
-
-  const { multichain, activeChain } = props.state;
-  const { feedback } = props.functions;
-
-  const list = () => {
-    listAddresses(multichain, setAddressList)
-  }
+export default ({ classes }) => {
+  const { state, methods } = useContext(GlobalState);
+  const { multichain, activeChain, addresses } = state;
+  const { feedback, setAddresses } = methods;
 
   const newAddress = () => {
-    if (!(multichain)) {
-      feedback('You are not connected', 'error');
-      return;
-    }
-    multichain.getNewAddress()
-    .then(res => {
-      console.log(res);
-      list();
-    })
-    .catch(err => console.log(err.message));
+    getNewAddress(multichain)
+      .then(res => getAddresses())
+      .catch(err => feedback('error', err))
+  }
+  const getAddresses = () => {
+    listAddresses(multichain)
+      .then(res => setAddresses(res))
+      .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    if (!activeChain) {
-      setAddressList([]);
+    if (!multichain) {
+      setAddresses([]);
+      return;
     }
-  }, [activeChain])
-
-  useEffect(() => {
-    if (multichain) {
-      list();
-    }
+    getAddresses()
   }, [multichain])
 
-  return (
+  return (multichain &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
@@ -83,14 +62,14 @@ export default ({ props }) => {
         </Typography>
         <div>
           <Button onClick={newAddress} variant="outlined" >New Address</Button>
-          <Multisig props={props} />
+          <Multisig />
         </div>
       </Toolbar>
 
 
-      <List className={classes.list}>
-        {addressList.map(address =>
-          <Paper className={classes.paper} key={address.address}>
+      <List >
+        {addresses.map(address =>
+          <Paper style={style.addressCard} key={address.address}>
             <ListItemText
               primary={address.address}
               secondary={`isMine: ${address.ismine}`} />

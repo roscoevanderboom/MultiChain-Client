@@ -2,7 +2,7 @@ import React from 'react';
 import { remote } from 'electron';
 
 // Constants
-import platform from '../constants/Platform'
+import platform from '../../constants/Platform'
 
 const quitApp = () => {
   remote.app.quit()
@@ -11,7 +11,7 @@ const hideApp = () => {
   remote.BrowserWindow.getFocusedWindow().minimize();
 }
 
-export default () =>{
+export default () => {
 
   const str = `Multichain Manager on ${platform}`;
 

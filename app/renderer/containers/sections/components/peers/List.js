@@ -19,18 +19,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default ({ props }) => {
+export default ({ peers }) => {
   const classes = useStyles();
-  const [peerInfo, setPeerInfo] = useState([])
 
-  useEffect(() => {
-    setPeerInfo(props)
-  }, [props])
+  console.log(peers)
 
-  return (
+  return (peers.length !== 0 &&
     <React.Fragment>
       <List className={classes.list}>
-        {peerInfo.map(peer =>
+        {peers.map(peer =>
           <ListItemText
             key={peer.address}
             className={classes.text}

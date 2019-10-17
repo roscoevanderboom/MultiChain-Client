@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+
+// Components
+import {
+  AppBar,
+  Tab,
+  Tabs,
+  Typography,
+  Box
+} from '@material-ui/core';
 
 // Containers
 import ChainInfo from './sections/ChainInfo';
@@ -15,6 +18,9 @@ import Addresses from './sections/Addresses';
 import Assets from './sections/Assets';
 import Peers from './sections/Peers';
 import Permissions from './sections/Permissions';
+
+// Style
+import { makeStyles } from '@material-ui/core/styles';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,16 +63,49 @@ const useStyles = makeStyles(theme => ({
   scroll: {
     overflow: 'scroll',
     height: '86.5vh'
+  },
+  list: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  text: {
+    width: '30%'
+  },
+  paramsText: {
+    width: '47%'
+  },
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 }));
 
-export default ({ props }) => {
+export default () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   function handleChange(event, newValue) {
     setValue(newValue);
   }
+
+  const sectionsArray = [
+    <ChainInfo classes={classes} />,
+    <Parameters classes={classes} />,
+    <Streams classes={classes} />,
+    <Addresses classes={classes} />,
+    <Assets classes={classes}  />,
+    <Peers classes={classes} />,
+    <Permissions classes={classes} />
+  ];
+  const tabsArray = [
+    "ChainInfo",
+    "Parameters",
+    "Streams",
+    "Addresses",
+    "Assets",
+    "Peers",
+    "Permissions"
+  ];
 
   return (
     <div className={classes.root}>
@@ -79,36 +118,16 @@ export default ({ props }) => {
           variant="scrollable"
           scrollButtons="auto"
           aria-label="scrollable auto tabs example">
-          <Tab label="ChainInfo" {...tabProps(0)} />
-          <Tab label="Parameters" {...tabProps(1)} />
-          <Tab label="Streams" {...tabProps(2)} />
-          <Tab label="Addresses" {...tabProps(3)} />
-          <Tab label="Assets" {...tabProps(4)} />
-          <Tab label="Peers" {...tabProps(5)} />
-          <Tab label="Permissions" {...tabProps(6)} />
+          {tabsArray.map((section, i) =>
+            <Tab key={i} label={`${section}`} {...tabProps(i)} />
+          )}
         </Tabs>
       </AppBar>
-      <TabPanel className={classes.scroll} value={value} index={0}>
-        <ChainInfo props={props} />
-      </TabPanel>
-      <TabPanel className={classes.scroll} value={value} index={1}>
-        <Parameters props={props} />
-      </TabPanel>
-      <TabPanel className={classes.scroll} value={value} index={2}>
-        <Streams props={props} />
-      </TabPanel>
-      <TabPanel className={classes.scroll} value={value} index={3}>
-        <Addresses props={props} />
-      </TabPanel>
-      <TabPanel className={classes.scroll} value={value} index={4}>
-        <Assets props={props} />
-      </TabPanel>
-      <TabPanel className={classes.scroll} value={value} index={5}>
-        <Peers props={props} />
-      </TabPanel>
-      <TabPanel className={classes.scroll} value={value} index={6}>
-        <Permissions props={props} />
-      </TabPanel>
+      {sectionsArray.map((section, i) =>
+        <TabPanel key={i} className={classes.scroll} value={value} index={i}>
+          {section}
+        </TabPanel>
+      )}
     </div>
   );
 }

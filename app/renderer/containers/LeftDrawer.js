@@ -1,14 +1,20 @@
 //
-import React from 'react';
+import React, { useState } from 'react';
 
 // Components
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import { Drawer, Button } from '@material-ui/core';
+
+import { Fingerprint } from '@material-ui/icons';
 import leftMenu from './components/LeftDrawer/LeftMenu';
 
-export default function Drawers({ props }) {
-  const [state, setState] = React.useState({ left: false, });
+const style = {
+  barIcon: {
+    color: 'white'
+  }
+}
+
+export default () => {
+  const [state, setState] = useState({ left: false, });
 
   const toggleDrawer = (side, open) => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -20,10 +26,10 @@ export default function Drawers({ props }) {
   return (
     <React.Fragment>
       <Button onClick={toggleDrawer('left', true)}>
-        <FingerprintIcon className={props.classes.barIcon} />
+        <Fingerprint style={style.barIcon} />
       </Button>
       <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
-        {leftMenu('left', toggleDrawer, props)}
+        {leftMenu('left', toggleDrawer)}
       </Drawer>
     </React.Fragment>
   );

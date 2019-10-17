@@ -1,4 +1,10 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../../state/state';
+
+// Actions
+import { createStream } from '../../../actions/Streams';
 
 // Components
 import {
@@ -13,33 +19,45 @@ import {
 } from '@material-ui/core';
 
 
-export default function NewStreamModal({ props, listStreams }) {
-  const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [value, setValue] = React.useState('Closed');
-  const [details, setDetails] = React.useState(false);
+export default ({ getStreamList }) => {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState('Closed');
+  const [details, setDetails] = useState(false);
+  const [streamDetails, setStreamDetails] = useState({
+    name: '',
+    isOpen: false,
+    restrict: {
+      write: true,
+      read: true,
+      offchain: true,
+    },
+    details: {
+      json: {}
+    }
+  });
 
-  const { multichain } = props.state;
-  const { feedback } = props.functions;
+  const { state, methods } = useContext(GlobalState);
+  const { multichain } = state;
+  const { feedback } = methods;
 
   const options = ['Open', 'Closed']
 
-  function handleClickOpen() {
+  const handleModal = () => {
     if (!(multichain)) {
-      feedback('You are not connected', 'error');
+      feedback('error', 'You are not connected');
       return;
     }
-    setOpen(true);
+    open ? setOpen(false) : setOpen(true);
   }
-
-  function handleClose() {
-    setOpen(false);
-  }
-  function handleName(e) {
+  const handleName = (e) => {
     setName(e.target.value);
   }
-  function handleIsOpen(e) {
+  const handleRestrictRead = (e) => {
+    console.log(streamDetails.restrict.read)
+  }
+  const handleIsOpen = (e) => {
     switch (e.target.value) {
       case 'Open':
         setIsOpen(true);
@@ -51,38 +69,26 @@ export default function NewStreamModal({ props, listStreams }) {
         break;
     }
   }
-  function handleDetails(e) {
+  const handleDetails = (e) => {
     setDetails(e.target.value);
   }
-
-  const newStream = () => {
-    if (!(multichain)) {
-      feedback('You are not connected', 'error');
-      return;
-    }
-    multichain.create({
-      type: 'stream',
-      name: name,
-      open: isOpen,
-      details: {
-        text: details
-      }
-    }, (err, res) => {
-      if (err) {
-        feedback(err.message, 'error')
-        return;
-      }
-      feedback(name + ' created', 'success' );
-      listStreams()
-    });
+  const handleSubmit = () => {
+    createStream({ name, isOpen, details })
+      .then(() => {
+        feedback('success', name + ' created');
+        getStreamList()
+      })
+      .catch(err => {
+        feedback('error', err.message)
+      })
   }
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="outlined" color="primary" onClick={handleModal}>
         New Stream
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Create stream</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -104,7 +110,7 @@ export default function NewStreamModal({ props, listStreams }) {
           <TextField
             id="selectIsOpen"
             select
-            value={value}
+            value={streamDetails.isOpen ? 'Open' : 'Closed'}
             onChange={handleIsOpen}
             helperText="Is stream open or closed?"
             margin="normal" >
@@ -114,14 +120,18 @@ export default function NewStreamModal({ props, listStreams }) {
               </MenuItem>
             ))}
           </TextField>
+          Restrictions:
+          <Button onClick={handleRestrictRead} color="primary">
+            Read {streamDetails.restrict.read ? 'True' : 'False'}
+          </Button>
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={newStream} color="primary">
+          <Button onClick={handleSubmit} color="primary">
             Create
+          </Button>
+          <Button onClick={handleModal} color="primary">
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>

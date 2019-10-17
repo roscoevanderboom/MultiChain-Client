@@ -7,14 +7,19 @@ import LocalChains from '../../multichain/LocalChains';
 import GetCreds from '../../multichain/GetCreds';
 import Chainpaths from '../../multichain/Chainpaths';
 import { startMultichain, stopMultichain, createChain } from '../../multichain/Daemons';
-import { subscribe } from '../../multichain/MultichainFunctions';
+import { subscribe, getInfo, unSubscribe } from '../../multichain/MultichainFunctions';
 
 let mainWindow = null;
 let forceQuit = false;
 
-module.exports = (isDevelopment) => {
+module.exports = () => {
+  //
+  // *********** WINDOW BEHAVIOUR **************
+  //
   mainWindow = new BrowserWindow({
-    fullscreen: true,
+    fullscreen: false,
+    height: 1000,
+    width: 1600,
     minWidth: 640,
     minHeight: 480,
     show: false,
@@ -25,21 +30,58 @@ module.exports = (isDevelopment) => {
     }
   });
 
+  mainWindow.loadFile(path.resolve(path.join(__dirname, '../renderer/index.html')));
+
+  // add inspect element on right click menu
+  mainWindow.webContents.on('context-menu', (e) => {
+    contextMenu(e, mainWindow);
+  });
+
+  // show window once on first load
+  mainWindow.webContents.once('did-finish-load', () => {
+    mainWindow.show();
+  });
+
+  // Handle window logic properly on macOS:
+  // 1. App should not terminate if window has been closed
+  // 2. Click on icon in dock should re-open the window
+  // 3. ⌘+Q should close the window and quit the app
+  mainWindow.webContents.on('did-finish-load', () => {
+
+    if (process.platform === 'darwin') {
+      mainWindow.on('close', function (e) {
+        if (!forceQuit) {
+          e.preventDefault();
+          mainWindow.hide();
+        }
+      });
+
+      app.on('activate', () => {
+        mainWindow.show();
+      });
+
+      app.on('before-quit', () => {
+        forceQuit = true;
+      });
+    } else {
+      mainWindow.on('closed', () => {
+        mainWindow = null;
+      });
+    }
+  });
+
   const loadChains = () => {
     LocalChains()
       .then(chains => mainWindow.webContents.send('localChains:send', chains))
       .catch(chains => mainWindow.webContents.send('localChains:send', chains));
   }
-
+  //
+  // *********** IPC **************
+  //
   // Get current chain list on window load
   mainWindow.webContents.on('did-finish-load', () => {
     loadChains();
   });
-
-  //
-  // *********** IPC **************
-  //
-
   // Request to get local chain list
   mainWindow.webContents.on('localChains:get', () => {
     loadChains();
@@ -99,62 +141,22 @@ module.exports = (isDevelopment) => {
   ipcMain.on('asset:subscribe', (e, data) => {
     const { activeChain, asset } = data;
     subscribe(activeChain, asset)
-      .then(res => {
-        console.log(res)
-        mainWindow.webContents.send('subscribe:success', res)
-      })
-      .catch(err => {
-        console.log(err)
-        mainWindow.webContents.send('subscribe:fail', err)
-      });
+      .then(() => mainWindow.webContents.send('subscribe:response', true))
+      .catch(() => mainWindow.webContents.send('subscribe:response', false))
+  });
+  // Request to get credantials for a chain
+  ipcMain.on('asset:unsubscribe', (e, data) => {
+    const { activeChain, asset } = data;
+    unSubscribe(activeChain, asset)
+      .then(() => mainWindow.webContents.send('unsubscribe:response', true))
+      .catch(() => mainWindow.webContents.send('unsubscribe:response', false));
   });
 
-  //
-  // *********** WINDOW BEHAVIOUR **************
-  //
-
-  mainWindow.loadFile(path.resolve(path.join(__dirname, '../renderer/index.html')));
-
-  if (isDevelopment) {
-    // auto-open dev tools
-    mainWindow.webContents.openDevTools();
-
-    // add inspect element on right click menu
-    mainWindow.webContents.on('context-menu', () => {
-      contextMenu(mainWindow);
-    });
-  }
-
-  // show window once on first load
-  mainWindow.webContents.once('did-finish-load', () => {
-    mainWindow.show();
+  // Request to check connection
+  ipcMain.on('chain:checkConnectionStatus', (e, data) => {
+    getInfo(data)
+      .then(res => mainWindow.webContents.send('checkConnectionStatus:response', true))
+      .catch(err => mainWindow.webContents.send('checkConnectionStatus:response', false));
   });
 
-  // Handle window logic properly on macOS:
-  // 1. App should not terminate if window has been closed
-  // 2. Click on icon in dock should re-open the window
-  // 3. ⌘+Q should close the window and quit the app
-  mainWindow.webContents.on('did-finish-load', () => {
-
-    if (process.platform === 'darwin') {
-      mainWindow.on('close', function (e) {
-        if (!forceQuit) {
-          e.preventDefault();
-          mainWindow.hide();
-        }
-      });
-
-      app.on('activate', () => {
-        mainWindow.show();
-      });
-
-      app.on('before-quit', () => {
-        forceQuit = true;
-      });
-    } else {
-      mainWindow.on('closed', () => {
-        mainWindow = null;
-      });
-    }
-  });
 }

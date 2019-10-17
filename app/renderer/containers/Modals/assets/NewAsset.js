@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../../state/state';
 
 // Actions
-import listAddresses from '../../../actions/Addresses';
+import { listAddresses } from '../../../actions/Addresses';
+import { issue } from '../../../actions/Assets';
 
 // Components
 import {
@@ -15,37 +19,28 @@ import {
   MenuItem
 } from '@material-ui/core';
 
-
-
-export default function FormDialog({ props }) {
+export default ({ getAssetlist }) => {
   const [open, setOpen] = useState(false);
-  const [assetName, setAssetName] = useState(false);
-  const [quantity, setQuantity] = useState(false);
-  const [details, setDetails] = useState(false);
-  const [issueAddress, setIssueAddress] = useState('Select Issue Address');
-  const [addresses, setAddresses] = useState([]);
+  const { state, methods } = useContext(GlobalState);
+  const { multichain, addresses } = state;
+  const { feedback } = methods;
+  const [assetDetails, setAssetDetails] = useState({
+    address: 'Select Issue Address',
+    asset: '',
+    qty: '',
+    details: {
+      text: ''
+    }
+  })
 
-  const [assetDetails, setAssetDetails] = useState({})
-
-  const { multichain } = props.state;
-  const { feedback, getAssetlist } = props.functions;
-
-  const getAddressList = () => {
-    listAddresses(multichain, setAddresses)
-  }
-
-  const handleClickOpen = () => {
+  const handleModal = () => {
     if (!(multichain)) {
       feedback('You are not connected', 'error');
       return;
     }
-    setOpen(true);
-    getAddressList();
+    open ? setOpen(false) : setOpen(true);
   }
 
-  const handleClose = () => {
-    setOpen(false);
-  }
   const handleDetails = (e) => {
     setAssetDetails({
       ...assetDetails,
@@ -71,42 +66,21 @@ export default function FormDialog({ props }) {
       quantity: e.target.value
     })
   }
-  const issue = () => {
-    const { address, name, details, quantity } = assetDetails;
-
-    if (address === undefined || name === undefined || quantity === undefined || details === undefined) {
-      feedback('Some inputs are empty', 'error');
-      return;
-    }
-
-
-    multichain.issue({
-      address: address,
-      asset: name,
-      qty: Number(quantity),
-      details: {
-        text: details
-      }
-    }, (err, info) => {
-      if (err) {
-        feedback(err.message, 'error');
-        return;
-      };
-      feedback("Asset created", 'success');
-      getAssetlist();
-    });
+  const newAsset = () => {
+    issue(multichain, assetDetails)
+      .then(() => {
+        getAssetlist();
+        feedback('success', 'Asset created');
+      })
+      .catch(err => feedback('error', err.message))
   };
-
-  useEffect(() => {
-    console.log(assetDetails);
-  }, [assetDetails])
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="outlined" color="primary" onClick={handleModal}>
         New Asset
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">New Assets</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -150,12 +124,12 @@ export default function FormDialog({ props }) {
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={issue} color="primary">
+          <Button onClick={newAsset} color="primary">
             Create
           </Button>
+          <Button onClick={handleModal} color="primary">
+            Cancel
+        </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

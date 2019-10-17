@@ -1,27 +1,34 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import MenuItem from '@material-ui/core/MenuItem';
+import React, { useState, useContext } from 'react';
 
-export default function FormDialog({ props }) {
-  const [open, setOpen] = React.useState(false);
-  const [count, setCount] = React.useState(0);
+// State
+import { GlobalState } from '../../../state/state';
 
-  const { multichain } = props.state;
-  const { feedback } = props.functions;
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@material-ui/core';
 
-  function handleClickOpen() {
-    setOpen(true);
+export default () => {
+  const [open, setOpen] = useState(false);
+  const [count, setCount] = useState(0);
+
+  const { state, methods } = useContext(GlobalState);
+  const { multichain } = state;
+  const { feedback } = methods;
+
+  const handleModal = () => {
+    if (!(multichain)) {
+      feedback('error', 'You are not connected');
+      return;
+    }
+    open ? setOpen(false) : setOpen(true);
   }
 
-  function handleClose() {
-    setOpen(false);
-  }
   function hanleSetCount(e) {
     setCount(e.target.value);
   }
@@ -38,14 +45,12 @@ export default function FormDialog({ props }) {
     console.log('set newMultisig')
   }
 
-
-
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="outlined" color="primary" onClick={handleModal}>
         MultiSig
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Multi signiture address</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -63,11 +68,11 @@ export default function FormDialog({ props }) {
             fullWidth />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
           <Button onClick={newMultisig} color="primary">
             Create
+          </Button>
+          <Button onClick={handleModal} color="primary">
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>

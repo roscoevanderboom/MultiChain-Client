@@ -1,8 +1,10 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
+// State
+import { GlobalState } from '../../state/state';
 // Actions
-import getBlockchainParams from '../../actions/Parameters';
+import { blockchainParams } from '../../actions/Parameters';
 
 // Components
 import MainParams from './components/parameters/Params';
@@ -11,49 +13,28 @@ import Genesis from './components/parameters/Genesis';
 import Network from './components/parameters/Network';
 import Mining from './components/parameters/Mining';
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(theme => ({
-  list: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  text: {
-    width: '47%'
-  }
-}));
-
-
-export default ({ props }) => {
-  const classes = useStyles();
-  const [params, setParams] = useState([]);
-  const { multichain, activeChain } = props.state;
-
-  const listParameters = () => {
-    getBlockchainParams(multichain, setParams)
-  }
-
+export default ({ classes }) => {
+  const { state, methods } = useContext(GlobalState);
+  const { multichain, params } = state;
+  const { setParams } = methods;
 
   useEffect(() => {
-    if (!activeChain) {
+    if (!multichain) {
       setParams([]);
-    }
-  }, [activeChain])
-
-  useEffect(() => {
-    if (multichain) {
-      listParameters();
+      return;
     };
+    blockchainParams(multichain)
+      .then(res => setParams(res))
+      .catch(err => console.log(err))
   }, [multichain])
 
-  return (
+  return (multichain &&
     <React.Fragment>
-      <MainParams props={params} classes={classes} />
-      <Consensus props={params} classes={classes} />
-      <Genesis props={params} classes={classes} />
-      <Network props={params} classes={classes} />
-      <Mining props={params} classes={classes} />
+      <MainParams params={params} classes={classes} />
+      <Consensus params={params} classes={classes} />
+      <Genesis params={params} classes={classes} />
+      <Network params={params} classes={classes} />
+      <Mining params={params} classes={classes} />
     </React.Fragment>
   );
 }

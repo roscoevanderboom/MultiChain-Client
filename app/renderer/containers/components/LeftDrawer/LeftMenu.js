@@ -1,5 +1,8 @@
 //
-import React from 'react';
+import React, { useContext } from 'react';
+
+// State
+import { GlobalState } from '../../../state/state';
 
 // Components
 import Typography from '@material-ui/core/Typography';
@@ -39,10 +42,11 @@ const useStyles = makeStyles({
 });
 
 
-export default (side, toggleDrawer, props) => {
+export default (side, toggleDrawer) => {
   const classes = useStyles();
 
-  const { openModal } = props.functions;
+  const { methods } = useContext(GlobalState);
+  const { openModal } = methods;
 
   return (
     <div
@@ -53,6 +57,7 @@ export default (side, toggleDrawer, props) => {
         Local chains
       </Typography>
       <Divider />
+      <br />
       <div className={classes.header}>
         <Button key={'create'} variant="outlined"
           onClick={() => {
@@ -64,9 +69,7 @@ export default (side, toggleDrawer, props) => {
             openModal('ConnectRemoteChain')
           }}>Connect</Button></div>
       <Divider />
-      <ChainList props={props} classes={classes} />
+      <ChainList />
     </div>
   )
 };
-
-// <ChainList props={props} />

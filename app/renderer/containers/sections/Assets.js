@@ -1,8 +1,11 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../state/state';
 
 // Actions
-import listAssets from '../../actions/Assets';
+import { listAssets } from '../../actions/Assets';
 
 // Components
 import {
@@ -15,64 +18,37 @@ import {
 import NewAsset from '../Modals/assets/NewAsset'
 import AssetBrowser from '../Modals/assets/AssetBrowser'
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles';
-
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(1, 1),
-  },
-  list: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  text: {
-    width: '30%'
-  },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  }
-}))
-
-export default ({ props }) => {
-  const classes = useStyles();
-  const [assetList, setAssetList] = useState([]);
-
-  const { multichain, activeChain } = props.state;
+export default ({ classes }) => {
+  const { state, methods } = useContext(GlobalState);
+  const { multichain, assets } = state;
+  const { feedback, setAssets } = methods;
 
   const getAssetlist = () => {
-    listAssets(multichain, setAssetList);
+    listAssets(multichain)
+      .then(res => setAssets(res))
+      .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    if (multichain) {
-      getAssetlist()
+    if (!multichain) {
+      setAssets([]);
+      return;
     }
+    getAssetlist()
   }, [multichain]);
 
-
-  useEffect(() => {
-    if (!activeChain) {
-      setAssetList([]);
-    }
-  }, [activeChain])
-
-  props.functions.getAssetlist = getAssetlist;
-
-  return (
+  return (multichain &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Assets:
         </Typography>
-        <NewAsset props={props} />
+        <NewAsset getAssetlist={getAssetlist} />
       </Toolbar>
 
       <List className={classes.list}>
-        {assetList.map(asset =>
-          <AssetBrowser key={asset.name} props={props} asset={asset} />
+        {assets.map(asset =>
+          <AssetBrowser key={asset.name} asset={asset} />
         )}
       </List>
 

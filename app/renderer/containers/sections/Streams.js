@@ -1,71 +1,50 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+
+// State
+import { GlobalState } from '../../state/state';
 
 // Actions
-import listStreams from '../../actions/Streams';
+import { listStreams } from '../../actions/Streams';
 
 // Components
 import { Toolbar, Typography, List } from '@material-ui/core';
+import StreamCard from './components/streams/StreamCard';
 
 // Modal
 import CreateStream from '../Modals/streams/CreateStream';
-import StreamBrowser from '../Modals/streams/StreamBrowser';
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles';
+export default ({ classes }) => {
+  const { state, methods } = useContext(GlobalState);
+  const { multichain, streams } = state;
+  const { setStreams } = methods;
 
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(1, 1),
-    marginBottom: 10,
-    cursor: 'pointer',
-    border: 'solid black 1px'
-  },
-  text: {
-    width: '30%'
-  },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  }
-}));
-
-export default ({ props }) => {
-  const classes = useStyles();
-  const [streamList, setStreamList] = useState([]);
-  const { multichain, activeChain } = props.state;
-
-  const list = () => {
-    listStreams(multichain, setStreamList);
+  const getStreamList = () => {
+    listStreams(multichain)
+      .then(res => setStreams(res))
+      .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    if (!activeChain) {
-      setStreamList([]);
+    if (!multichain) {
+      setStreams([]);
+      return;
     }
-  }, [activeChain])
-
-  useEffect(() => {
-    if (multichain) {
-      list()
-    }
+    getStreamList()
   }, [multichain])
 
-
-
-  return (
+  return (multichain &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Streams:
         </Typography>
-        <CreateStream props={props} listStreams={list} />
+        <CreateStream getStreamList={getStreamList} />
       </Toolbar>
 
-      <List>
-        {streamList.map((stream, i) =>
-          <StreamBrowser key={i} stream={stream} props={props} />
+      <List className={classes.list}>
+        {streams.map((stream, i) =>
+          <StreamCard key={i} stream={stream} getStreamList={getStreamList} />
         )}
       </List>
     </React.Fragment>

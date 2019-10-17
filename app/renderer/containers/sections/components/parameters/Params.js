@@ -1,5 +1,5 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // Components
 import {
@@ -8,7 +8,7 @@ import {
   Typography
 } from '@material-ui/core';
 
-export default ({ props,classes }) => {
+export default ({ params,classes }) => {
 
   const keys = [
     'anyone-can-activate',
@@ -33,7 +33,7 @@ export default ({ props,classes }) => {
             className={classes.text}
             key={key}
             primary={`${key}`}
-            secondary={`${props[key]}`}/>
+            secondary={`${params[key]}`}/>
         )}
       </List>
     </React.Fragment>

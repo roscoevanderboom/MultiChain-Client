@@ -1,11 +1,11 @@
 //
 //
-export default (multichain, setKeys, setValues) => {
-  multichain.getInfo((err, res) => {
-    if (err) {
-      return;
-    }
-    setKeys(Object.keys(res));
-    setValues(Object.values(res));
-  });
+module.exports = {
+  getInfo: (multichain) => {
+    return new Promise((resolve, reject) => {
+      multichain.getInfo((err, res) => {
+        err ? reject(err) : resolve(res);
+      });
+    })
+  },
 }
