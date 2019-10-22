@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import ItemDetails from './ItemDetails';
-import NewStreamItems from '../../../Modals/streams/NewStreamItems';
+import NewStreamItems from './NewStreamItems';
 
 // Icons
 

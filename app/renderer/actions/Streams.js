@@ -2,14 +2,18 @@
 //
 module.exports = {
   createStream: (multichain, options) => {
-    const { name, isOpen, details } = options;
+    const { name,isOpen, details, restrictions } = options;
     return new Promise((resolve, reject) => {
       multichain.create({
         type: 'stream',
         name: name,
         open: isOpen,
-        details: {
-          text: details
+        details: details,
+        restrict: {
+          write: true,
+          read: true,
+          onchain: true,
+          offchain: true,
         }
       }, (err, res) => {
         err ? reject(err) : resolve(res);

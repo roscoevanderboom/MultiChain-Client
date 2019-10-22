@@ -1,5 +1,5 @@
 //
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { ipcRenderer } from 'electron';
 
 // State
@@ -24,8 +24,9 @@ const useStyles = makeStyles({
 export default () => {
   const classes = useStyles();
   const { state, methods } = useContext(GlobalState);
-  const { localChains, activeChain } = state;
-  const { feedback, setActiveChain, setMultichain } = methods;
+  const { localChains, activeDaemons } = state;
+  const { feedback, setMultichain } = methods;
+
 
   useEffect(() => {
     // Response to connect request
@@ -38,22 +39,13 @@ export default () => {
 
     // Response to start request
     ipcRenderer.on('chain-start:success', (e, response) => {
-      console.log(response);
+      ipcRenderer.send('chain:checkConnectionStatus', response.chain)
     });
     ipcRenderer.on('chain-start:fail', (e, response) => {
-      let error = response.slice(response.indexOf('ERROR:'))
-      feedback('error', error);
+      ipcRenderer.send('chain:checkConnectionStatus', response.chain)
     });
 
-    // Response to stop request
-    ipcRenderer.on('chain-stop:success', (e, response) => {
-      feedback('success', response);
-      setActiveChain(false);
-      setMultichain(false);
-    });
-    ipcRenderer.on('chain-stop:fail', (e, response) => {
-      feedback('error', response);
-    });
+
     return () => {
       ipcRenderer.removeAllListeners('chain-connect:success');
       ipcRenderer.removeAllListeners('chain-connect:fail');
@@ -61,6 +53,7 @@ export default () => {
       ipcRenderer.removeAllListeners('chain-start:fail');
       ipcRenderer.removeAllListeners('chain-stop:success');
       ipcRenderer.removeAllListeners('chain-stop:fail');
+      ipcRenderer.removeAllListeners('checkConnectionStatus:response');
     };
   }, [])
 
@@ -68,7 +61,12 @@ export default () => {
     <React.Fragment>
       <List className={classes.list}>
         {localChains.map(chain => (
-          <ChainButton key={chain} chain={chain} activeChain={activeChain} />
+          <ChainButton
+            key={chain}
+            chain={chain}
+            state={state}
+            activeDaemons={activeDaemons}
+            methods={methods} />
         ))}
       </List>
     </React.Fragment>

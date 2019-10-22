@@ -5,7 +5,10 @@ import { ipcRenderer } from 'electron';
 import { GlobalState } from '../state/state';
 
 // Actions
-import { getInfo } from '../actions/ChainInfo'
+import { getInfo } from '../actions/ChainInfo';
+
+// Constants
+import notIncluded from '../constants/NotIncluded';
 
 // Containers
 import Windowbar from './components/WindowBar';
@@ -20,15 +23,23 @@ const Root = () => {
   const { state, methods } = useContext(GlobalState);
   const {
     multichain,
+    activeDaemons,
     activeChain,
     localChains,
   } = state;
   const {
     setActiveChain,
+    setActiveDaemons,
     setLocalChains,
     feedback,
     setChainInfo
   } = methods;
+
+  useEffect(() => {
+    localChains.forEach(chain => {
+      ipcRenderer.send('chain:checkConnectionStatus', chain);
+    });
+  }, [localChains])
 
   useEffect(() => {
     ipcRenderer.on('localChains:send', (e, chains) => {
@@ -55,11 +66,10 @@ const Root = () => {
     };
   }, [multichain]);
 
-
   return (
     <React.Fragment>
       <Windowbar />
-      <Topnav activeChain={activeChain}/>
+      <Topnav activeChain={activeChain} />
       <SectionTabs />
 
       <CreateChain />

@@ -5,9 +5,11 @@ import { useSnackbar } from 'notistack';
 export const GlobalState = createContext();
 export const GlobalStatePovider = (props) => {
   // General App State
+  const [loading, setLoading] = useState(true);
   const [multichain, setMultichain] = useState(false);
   const [localChains, setLocalChains] = useState([]);
   const [activeChain, setActiveChain] = useState(false);
+  const [activeDaemons, setActiveDaemons] = useState([])
   const [modals, setModals] = useState({
     CreateChain: false,
     ConnectRemoteChain: false
@@ -36,9 +38,11 @@ export const GlobalStatePovider = (props) => {
 
   // Build props to pass to components
   const state = {
+    loading,
     // General
     multichain,
     activeChain,
+    activeDaemons,
     localChains,
     modals,
     // Sections
@@ -52,9 +56,11 @@ export const GlobalStatePovider = (props) => {
   };
 
   const methods = {
+    setLoading,
     // General
     setMultichain,
     setActiveChain,
+    setActiveDaemons,
     setLocalChains,
     openModal,
     closeModal,

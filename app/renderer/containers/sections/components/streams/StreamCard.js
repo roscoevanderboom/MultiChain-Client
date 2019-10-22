@@ -1,5 +1,5 @@
 // Services
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 // State
 import { GlobalState } from '../../../../state/state';
@@ -45,14 +45,29 @@ const useStyles = makeStyles({
 });
 export default ({ stream, getStreamList }) => {
   const classes = useStyles();
-  const { state } = useContext(GlobalState);
+  const { state, methods } = useContext(GlobalState);
   const { multichain } = state;
+  const { feedback } = methods;
 
   const handleSubscribe = () => {
-    stream.subscribed
-      ? unsubscribe(multichain, getStreamList, stream)
-      : subscribe(multichain, getStreamList, stream);
+    if (stream.subscribed) {
+      unsubscribe(multichain, getStreamList, stream)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => feedback('error', err.message))
+      return;
+    }
+    subscribe(multichain, getStreamList, stream)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => feedback('error', err.message))
   }
+
+  useEffect(() => {
+    console.log(stream)
+  }, [])
 
   return (
     <Card className={classes.card}>

@@ -1,5 +1,7 @@
-const { execFile } = require('child_process');
+const { execFile, exec, spawn
+} = require('child_process');
 const path = require('path');
+const util = require('util');
 const binaryPath = require('./BinaryPaths')
 
 const mcUtil = path.join(binaryPath, 'multichain-util');
@@ -17,10 +19,15 @@ module.exports = {
   },
   startMultichain: (chainName) => {
     return new Promise((resolve, reject) => {
-      execFile(mcd, [chainName, 'daemon'], (err, res) => {
-        err ? reject(err.message) : resolve(res);
+      const daemon = spawn(mcd, [`${chainName}`, '-daemon']);
+      daemon.stdout.on('data', (data) => {
+        console.log(data.toString())
+        resolve(data.toString());
       });
-
+      daemon.stderr.on('data', (data) => {
+        console.log(data.toString())
+        reject(data.toString());
+      });
     });
   },
   stopMultichain: (chainName) => {

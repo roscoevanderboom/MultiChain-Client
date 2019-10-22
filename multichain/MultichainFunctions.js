@@ -10,40 +10,29 @@ module.exports = {
   getInfo: (chainName) => {
     return new Promise((resolve, reject) => {
       execFile(mcCLI, [chainName, 'getinfo'], (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(JSON.parse(res));
+        err ? reject(err) : resolve(JSON.parse(res));
       });
     });
   },
   subscribe: (chainName, asset) => {
-    console.log(asset)
     return new Promise((resolve, reject) => {
       execFile(mcCLI, [
         chainName,
         'subscribe',
         `${asset.name}`
       ], (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(res);
+        err ? reject(err) : resolve(res);
       });
     });
   },
   unSubscribe: (chainName, asset) => {
-    console.log(asset)
     return new Promise((resolve, reject) => {
       execFile(mcCLI, [
         chainName,
         'unsubscribe',
         `${asset.name}`
       ], (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(res);
+        err ? reject(err) : resolve(res);
       });
     });
   },

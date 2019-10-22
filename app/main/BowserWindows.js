@@ -89,19 +89,22 @@ module.exports = () => {
   // Request to start a chain
   ipcMain.on('chain:start', (e, selectedChain) => {
     startMultichain(selectedChain)
-      .then(res => {
-        console.log('Start success');
-        mainWindow.webContents.send('chain-start:success', 'Start success');
-      })
-      .catch(err => {
-        mainWindow.webContents.send('chain-start:fail', err);
-      });
+      .then(res =>
+        mainWindow.webContents.send('chain-start:success',
+          { response: res, chain: selectedChain }))
+      .catch(err =>
+        mainWindow.webContents.send('chain-start:fail',
+          { response: err.message, chain: selectedChain }));
   });
   // Request to stop a chain
   ipcMain.on('chain:stop', (e, selectedChain) => {
     stopMultichain(selectedChain)
-      .then(res => mainWindow.webContents.send('chain-stop:success', res))
-      .catch(err => mainWindow.webContents.send('chain-stop:fail', err.message))
+      .then(res =>
+        mainWindow.webContents.send('chain-stop:success',
+          { response: res, chain: selectedChain }))
+      .catch(err =>
+        mainWindow.webContents.send('chain-stop:fail',
+          { response: err.message, chain: selectedChain }))
   });
   // Request to get credantials for a chain
   ipcMain.on('chain:connect', (e, chain) => {
@@ -153,10 +156,15 @@ module.exports = () => {
   });
 
   // Request to check connection
-  ipcMain.on('chain:checkConnectionStatus', (e, data) => {
-    getInfo(data)
-      .then(res => mainWindow.webContents.send('checkConnectionStatus:response', true))
-      .catch(err => mainWindow.webContents.send('checkConnectionStatus:response', false));
+  ipcMain.on('chain:checkConnectionStatus', (e, chain) => {
+    getInfo(chain)
+      .then(res =>
+        mainWindow.webContents.send('checkConnectionStatus:response',
+          { response: res, chain: chain })
+      )
+      .catch(err =>
+        mainWindow.webContents.send('checkConnectionStatus:response',
+          { response: err.message, chain: chain })
+      );
   });
-
 }

@@ -1,7 +1,7 @@
 // Services
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { SnackbarProvider } from 'notistack';
 // State
 import { GlobalStatePovider } from './state/state';
 
@@ -15,7 +15,6 @@ ReactDOM.render(
     <GlobalStatePovider>
       <App />
     </GlobalStatePovider>
-  </SnackbarProvider>
-  ,
-  rootElement,
+  </SnackbarProvider>,
+  rootElement
 );

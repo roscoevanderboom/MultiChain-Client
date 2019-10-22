@@ -12,7 +12,7 @@ import { Toolbar, Typography, List } from '@material-ui/core';
 import StreamCard from './components/streams/StreamCard';
 
 // Modal
-import CreateStream from '../Modals/streams/CreateStream';
+import CreateStream from './components/streams/CreateStream';
 
 export default ({ classes }) => {
   const { state, methods } = useContext(GlobalState);

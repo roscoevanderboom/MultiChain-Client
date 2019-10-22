@@ -2,10 +2,10 @@
 import React, { useState, useContext } from 'react';
 
 // State
-import { GlobalState } from '../../../state/state';
+import { GlobalState } from '../../../../state/state';
 
 // Actions
-import { publish } from '../../../actions/Streams';
+import { publish } from '../../../../actions/Streams';
 
 // Components
 import {
