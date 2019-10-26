@@ -7,13 +7,20 @@ import { GlobalState } from '../../state/state';
 import { blockchainParams } from '../../actions/Parameters';
 
 // Components
-import MainParams from './components/parameters/Params';
-import Consensus from './components/parameters/Consensus';
-import Genesis from './components/parameters/Genesis';
-import Network from './components/parameters/Network';
-import Mining from './components/parameters/Mining';
+import { Typography, Toolbar } from '@material-ui/core';
+import List from './components/parameters/List';
+// Styles
+import { makeStyles } from '@material-ui/core/styles';
 
-export default ({ classes }) => {
+const useStyles = makeStyles(theme => ({
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+}));
+
+export default () => {
+  const classes = useStyles();
   const { state, methods } = useContext(GlobalState);
   const { multichain, params } = state;
   const { setParams } = methods;
@@ -30,11 +37,12 @@ export default ({ classes }) => {
 
   return (multichain &&
     <React.Fragment>
-      <MainParams params={params} classes={classes} />
-      <Consensus params={params} classes={classes} />
-      <Genesis params={params} classes={classes} />
-      <Network params={params} classes={classes} />
-      <Mining params={params} classes={classes} />
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h5" component="h3">
+          Parameters:
+        </Typography>
+      </Toolbar>
+      <List params={params} />
     </React.Fragment>
   );
 }

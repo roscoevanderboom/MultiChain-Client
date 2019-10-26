@@ -21,11 +21,9 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const daemon = spawn(mcd, [`${chainName}`, '-daemon']);
       daemon.stdout.on('data', (data) => {
-        console.log(data.toString())
         resolve(data.toString());
       });
       daemon.stderr.on('data', (data) => {
-        console.log(data.toString())
         reject(data.toString());
       });
     });

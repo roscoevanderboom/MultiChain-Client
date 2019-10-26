@@ -1,9 +1,9 @@
 // Services
 import React, { useEffect, useContext } from 'react';
-
+// StateProvider
+import { StreamStatePovider } from '../../state/streamState';
 // State
 import { GlobalState } from '../../state/state';
-
 // Actions
 import { listStreams } from '../../actions/Streams';
 
@@ -34,7 +34,7 @@ export default ({ classes }) => {
   }, [multichain])
 
   return (multichain &&
-    <React.Fragment>
+    <StreamStatePovider>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Streams:
@@ -47,7 +47,7 @@ export default ({ classes }) => {
           <StreamCard key={i} stream={stream} getStreamList={getStreamList} />
         )}
       </List>
-    </React.Fragment>
+    </StreamStatePovider>
   );
 }
 

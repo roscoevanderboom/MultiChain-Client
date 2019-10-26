@@ -1,5 +1,5 @@
 // Services
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 // State
 import { GlobalState } from '../../../../state/state';
@@ -65,16 +65,12 @@ export default ({ stream, getStreamList }) => {
       .catch(err => feedback('error', err.message))
   }
 
-  useEffect(() => {
-    console.log(stream)
-  }, [])
-
   return (
     <Card className={classes.card}>
       <CardHeader
         title={`${stream.name}`} />
       <StreamDetails stream={stream} />
-      <ItemsList stream={stream} getStreamList={getStreamList} />
+      <ItemsList stream={stream} />
       <CardActions>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           Subscribe:
@@ -89,3 +85,8 @@ export default ({ stream, getStreamList }) => {
     </Card>
   )
 }
+
+
+
+
+

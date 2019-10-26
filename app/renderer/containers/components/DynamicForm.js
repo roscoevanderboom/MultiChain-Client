@@ -3,12 +3,14 @@ import React, { useState, useContext } from 'react';
 
 // Components
 import {
+  Button,
   Divider,
   TextField,
   IconButton,
   ListItem,
   Typography,
-  MenuItem
+  MenuItem,
+  DialogActions
 } from '@material-ui/core';
 // Icons
 import {
@@ -29,10 +31,15 @@ const style = {
   },
   key: {
     marginRight: 10
+  },
+  footer: {
+    paddingTop: 12,
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 }
 
-export default ({ feedback }) => {
+export default ({ feedback, handleSubmit, handleModal }) => {
   const [inputFields, setInputFields] = useState([]);
   const [newkey, setNewKey] = useState(false);
   const [newType, setNewType] = useState('Input Type');
@@ -45,6 +52,7 @@ export default ({ feedback }) => {
   const handleNewType = (e) => {
     setNewType(e.target.value)
   }
+
   const checkKeys = () => {
     let result = true;
     let usedKeys = inputFields.map(input => input.key);
@@ -70,7 +78,8 @@ export default ({ feedback }) => {
     }
     let newInput = [...inputFields, {
       key: newkey,
-      type: newType
+      type: newType,
+      value: false
     }];
     setInputFields(newInput)
   }
@@ -78,6 +87,17 @@ export default ({ feedback }) => {
     let newInput = [...inputFields];
     newInput.splice(i, 1);
     setInputFields(newInput);
+  }
+  const handleDetails = (e) => {
+    e.preventDefault()
+    let data = {};
+    let form = document.querySelectorAll('form');
+    let keys = form[0].querySelectorAll('p');
+    let inputs = form[0].querySelectorAll('input');
+    inputs.forEach((input, index) => {
+      data[keys[index].textContent] = input.value
+    });
+    handleSubmit(JSON.stringify(data))
   }
 
   return (
@@ -100,18 +120,27 @@ export default ({ feedback }) => {
         </IconButton>
       </div>
       <Divider />
-      <div>
+      <form onSubmit={handleDetails}>
         {inputFields.map((input, i) =>
           <ListItem style={style.listItem} key={i}>
-            <Typography className='key' style={style.key}>{`${input.key}: `}</Typography>
-            <div>
-              <TextField type={input.type} />
-              <IconButton onClick={removeField(i)} >
-                <Clear />
-              </IconButton>
-            </div>
+            <Typography>{`${input.key}`}</Typography>
+            <TextField
+              placeholder={`${input.type}`}
+              type={input.type} />
+            <IconButton onClick={removeField(i)} >
+              <Clear />
+            </IconButton>
           </ListItem>
         )}
+      </form>
+      <Divider />
+      <div style={style.footer}>
+        <Button onClick={handleDetails} color="primary">
+          Create
+        </Button>
+        <Button onClick={handleModal} color="primary">
+          Cancel
+        </Button>
       </div>
     </React.Fragment>
   )

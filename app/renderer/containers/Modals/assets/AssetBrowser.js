@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ asset }) => {
+export default ({ asset, getAssetlist }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
@@ -60,9 +60,6 @@ export default ({ asset }) => {
   const { feedback } = methods;
 
   const handleModal = () => {
-    if (!subscribed) {
-      feedback('info', 'You have not yet subscribed to this asset', );
-    }
     open ? setOpen(false) : setOpen(true);
   }
 
@@ -80,10 +77,11 @@ export default ({ asset }) => {
 
   useEffect(() => {
     ipcRenderer.on('subscribe:response', (e, res) => {
-      setSubscribed(res);
+      getAssetlist()
     });
     ipcRenderer.on('unsubscribe:response', (e, res) => {
-      setSubscribed(res);
+      // res ? setSubscribed(false) : setSubscribed(true)
+      getAssetlist()
     });
     return () => {
       ipcRenderer.removeAllListeners('subscribe:response');

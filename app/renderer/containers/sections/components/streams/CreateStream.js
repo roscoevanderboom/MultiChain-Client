@@ -11,7 +11,6 @@ import {
   Button,
   TextField,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -39,7 +38,6 @@ export default ({ getStreamList }) => {
   const [name, setName] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [restrictions, setRestrictions] = useState([]);
-  const [details, setDetails] = useState({});
 
   const { state, methods } = useContext(GlobalState);
   const { multichain } = state;
@@ -69,33 +67,30 @@ export default ({ getStreamList }) => {
   const handleIsOpen = (e) => {
     isOpen ? setIsOpen(false) : setIsOpen(true);
   }
-  const handleDetails = (e) => {
-    let data = {};
-    let form = document.getElementById('streamDetails')
-    let keys = form.querySelectorAll('p');
-    let inputs = form.querySelectorAll('input');
-    console.log(keys);
-    console.log(inputs);
 
-    inputs.forEach((input, index) => {
-      data[keys[index]] = input.value
-    });
-    return JSON.stringify(data)
-  }
-  const handleSubmit = () => {
-    let details = handleDetails();
-    console.log(details);
-    const options = { name, isOpen, details }
+  const handleSubmit = (jsonData) => {
+    const options = { name, isOpen, jsonData, restrictions }
+    if (!name) {
+      feedback('error', 'Please give a name')
+      return;
+    }
 
-    // createStream(multichain, options)
-    //   .then(() => {
-    //     feedback('success', name + ' created');
-    //     getStreamList()
-    //   })
-    //   .catch(err => {
-    //     feedback('error', err.message)
-    //   })
+    createStream(multichain, options)
+      .then(() => {
+        feedback('success', name + ' created');
+        getStreamList()
+      })
+      .catch(err => {
+        feedback('error', err.message)
+      })
   }
+
+  const switchValues = [
+    'read',
+    'write',
+    'onchain',
+    'offchain',
+  ]
 
   const OptionSwitch = ({ switchValue, checkedValue, handleClick }) => {
     return (
@@ -139,39 +134,20 @@ export default ({ getStreamList }) => {
               switchValue='isOpen'
               checkedValue={isOpen}
               handleClick={handleIsOpen} />
-            <OptionSwitch
-              switchValue='read'
-              checkedValue={restrictions.includes('read') ? true : false}
-              handleClick={handleRestrictions('read')} />
-            <OptionSwitch
-              switchValue='write'
-              checkedValue={restrictions.includes('write') ? true : false}
-              handleClick={handleRestrictions('write')} />
-            <OptionSwitch
-              switchValue='onchain'
-              checkedValue={restrictions.includes('onchain') ? true : false}
-              handleClick={handleRestrictions('onchain')} />
-            <OptionSwitch
-              switchValue='offchain'
-              checkedValue={restrictions.includes('offchain') ? true : false}
-              handleClick={handleRestrictions('offchain')} />
+            {switchValues.map(val =>
+              <OptionSwitch
+                switchValue={val}
+                checkedValue={restrictions.includes({ val }) ? true : false}
+                handleClick={handleRestrictions({ val })} />
+            )}
           </div>
           <Divider />
           <Typography variant='h6'>Stream Details</Typography>
-          <div id='streamDetails'>
-            <DynamicForm feedback={feedback} />
-          </div>
-
-
+          <DynamicForm
+            feedback={feedback}
+            handleModal={handleModal}
+            handleSubmit={handleSubmit} />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDetails} color="primary">
-            Create
-          </Button>
-          <Button onClick={handleModal} color="primary">
-            Cancel
-          </Button>
-        </DialogActions>
       </Dialog>
     </React.Fragment>
   );

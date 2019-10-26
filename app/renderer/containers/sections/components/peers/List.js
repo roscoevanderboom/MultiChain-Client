@@ -21,17 +21,23 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ peers }) => {
   const classes = useStyles();
+  const [detailKeys, setDetailKeys] = useState([]);
+  const [detailsValues, setDetailsValues] = useState([]);
 
-  console.log(peers)
+  useEffect(() => {
+    setDetailKeys(Object.keys(peers));
+    setDetailsValues(Object.values(peers));
+  }, []);
 
   return (peers.length !== 0 &&
     <React.Fragment>
       <List className={classes.list}>
-        {peers.map(peer =>
+        {peers.map((peer, i) =>
           <ListItemText
-            key={peer.address}
+            key={i}
             className={classes.text}
-            primary={peer.address} />
+            primary={peer.address}
+            secondary />
         )}
       </List>
     </React.Fragment>

@@ -9,10 +9,12 @@ import {
   Typography
 } from '@material-ui/core';
 
-import SubscribedList from './SubscribedList'
-import UnsubscribedDetails from './UnsubscribedDetails'
+import DetailsCollapse from '../Details-Collapse';
+import ParamsCollapse from '../Params-Collapse';
+import InfoCollapse from '../Info-Collapse';
 
-export default ({ stream }) => {
+
+export default ({ asset }) => {
   const [open, setOpen] = useState(false);
 
   const handleModal = () => {
@@ -24,10 +26,10 @@ export default ({ stream }) => {
       <Button variant='outlined' onClick={handleModal}>Details</Button>
       <Dialog open={open} onClose={handleModal}>
         <DialogContent style={{ width: 550 }}>
-          <Typography variant="h4">{`${stream.name}`}</Typography>
-          {stream.subscribed
-            ? <SubscribedList stream={stream} />
-            : <UnsubscribedDetails stream={stream} />}
+          <Typography variant="h4">{`${asset.name}`}</Typography>
+          <DetailsCollapse details={asset.details} />
+          <ParamsCollapse restrict={asset.restrict} />
+          <InfoCollapse props={asset} />
         </DialogContent>
       </Dialog>
     </React.Fragment>

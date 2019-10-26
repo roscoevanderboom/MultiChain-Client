@@ -19,6 +19,8 @@ import {
   MenuItem
 } from '@material-ui/core';
 
+import Form from '../../components/DynamicForm'
+
 export default ({ getAssetlist }) => {
   const [open, setOpen] = useState(false);
   const { state, methods } = useContext(GlobalState);
@@ -27,10 +29,7 @@ export default ({ getAssetlist }) => {
   const [assetDetails, setAssetDetails] = useState({
     address: 'Select Issue Address',
     asset: '',
-    qty: '',
-    details: {
-      text: ''
-    }
+    qty: ''
   })
 
   const handleModal = () => {
@@ -39,13 +38,6 @@ export default ({ getAssetlist }) => {
       return;
     }
     open ? setOpen(false) : setOpen(true);
-  }
-
-  const handleDetails = (e) => {
-    setAssetDetails({
-      ...assetDetails,
-      details: e.target.value
-    })
   }
 
   const handleIssueAddress = (e) => {
@@ -66,8 +58,9 @@ export default ({ getAssetlist }) => {
       quantity: e.target.value
     })
   }
-  const newAsset = () => {
-    issue(multichain, assetDetails)
+
+  const handleNewAsset = (json) => {
+    issue(multichain, assetDetails, json)
       .then(() => {
         getAssetlist();
         feedback('success', 'Asset created');
@@ -114,23 +107,16 @@ export default ({ getAssetlist }) => {
             label="Quantity"
             id="assetQuantity"
             onChange={handleQuantity} />
-          <TextField
-            type='text'
-            margin="dense"
-            label="Asset details"
-            id="details"
-            onChange={handleDetails}
-            fullWidth />
-
         </DialogContent>
-        <DialogActions>
-          <Button onClick={newAsset} color="primary">
-            Create
-          </Button>
-          <Button onClick={handleModal} color="primary">
-            Cancel
-        </Button>
-        </DialogActions>
+        <DialogContent>
+          <DialogContentText>
+            Asset Details
+          </DialogContentText>
+          <Form
+            feedback={feedback}
+            handleSubmit={handleNewAsset}
+            handleModal={handleModal} />
+        </DialogContent>
       </Dialog>
     </React.Fragment>
   );

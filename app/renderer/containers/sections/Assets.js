@@ -16,7 +16,7 @@ import {
 
 // Modals
 import NewAsset from '../Modals/assets/NewAsset'
-import AssetBrowser from '../Modals/assets/AssetBrowser'
+import AssetCard from './components/assets/assetCard'
 
 export default ({ classes }) => {
   const { state, methods } = useContext(GlobalState);
@@ -48,7 +48,7 @@ export default ({ classes }) => {
 
       <List className={classes.list}>
         {assets.map(asset =>
-          <AssetBrowser key={asset.name} asset={asset} />
+          <AssetCard key={asset.name} asset={asset} getAssetlist={getAssetlist}/>
         )}
       </List>
 

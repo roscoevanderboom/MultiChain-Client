@@ -8,15 +8,15 @@ module.exports = {
       });
     })
   },
-  issue: (multichain, assetDetails) => {
-    const { address, name, details, quantity } = assetDetails;
+  issue: (multichain, assetDetails, json) => {
+    const { address, name, quantity } = assetDetails;
     return new Promise((resolve, reject) => {
       multichain.issue({
         address: address,
         asset: name,
         qty: Number(quantity),
         details: {
-          text: details
+          json: json
         }
       }, (err, res) => {
         err ? reject(err) : resolve(res);

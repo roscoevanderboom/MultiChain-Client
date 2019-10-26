@@ -151,8 +151,8 @@ module.exports = () => {
   ipcMain.on('asset:unsubscribe', (e, data) => {
     const { activeChain, asset } = data;
     unSubscribe(activeChain, asset)
-      .then(() => mainWindow.webContents.send('unsubscribe:response', true))
-      .catch(() => mainWindow.webContents.send('unsubscribe:response', false));
+      .then(() => mainWindow.webContents.send('unsubscribe:response', false))
+      .catch(() => mainWindow.webContents.send('unsubscribe:response', true));
   });
 
   // Request to check connection

@@ -27,6 +27,7 @@ export default () => {
   const { multichain, permissions } = state;
   const { setPermissions } = methods;
 
+
   useEffect(() => {
     if (!multichain) {
       setPermissions([]);
@@ -36,6 +37,7 @@ export default () => {
       .then(res => setPermissions(res))
       .catch(err => console.log(err))
   }, [multichain])
+
 
   return (multichain &&
     <React.Fragment>

@@ -2,19 +2,16 @@
 //
 module.exports = {
   createStream: (multichain, options) => {
-    const { name,isOpen, details, restrictions } = options;
+    const { name, isOpen, jsonData, restrictions } = options;
     return new Promise((resolve, reject) => {
       multichain.create({
         type: 'stream',
         name: name,
         open: isOpen,
-        details: details,
-        restrict: {
-          write: true,
-          read: true,
-          onchain: true,
-          offchain: true,
-        }
+        details: {
+          json: jsonData
+        },
+        restrict: restrictions
       }, (err, res) => {
         err ? reject(err) : resolve(res);
       })
@@ -65,11 +62,11 @@ module.exports = {
       })
     })
   },
-  publish: (multichain, stream, data) => {
+  publish: (multichain, stream, keys, data) => {
     return new Promise((resolve, reject) => {
       multichain.publish({
         stream: stream.name,
-        key: stream.name,
+        key: keys,
         data: { json: data }
       },
         (err, res) => {

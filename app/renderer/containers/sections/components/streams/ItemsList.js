@@ -1,16 +1,12 @@
 // Services
 import React, { useState, useEffect, useContext } from 'react';
-
 // State
 import { GlobalState } from '../../../../state/state';
+// Actions
+import { listStreamItems } from '../../../../actions/Streams';
 
 // Constants
 import notIncluded from '../../../../constants/NotIncluded';
-
-// Actions
-import {
-  listStreamItems
-} from '../../../../actions/Streams';
 
 // Components
 import {
@@ -23,14 +19,12 @@ import {
 import ItemDetails from './ItemDetails';
 import NewStreamItems from './NewStreamItems';
 
-// Icons
-
 // Styles
 const style = {
   card: {
     padding: 12,
     overflow: 'scroll',
-    minWidth: 600
+    minWidth: 575
   },
   filters: {
     display: 'flex',
@@ -42,14 +36,13 @@ const style = {
   }
 }
 
-export default ({ stream, getStreamList }) => {
+export default ({ stream }) => {
+  const { state, methods } = useContext(GlobalState);
+  const { multichain } = state;
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([]);
   const [streamKeys, setStreamKeys] = useState([]);
   const [streamPublishers, setStreamPublishers] = useState([]);
-
-  const { state } = useContext(GlobalState);
-  const { multichain } = state;
+  const [items, setItems] = useState([]);
 
   const handleModal = () => {
     open ? setOpen(false) : setOpen(true);
@@ -67,6 +60,7 @@ export default ({ stream, getStreamList }) => {
 
 
   useEffect(() => {
+
     let keys = [];
     let publishers = [];
     items.forEach(item => {
@@ -75,7 +69,7 @@ export default ({ stream, getStreamList }) => {
     });
     setStreamKeys(keys);
     setStreamPublishers(publishers);
-  }, [items, stream]);
+  }, [items]);
 
   return (
     <React.Fragment>
@@ -110,7 +104,9 @@ export default ({ stream, getStreamList }) => {
               </React.Fragment>
             }
             action={
-              <NewStreamItems stream={stream} getStreamList={getStreamList} />
+              <NewStreamItems
+                getStreamItemsList={getStreamItemsList}
+                stream={stream} />
             } />
 
           {items.map((item, i) =>
