@@ -25,15 +25,21 @@ function watchCss() {
   return watch(['app/renderer/**/*.css'],
     series(assets.copyCss, hotreload.reload));
 }
+function watchMultichain() {
+  return watch(['app/renderer/multichain/**/**'],
+    series(assets.copyMC, hotreload.reload));
+}
 
 watchMainScripts.displayName = 'watch-main-scripts';
 watchRendererScripts.displayName = 'watch-renderer-scripts';
 watchCss.displayName = 'watch-css';
 watchHtml.displayName = 'watch-html';
+watchMultichain.displayName = 'watch-multichain';
 
 exports.start = series(
   assets.copyHtml,
   assets.copyCss,
+  assets.copyMC,
   scripts.developBuild,
   hotreload.start,
   electron.start,
@@ -41,5 +47,7 @@ exports.start = series(
     watchMainScripts,
     watchRendererScripts,
     watchCss,
-    watchHtml),
+    watchHtml,
+    watchMultichain
+    ),
 );

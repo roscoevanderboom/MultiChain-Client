@@ -49,11 +49,6 @@ export default ({ name, props, newStyle }) => {
     setDataValues(values)
   }, [props])
 
-  useEffect(() => {
-    console.log(newStyle)
-
-  }, [newStyle])
-
   return (
     <React.Fragment>
       <ListItem button onClick={handleClick}>

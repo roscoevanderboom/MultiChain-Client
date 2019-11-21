@@ -1,20 +1,42 @@
 //
 //
+const { execFile } = require('child_process');
+const path = require('path');
+
+const binaryPath = require('../multichain/BinaryPaths')
+const mcCLI = path.join(binaryPath, 'multichain-cli');
+
 module.exports = {
-  createStream: (multichain, options) => {
-    const { name, isOpen, jsonData, restrictions } = options;
+  createStream: (chainName, options) => {
+    const { name, jsonData, restrict } = options;
+    const keys = ['write', 'read', 'onchain', 'offchain']
+    let restrictions = '';
+
+    keys.forEach(key => {
+      if (restrict[key] && restrictions === '') {
+        restrictions = restrictions.concat(key);
+      } else if (restrict[key] && restrictions !== '') {
+        restrictions = restrictions.concat(',', key);
+      }
+    })
+
+    if (!restrict.read && !restrict.write && !restrict.onchain && !restrict.offchain) {
+      restrictions = null;
+    }
+
     return new Promise((resolve, reject) => {
-      multichain.create({
-        type: 'stream',
-        name: name,
-        open: isOpen,
-        details: {
-          json: jsonData
-        },
-        restrict: restrictions
-      }, (err, res) => {
-        err ? reject(err) : resolve(res);
-      })
+      execFile(mcCLI, [
+        chainName,
+        'create',
+        'stream',
+        name,
+        JSON.stringify({
+          restrict: restrictions
+        }),
+        jsonData
+      ], (err, res) => {
+        err ? reject(err.message) : resolve(res);
+      });
     })
   },
   listStreams: (multichain) => {

@@ -91,6 +91,7 @@ export default ({ params }) => {
     <React.Fragment>
       {dataValues.map((key, i) =>
         <Collapse
+          key={i}
           props={key}
           newStyle={newStyle}
           name={dataKeys[i].toUpperCase()} />

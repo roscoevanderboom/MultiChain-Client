@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 
 // State
-import { GlobalState } from '../../../state/state';
+import { GlobalState } from '../../state/state';
 
 // Components
 import Typography from '@material-ui/core/Typography';

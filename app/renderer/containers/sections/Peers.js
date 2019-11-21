@@ -25,21 +25,10 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
   const classes = useStyles();
-  const { state, methods } = useContext(GlobalState);
-  const { multichain, peers } = state;
-  const { setPeers } = methods;
+  const { state } = useContext(GlobalState);
+  const { peers } = state;
 
-  useEffect(() => {
-    if (!multichain) {
-      setPeers([]);
-      return;
-    }
-    getPeerInfo(multichain)
-      .then(res => setPeers(res))
-      .catch(err => console.log(err))
-  }, [multichain])
-
-  return (multichain &&
+  return (peers &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">

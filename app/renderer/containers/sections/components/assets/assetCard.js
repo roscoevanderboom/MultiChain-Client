@@ -1,13 +1,14 @@
 // Services
 import React, { useState, useEffect, useContext } from 'react';
-import { ipcRenderer } from 'electron';
 
 // State
 import { GlobalState } from '../../../../state/state';
 
+// Multichain
+import { subscribe, unSubscribe } from '../../../../multichain/Multichain-Functions'
+
 // Components
 import {
-  Button,
   Switch,
   Card,
   CardHeader,
@@ -16,7 +17,6 @@ import {
 } from '@material-ui/core';
 
 import AssetDetails from './assetDetails';
-
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
@@ -31,36 +31,27 @@ const useStyles = makeStyles({
     fontSize: '1.5em',
   }
 });
-export default ({ asset, getAssetlist }) => {
+
+export default ({ asset }) => {
   const classes = useStyles();
   const [subscribed, setSubscribed] = useState(false);
   const { state, methods } = useContext(GlobalState);
   const { activeChain } = state;
+  const { update } = methods;
 
   const subscribeToAsset = () => {
     if (!asset.subscribed) {
-      ipcRenderer.send('asset:subscribe', { activeChain, asset });
+      subscribe(activeChain, asset)
+        .then(() => update('assets'))
       return;
     }
-    ipcRenderer.send('asset:unsubscribe', { activeChain, asset });
+    unSubscribe(activeChain, asset)
+      .then(() => update('assets'))
   }
 
   useEffect(() => {
     setSubscribed(asset.subscribed);
   }, [asset])
-
-  useEffect(() => {
-    ipcRenderer.on('subscribe:response', () => {
-      getAssetlist()
-    });
-    ipcRenderer.on('unsubscribe:response', () => {
-      getAssetlist()
-    });
-    return () => {
-      ipcRenderer.removeAllListeners('subscribe:response');
-      ipcRenderer.removeAllListeners('unsubscribe:response');
-    }
-  }, [])
 
   return (
     <Card className={classes.card}>

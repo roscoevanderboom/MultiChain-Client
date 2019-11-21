@@ -44,7 +44,7 @@ export default () => {
     setValues(Object.values(chainInfo));
   }, [chainInfo, multichain])
 
-  return (multichain &&
+  return (keys.length > 0 &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">

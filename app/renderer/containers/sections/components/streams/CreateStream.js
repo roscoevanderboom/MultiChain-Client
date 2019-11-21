@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 // State
 import { GlobalState } from '../../../../state/state';
@@ -16,32 +16,31 @@ import {
   DialogTitle,
   Divider,
   Typography,
-  Switch
 } from '@material-ui/core';
 
 import DynamicForm from '../../../components/DynamicForm'
+import Switch from '../../../components/Labeled_Switch';
 
 const style = {
   options: {
     display: 'flex',
     justifyContent: 'space-evenly'
-  },
-  switch: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
   }
 }
 
-export default ({ getStreamList }) => {
+export default () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [restrictions, setRestrictions] = useState([]);
+  const [restrict, setRestrict] = useState({
+    read: false,
+    write: false,
+    onchain: false,
+    offchain: false,
+  })
 
   const { state, methods } = useContext(GlobalState);
-  const { multichain } = state;
-  const { feedback } = methods;
+  const { multichain, activeChain } = state;
+  const { feedback, update } = methods;
 
   const handleModal = () => {
     if (!(multichain)) {
@@ -53,60 +52,38 @@ export default ({ getStreamList }) => {
   const handleName = (e) => {
     setName(e.target.value);
   }
-  const handleRestrictions = (option) => (e) => {
-    if (restrictions.includes(option)) {
-      let index = restrictions.indexOf(option)
-      let remove = [...restrictions];
-      remove.splice(index, 1);
-      setRestrictions(remove);
-      return;
-    }
-    let add = [...restrictions, option]
-    setRestrictions(add);
-  }
-  const handleIsOpen = (e) => {
-    isOpen ? setIsOpen(false) : setIsOpen(true);
+  const handleRestrictions = (e) => {
+    setRestrict({
+      ...restrict,
+      [e.target.value]: restrict[e.target.value] ? false : true,
+    })
   }
 
   const handleSubmit = (jsonData) => {
-    const options = { name, isOpen, jsonData, restrictions }
+    const options = { name, jsonData, restrict }
     if (!name) {
       feedback('error', 'Please give a name')
       return;
     }
 
-    createStream(multichain, options)
+    createStream(activeChain, options)
       .then(() => {
         feedback('success', name + ' created');
-        getStreamList()
+        update('streams')
       })
       .catch(err => {
-        feedback('error', err.message)
+        feedback('error', err.slice(err.indexOf('message:') + 8))
       })
   }
 
-  const switchValues = [
-    'read',
-    'write',
-    'onchain',
-    'offchain',
-  ]
-
-  const OptionSwitch = ({ switchValue, checkedValue, handleClick }) => {
-    return (
-      <div style={style.switch}>
-        <p>{switchValue}</p>
-        <Switch
-          value={switchValue}
-          onClick={handleClick}
-          color='primary'
-          checked={checkedValue}
-          inputProps={{ 'aria-label': 'primary checkbox' }}
-        />
-      </div>
-    )
-  }
-
+  useEffect(() => {
+    if (restrict.read) {
+      setRestrict({
+        ...restrict,
+        onchain: true,
+      })
+    }
+  }, [restrict.read])
 
   return (
     <React.Fragment>
@@ -117,7 +94,8 @@ export default ({ getStreamList }) => {
         <DialogTitle id="form-dialog-title">Create stream</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Here can be some tips for creating streams.
+            IMPORTANT: Streams created with 'read' restrictions do not allow for onchain
+            data. They are also only readable with Multichain Entrprise Edition.
           </DialogContentText>
           <TextField
             autoFocus
@@ -130,15 +108,11 @@ export default ({ getStreamList }) => {
           <br></br>
           <Typography variant='h6'>Stream Options</Typography>
           <div style={style.options}>
-            <OptionSwitch
-              switchValue='isOpen'
-              checkedValue={isOpen}
-              handleClick={handleIsOpen} />
-            {switchValues.map(val =>
-              <OptionSwitch
+            {Object.keys(restrict).map(val =>
+              <Switch
                 switchValue={val}
-                checkedValue={restrictions.includes({ val }) ? true : false}
-                handleClick={handleRestrictions({ val })} />
+                checkedValue={restrict[val]}
+                handleClick={handleRestrictions} />
             )}
           </div>
           <Divider />

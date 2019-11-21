@@ -3,8 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 
 // State
 import { GlobalState } from '../../state/state';
-// Actions
-import { blockchainParams } from '../../actions/Parameters';
 
 // Components
 import { Typography, Toolbar } from '@material-ui/core';
@@ -21,21 +19,10 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
   const classes = useStyles();
-  const { state, methods } = useContext(GlobalState);
-  const { multichain, params } = state;
-  const { setParams } = methods;
+  const { state } = useContext(GlobalState);
+  const { params } = state;
 
-  useEffect(() => {
-    if (!multichain) {
-      setParams([]);
-      return;
-    };
-    blockchainParams(multichain)
-      .then(res => setParams(res))
-      .catch(err => console.log(err))
-  }, [multichain])
-
-  return (multichain &&
+  return (params &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">

@@ -9,6 +9,10 @@ export default ({ details }) => {
   const [dataValues, setDataValues] = useState([]);
 
   const handleJSON = (jsonValues) => {
+    if (!jsonValues.includes('"')) {
+      return;
+    }
+
     let obj = {
       keys: Object.keys(JSON.parse(jsonValues)),
       values: Object.values(JSON.parse(jsonValues))

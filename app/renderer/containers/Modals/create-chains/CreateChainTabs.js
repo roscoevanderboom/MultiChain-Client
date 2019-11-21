@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
+
+// State
+import { GlobalState } from '../../../state/state';;
 
 
 // Components
@@ -54,6 +57,8 @@ function tabProps(index) {
 }
 
 export default ({ feedback }) => {
+  const { methods } = useContext(GlobalState);
+  const { getChainList } = methods;
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -68,13 +73,18 @@ export default ({ feedback }) => {
 
   useEffect(() => {
     // Receive success / fail response
-    ipcRenderer.once('chain-create:success', (e, response) => {
+    ipcRenderer.on('chain-create:success', (e, response) => {
       feedback('success', response);
-      ipcRenderer.send('localChains:get');
+      getChainList()
     });
-    ipcRenderer.once('chain-create:fail', (e, response) => {
+    ipcRenderer.on('chain-create:fail', (e, response) => {
       feedback('error', response);
     });
+
+    return () => {
+      ipcRenderer.removeAllListeners('chain-create:success');
+      ipcRenderer.removeAllListeners('chain-create:fail');
+    }
   }, []);
 
   return (

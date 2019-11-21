@@ -13,10 +13,14 @@ import {
   Dialog,
   DialogContent,
   Input,
+  MenuItem,
   Typography,
+  TextField
 } from '@material-ui/core';
 
-import DynamicForm from '../../../components/DynamicForm'
+import DynamicForm from '../../../components/DynamicForm';
+import AddressSelect from '../../../sections/components/Addresses-Select';
+
 
 // Style
 const style = {
@@ -29,9 +33,10 @@ const style = {
   }
 }
 
-export default ({ stream, getStreamItemsList }) => {
+export default ({ stream, updateAll }) => {
   const [open, setOpen] = useState(false);
   const [keys, setKeys] = useState([]);
+  const [address, setAddress] = useState(false);
 
   const { state, methods } = useContext(GlobalState);
   const { multichain } = state;
@@ -51,13 +56,23 @@ export default ({ stream, getStreamItemsList }) => {
     let newKeys = keys.filter(key => key !== e.target.textContent)
     setKeys(newKeys);
   }
+  const handleAddress = (e) => {
+    setAddress(e.target.value)
+  }
 
   const handleSubmit = (json) => {
-    publish(multichain, stream, keys, json)
+    multichain.publishFrom({
+      from: address,
+      stream: stream.name,
+      key: keys,
+      data: {
+        json: json
+      }
+    })
       .then(res => {
         console.log(res)
         feedback('success', 'New item posted');
-        getStreamItemsList(stream)
+        updateAll()
       })
       .catch(err => {
         console.log(err)
@@ -74,6 +89,12 @@ export default ({ stream, getStreamItemsList }) => {
 
       <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
         <DialogContent>
+          <Typography variant='h5' component='h5'>Publishing Address</Typography>
+          <AddressSelect
+            value={address}
+            onChange={handleAddress} />
+          <br></br>
+          <br></br>
           <Typography variant='h5' component='h5'>Item Keys</Typography>
           <Input
             fullWidth={true}
@@ -88,6 +109,7 @@ export default ({ stream, getStreamItemsList }) => {
                 onClick={handleRemoveKey}
                 children={key} />)}
           </div>
+          <br></br>
           <Typography variant='h5' component='h5'>Item Details</Typography>
           <DynamicForm
             feedback={feedback}

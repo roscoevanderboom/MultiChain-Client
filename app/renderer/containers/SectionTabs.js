@@ -94,7 +94,7 @@ export default () => {
     <Streams classes={classes} />,
     <Addresses classes={classes} />,
     <Assets classes={classes}  />,
-    // <Peers classes={classes} />,
+    <Peers classes={classes} />,
     <Permissions classes={classes} />
   ];
   const tabsArray = [
@@ -103,7 +103,7 @@ export default () => {
     "Streams",
     "Addresses",
     "Assets",
-    // "Peers",
+    "Peers",
     "Permissions"
   ];
 

@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Drawer, Button } from '@material-ui/core';
 
 import { Fingerprint } from '@material-ui/icons';
-import leftMenu from './components/LeftDrawer/LeftMenu';
+import leftMenu from './LeftDrawer/LeftMenu';
 
 const style = {
   barIcon: {

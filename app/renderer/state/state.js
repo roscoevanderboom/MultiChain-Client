@@ -1,6 +1,11 @@
 // Services
 import React, { useState, createContext } from 'react';
 import { useSnackbar } from 'notistack';
+// Multichain
+import getLocalChains from '../multichain/LocalChains';
+import getCreds from '../multichain/GetCreds';
+
+import { address_permissions } from '../constants/Permissions'
 
 export const GlobalState = createContext();
 export const GlobalStatePovider = (props) => {
@@ -8,32 +13,135 @@ export const GlobalStatePovider = (props) => {
   const [loading, setLoading] = useState(true);
   const [multichain, setMultichain] = useState(false);
   const [localChains, setLocalChains] = useState([]);
+  const [chain_credentials, setChain_credentials] = useState([]);
   const [activeChain, setActiveChain] = useState(false);
-  const [activeDaemons, setActiveDaemons] = useState([])
   const [modals, setModals] = useState({
     CreateChain: false,
     ConnectRemoteChain: false
   });
 
   // Sections State
-  const [chainInfo, setChainInfo] = useState([]);
-  const [addresses, setAddresses] = useState([]);
-  const [params, setParams] = useState([]);
-  const [permissions, setPermissions] = useState([]);
-  const [peers, setPeers] = useState([]);
-  const [assets, setAssets] = useState([]);
-  const [streams, setStreams] = useState([]);
+  const [chainInfo, setChainInfo] = useState(false);
+  const [addresses, setAddresses] = useState(false);
+  const [params, setParams] = useState(false);
+  const [permissions, setPermissions] = useState(false);
+  const [peers, setPeers] = useState(false);
+  const [assets, setAssets] = useState(false);
+  const [streams, setStreams] = useState(false);
 
-  // Methods that use useState
+  // Methods for user feedback
   const { enqueueSnackbar } = useSnackbar();
   const feedback = (variant, message) => {
     enqueueSnackbar(message, { variant });
   };
+  // For modals in the side-panels
   const openModal = (modal) => {
     setModals({ ...modals, [modal]: true, })
   }
   const closeModal = (modal) => {
     setModals({ ...modals, [modal]: false, })
+  }
+
+  // Multichain data collection
+  const getInfo = () => {
+    multichain.getInfo((err, res) => {
+      err ? setChainInfo([]) : setChainInfo(res)
+    })
+  }
+  const getBlockchainParams = () => {
+    multichain.getBlockchainParams((err, res) => {
+      err ? setParams([]) : setParams(res);
+    });
+  }
+  const listAddresses = () => {
+    multichain.listAddresses((err, res) => {
+      err ? setAddresses([]) : setAddresses(res);
+    });
+  }
+  const listPermissions = () => {
+    multichain.listPermissions((err, res) => {
+      if (err) {
+        setPermissions({});
+        return;
+      }
+      let obj = {}
+      address_permissions.map(key => {
+        obj[key] = res.filter(val => val.type === key)
+      })
+      let values = Object.values(obj);
+      let sorted_permissions = {};
+      address_permissions.map((key, i) => {
+        sorted_permissions[key] = values[i].map(val => val.address)
+      })
+      setPermissions(sorted_permissions);
+    });
+  }
+  const listAssets = () => {
+    multichain.listAssets((err, res) => {
+      err ? setAssets([]) : setAssets(res);
+    });
+  }
+  const getPeerInfo = () => {
+    multichain.getPeerInfo((err, res) => {
+      err ? setPeers([]) : setPeers(res);
+    });
+  }
+  const listStreams = () => {
+    multichain.listStreams((err, res) => {
+      err ? setStreams([]) : setStreams(res);
+    });
+  }
+
+  const update = (varient) => {
+    switch (varient) {
+      case 'parameters':
+        getBlockchainParams()
+        break;
+      case 'stream':
+        listStreams()
+        break;
+      case 'peerInfo':
+        getPeerInfo()
+        break;
+      case 'assets':
+        listAssets()
+        break;
+      case 'permissions':
+        listPermissions()
+        break;
+      case 'addresses':
+        listAddresses()
+        break;
+      case 'info':
+        getInfo()
+        break;
+      default:
+        getBlockchainParams()
+        listStreams()
+        getPeerInfo()
+        listAssets()
+        listPermissions()
+        listAddresses()
+        getInfo()
+        break
+    }
+  }
+
+  const getChainList = () => {
+    getLocalChains()
+      .then(chains => setLocalChains(chains))
+  }
+
+  const load_credentials = () => {
+    localChains.forEach(chain => {
+      getCreds(chain)
+        .then(creds => {
+          setChain_credentials(chain_credentials => [...chain_credentials, creds])
+        })
+        .catch(() => {
+          console.log('error')
+        })
+    });
   }
 
   // Build props to pass to components
@@ -42,8 +150,8 @@ export const GlobalStatePovider = (props) => {
     // General
     multichain,
     activeChain,
-    activeDaemons,
     localChains,
+    chain_credentials,
     modals,
     // Sections
     chainInfo,
@@ -57,22 +165,17 @@ export const GlobalStatePovider = (props) => {
 
   const methods = {
     setLoading,
-    // General
+    // General setState
     setMultichain,
     setActiveChain,
-    setActiveDaemons,
-    setLocalChains,
+    getChainList,
+    load_credentials,
+    // UI setState
     openModal,
     closeModal,
     feedback,
-    // Sections
-    setChainInfo,
-    setAddresses,
-    setParams,
-    setPermissions,
-    setPeers,
-    setAssets,
-    setStreams
+    // Sections setState
+    update
   };
 
 

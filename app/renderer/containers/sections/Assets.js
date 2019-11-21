@@ -15,44 +15,27 @@ import {
 } from '@material-ui/core';
 
 // Modals
-import NewAsset from '../Modals/assets/NewAsset'
+import NewAsset from './components/assets/NewAsset'
 import AssetCard from './components/assets/assetCard'
 
 export default ({ classes }) => {
-  const { state, methods } = useContext(GlobalState);
-  const { multichain, assets } = state;
-  const { feedback, setAssets } = methods;
+  const { state } = useContext(GlobalState);
+  const { assets } = state;
 
-  const getAssetlist = () => {
-    listAssets(multichain)
-      .then(res => setAssets(res))
-      .catch(err => console.log(err))
-  }
-
-  useEffect(() => {
-    if (!multichain) {
-      setAssets([]);
-      return;
-    }
-    getAssetlist()
-  }, [multichain]);
-
-  return (multichain &&
+  return (assets &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" component="h3">
           Assets:
         </Typography>
-        <NewAsset getAssetlist={getAssetlist} />
+        <NewAsset />
       </Toolbar>
 
       <List className={classes.list}>
         {assets.map(asset =>
-          <AssetCard key={asset.name} asset={asset} getAssetlist={getAssetlist}/>
+          <AssetCard key={asset.name} asset={asset} />
         )}
       </List>
-
-
     </React.Fragment>
   );
 }

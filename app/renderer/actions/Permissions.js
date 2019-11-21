@@ -8,4 +8,11 @@ module.exports = {
       });
     })
   },
+  grantFrom: (multichain) => {
+    return new Promise((resolve, reject) => {
+      multichain.grant((err, res) => {
+        err ? reject(err) : resolve(res);
+      });
+    })
+  },
 }

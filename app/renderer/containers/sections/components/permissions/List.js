@@ -5,6 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { List } from '@material-ui/core';
 import Collapse from '../../../components/Collapse-Array';
 
+// Constants
+import { address_permissions } from '../../../../constants/Permissions';
+
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,55 +28,12 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ permissions }) => {
   const classes = useStyles();
-  const [permissionArrays, setPermissionArrays] = useState({
-    admin: [],
-    activate: [],
-    connect: [],
-    create: [],
-    send: [],
-    receive: [],
-    issue: [],
-    mine: []
-  });
 
-  const keys = [
-    'admin',
-    'activate',
-    `connect`,
-    'create',
-    'send',
-    'receive',
-    'issue',
-    'mine'
-  ];
-
-  const sort_by_permission = () => {
-    let sortedArrays = {
-      admin: [],
-      activate: [],
-      connect: [],
-      create: [],
-      send: [],
-      receive: [],
-      issue: [],
-      mine: []
-    }
-    keys.map(key => {
-      sortedArrays[key] = permissions.filter(val => val.type === key);
-      sortedArrays[key] = sortedArrays[key].map(val => val.address)
-    })
-    setPermissionArrays(sortedArrays)
-  }
-
-  useEffect(() => {
-    sort_by_permission()
-  }, [permissions])
-
-  return (permissions.length !== 0 &&
+  return (
     <React.Fragment>
       <List className={classes.list}>
-        {keys.map((key, i) =>
-          <Collapse name={key.toUpperCase()} props={permissionArrays[key]} />
+        {address_permissions.map((key, i) =>
+          <Collapse name={key.toUpperCase()} props={permissions[key]} />
         )}
       </List>
     </React.Fragment>

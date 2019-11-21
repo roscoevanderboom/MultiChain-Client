@@ -2,8 +2,8 @@
 import { app } from 'electron';
 
 import appWindow from './BowserWindows';
-import LocalChains from '../../multichain/LocalChains';
-import { stopMultichain } from '../../multichain/Daemons';
+import LocalChains from '../renderer/multichain/LocalChains';
+import { stopMultichain } from '../renderer/multichain/Daemons';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 

@@ -1,12 +1,6 @@
 // Services
 import React, { useState, useEffect, useContext } from 'react';
-// State
-import { GlobalState } from '../../../../state/state';
-// Actions
-import { listStreamItems } from '../../../../actions/Streams';
 
-// Constants
-import notIncluded from '../../../../constants/NotIncluded';
 
 // Components
 import {
@@ -14,17 +8,19 @@ import {
   Card,
   CardHeader,
   Dialog,
-  Typography,
+  CardContent,
 } from '@material-ui/core';
 import ItemDetails from './ItemDetails';
 import NewStreamItems from './NewStreamItems';
+import KeyItemSearch from './streamQueries/Key-Items';
+import PublisherItemSearch from './streamQueries/Publisher-Items';
 
 // Styles
 const style = {
   card: {
     padding: 12,
     overflow: 'scroll',
-    minWidth: 575
+    minWidth: 595
   },
   filters: {
     display: 'flex',
@@ -36,40 +32,37 @@ const style = {
   }
 }
 
-export default ({ stream }) => {
-  const { state, methods } = useContext(GlobalState);
-  const { multichain } = state;
+export default ({ stream, streamMethods, streamState }) => {
   const [open, setOpen] = useState(false);
-  const [streamKeys, setStreamKeys] = useState([]);
-  const [streamPublishers, setStreamPublishers] = useState([]);
-  const [items, setItems] = useState([]);
+  const {
+    listStreamItems,
+    listStreamPublishers,
+    listStreamKeys,
+    listStreamKeyItems,
+    listStreamPublisherItems
+  } = streamMethods;
+
+  const {
+    streamKeys,
+    streamPublishers,
+    streamItems,
+  } = streamState;
 
   const handleModal = () => {
     open ? setOpen(false) : setOpen(true);
   };
 
-  const getStreamItemsList = () => {
-    listStreamItems(multichain, stream)
-      .then(res => setItems(res.reverse()))
-      .catch(err => console.log(err))
+  const updateAll = () => {
+    listStreamItems({ count: 100 })
+    listStreamKeys({ count: 100 })
+    listStreamPublishers({ count: 100 })
   }
 
   useEffect(() => {
-    getStreamItemsList()
+    if (stream) {
+      updateAll()
+    }
   }, [stream]);
-
-
-  useEffect(() => {
-
-    let keys = [];
-    let publishers = [];
-    items.forEach(item => {
-      item.keys.map(key => notIncluded(keys, key));
-      item.publishers.map(pub => notIncluded(publishers, pub))
-    });
-    setStreamKeys(keys);
-    setStreamPublishers(publishers);
-  }, [items]);
 
   return (
     <React.Fragment>
@@ -80,38 +73,31 @@ export default ({ stream }) => {
         <Card style={style.card}>
           <CardHeader
             avatar={
-              <React.Fragment>
-                <Typography variant="h6" component="h6">
-                  Keys:
-                </Typography>
-                <select style={style.select}>
-                  {streamKeys.map(key =>
-                    <option value={key} key={key}>{key}</option>
-                  )}
-                </select>
-              </React.Fragment>
-            }
+              <KeyItemSearch
+                style={style}
+                streamKeys={streamKeys}
+                listStreamKeyItems={listStreamKeyItems} />}
             title={
-              <React.Fragment>
-                <Typography variant="h6" component="h6">
-                  Publishers:
-                </Typography>
-                <select style={style.select}>
-                  {streamPublishers.map(pub =>
-                    <option value={pub} key={pub}>{pub}</option>
-                  )}
-                </select>
-              </React.Fragment>
-            }
-            action={
+              <PublisherItemSearch
+                style={style}
+                streamPublishers={streamPublishers}
+                listStreamPublisherItems={listStreamPublisherItems} />
+            } />
+
+          <CardContent
+            children={
               <NewStreamItems
-                getStreamItemsList={getStreamItemsList}
+                updateAll={updateAll}
                 stream={stream} />
             } />
 
-          {items.map((item, i) =>
-            <ItemDetails key={i} item={item} />
-          )}
+          <CardContent
+            children={
+              streamItems.map((item, i) =>
+                <ItemDetails key={i} item={item} />
+              )} />
+
+
         </Card>
       </Dialog>
     </React.Fragment>
