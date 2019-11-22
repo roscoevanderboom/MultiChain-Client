@@ -1,12 +1,9 @@
 import React, { useEffect, useContext } from 'react'
+import { readdir } from 'fs'
+import { ipcRenderer } from 'electron'
 
 // State
 import { GlobalState } from '../state/state';
-
-// Multichain
-import getCreds from '../multichain/GetCreds';
-import getLocalChains from '../multichain/LocalChains';
-import { getInfo } from '../multichain/Multichain-Functions';
 
 // Containers
 import Windowbar from './components/WindowBar';
@@ -16,6 +13,7 @@ import SectionTabs from './SectionTabs';
 // Modals
 import CreateChain from './Modals/create-chains/CreateChain';
 import ConnectRemoteChain from './Modals/connect-remote-node/ConnectRemoteChain';
+import Installer from './Modals/insaller/Installer';
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -29,8 +27,25 @@ const Root = () => {
   const {
     getChainList,
     update,
-    load_credentials
+    load_credentials,
+    openModal
   } = methods;
+
+  useEffect(() => {
+    readdir(process.resourcesPath, (err, res) => {
+      if (!res.includes('multichain')) {
+        ipcRenderer.send('check:multichainBinaries');
+        ipcRenderer.on('download:start', () => {
+          openModal('Installer')
+        })
+        ipcRenderer.on('unzip:begin', () => {
+          openModal('Installer')
+        })
+      }
+    })
+
+
+  }, []);
 
   useEffect(() => {
     getChainList()
@@ -55,6 +70,7 @@ const Root = () => {
       <SectionTabs />
       <CreateChain />
       <ConnectRemoteChain />
+      <Installer />
     </React.Fragment>
   )
 }

@@ -2,8 +2,13 @@
 //
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
+import { readdir } from 'fs';
+import extract from 'extract-zip';
+import { download } from 'electron-dl';
+import download_url from '../renderer/multichain/Download-URLS'
 import contextMenu from './ContextMenu';
 import Chainpaths from '../renderer/multichain/Chainpaths';
+import BinaryPaths from '../renderer/multichain/BinaryPaths';
 import { createChain } from '../renderer/multichain/Daemons';
 
 let mainWindow = null;
@@ -64,6 +69,47 @@ module.exports = () => {
       mainWindow.on('closed', () => {
         mainWindow = null;
       });
+    }
+  });
+
+  // *************  IPC  *****************
+
+  ipcMain.on('check:multichainBinaries', () => {
+    readdir(process.resourcesPath, (err, res) => {
+      let zipFile = download_url.slice(download_url.indexOf('download/') + 9)
+      let ipfsFile = 'QmUH4ykeQhEAtapxnaE792F4hiAYsrRrCGpXJuc1nHE6Vy.zip'
+      if (res.includes(zipFile) || res.includes(ipfsFile)) {
+        mainWindow.webContents.send('download:progress', '1');
+        return;
+      }
+      mainWindow.webContents.send('download:start');
+      download(mainWindow, download_url, {
+        directory: process.resourcesPath,
+        onProgress: (progress) => {
+          mainWindow.webContents.send('download:progress', progress);
+        },
+      });
+    })
+  })
+
+  ipcMain.on('download:complete', (e, isComplete) => {
+    if (isComplete) {
+      mainWindow.webContents.send('unzip:begin', 'Unzip source files');
+      readdir(process.resourcesPath, (err, res) => {
+        res.map(file => {
+          if (file.includes('.zip') || file.includes('.gz')) {
+            let source = path.join(process.resourcesPath, file);
+            let target = path.join(process.resourcesPath, 'multichain');
+            extract(source, { dir: target }, function (err) {
+              if (err) {
+                console.log(err)
+                return;
+              }
+              mainWindow.webContents.send('unzip:complete', 'Unzip complete');
+            })
+          }
+        })
+      })
     }
   });
 

@@ -17,7 +17,8 @@ export const GlobalStatePovider = (props) => {
   const [activeChain, setActiveChain] = useState(false);
   const [modals, setModals] = useState({
     CreateChain: false,
-    ConnectRemoteChain: false
+    ConnectRemoteChain: false,
+    Installer: false
   });
 
   // Sections State
