@@ -17,23 +17,16 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     width: '100%',
     top: 35,
-    zIndex: '900'
-  },
-  toolbar: {
-    justifyContent: 'space-between',
-    padding: '0',
-  },
-
+    zIndex: '900',
+  }
 }));
 
 export default ({ activeChain }) => {
-
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar className={classes.toolbar}>
+        <Toolbar id="toolbar">
           <LeftDrawer />
           <Typography variant="h6" className={classes.title}>
             {activeChain ? activeChain : 'No chain loaded'}

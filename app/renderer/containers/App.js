@@ -11,9 +11,7 @@ import Topnav from './Topnav';
 import SectionTabs from './SectionTabs';
 
 // Modals
-import CreateChain from './Modals/create-chains/CreateChain';
-import ConnectRemoteChain from './Modals/connect-remote-node/ConnectRemoteChain';
-import Installer from './Modals/insaller/Installer';
+import Modals from './Modals';
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -34,7 +32,7 @@ const Root = () => {
   useEffect(() => {
     readdir(process.resourcesPath, (err, res) => {
       if (!res.includes('multichain')) {
-        ipcRenderer.send('check:multichainBinaries');
+        ipcRenderer.send('download');
         ipcRenderer.on('download:start', () => {
           openModal('Installer')
         })
@@ -43,8 +41,6 @@ const Root = () => {
         })
       }
     })
-
-
   }, []);
 
   useEffect(() => {
@@ -68,9 +64,7 @@ const Root = () => {
       <Windowbar />
       <Topnav activeChain={activeChain} />
       <SectionTabs />
-      <CreateChain />
-      <ConnectRemoteChain />
-      <Installer />
+      <Modals />
     </React.Fragment>
   )
 }

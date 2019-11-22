@@ -74,7 +74,7 @@ module.exports = () => {
 
   // *************  IPC  *****************
 
-  ipcMain.on('check:multichainBinaries', () => {
+  ipcMain.on('download', () => {
     readdir(process.resourcesPath, (err, res) => {
       let zipFile = download_url.slice(download_url.indexOf('download/') + 9)
       let ipfsFile = 'QmUH4ykeQhEAtapxnaE792F4hiAYsrRrCGpXJuc1nHE6Vy.zip'

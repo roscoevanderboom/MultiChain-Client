@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 
 // State
-import { GlobalState } from '../../../state/state';;
-
+import { GlobalState } from '../../../state/state';
 
 // Components
 import Tabs from '@material-ui/core/Tabs';
@@ -56,9 +55,9 @@ function tabProps(index) {
   };
 }
 
-export default ({ feedback }) => {
+export default () => {
   const { methods } = useContext(GlobalState);
-  const { getChainList } = methods;
+  const { getChainList, feedback } = methods;
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
