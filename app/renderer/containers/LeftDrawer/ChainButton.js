@@ -66,7 +66,8 @@ export default ({ chain, state, methods }) => {
       stopMultichain(chain)
         .then(res => {
           setConnected(false);
-          setMultichain(false)
+          setMultichain(false);
+          setActiveChain
         })
         .catch(err => console.log(err))
       return;
@@ -95,7 +96,7 @@ export default ({ chain, state, methods }) => {
   return (
     <ListItem
       button
-      className={chain === activeChain ? classes.active : classes.chainBtn}>
+      className={chain === activeChain && connected ? classes.active : classes.chainBtn}>
 
       <ListItemText
         primary={chain}
