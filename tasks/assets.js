@@ -1,19 +1,14 @@
 const { src, dest } = require('gulp');
 
-function copyHtml() {
-  return src('app/renderer/**/**.html').pipe(dest('build/renderer'));
+function copyMain() {
+  return src('app/main/**/**').pipe(dest('build/main'));
 }
-function copyCss() {
-  return src('app/renderer/**/*.css').pipe(dest('build/renderer'));
-}
-function copyMC() {
-  return src('app/renderer/multichain/**/**').pipe(dest('build/renderer/multichain/'));
+function copyRenderer() {
+  return src('app/renderer/**/**').pipe(dest('build/renderer'));
 }
 
-copyHtml.displayName = 'copy-html';
-copyCss.displayName = 'copy-css';
-copyMC.displayName = 'copy-multichain';
+copyMain.displayName = 'copyMain';
+copyRenderer.displayName = 'copyRenderer';
 
-exports.copyHtml = copyHtml;
-exports.copyCss = copyCss;
-exports.copyMC = copyMC;
+exports.copyMain = copyMain;
+exports.copyRenderer = copyRenderer;

@@ -29,7 +29,8 @@ module.exports = () => {
     webPreferences: {
       nodeIntegration: true,
       backgroundThrottling: false
-    }
+    },
+    icon: path.join(__dirname, 'icon.jpg'),
   });
 
   mainWindow.loadFile(path.resolve(path.join(__dirname, '../renderer/index.html')));
@@ -73,6 +74,7 @@ module.exports = () => {
   });
 
   // *************  IPC  *****************
+
 
   ipcMain.on('download', () => {
     readdir(process.resourcesPath, (err, res) => {

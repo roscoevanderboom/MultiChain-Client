@@ -1,7 +1,7 @@
 appId: com.example.app
 copyright: Roscoe van der Boom
 productName: Multichain Manager
-
+icon: app/main/icon.jpg
 asar: true
 
 directories:

@@ -9,7 +9,7 @@ import {
   Modal,
   Backdrop,
   Fade,
-  Button,
+  LinearProgress,
   TextField
 } from '@material-ui/core';
 
@@ -27,6 +27,12 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     maxWidth: 600
+  },
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
   },
 }));
 
@@ -87,8 +93,11 @@ export default () => {
 
         <Fade in={Installer}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">{current_action}</h2>
-            <h4>{progress}</h4>
+            <div className={classes.root}>
+              <h2 id="transition-modal-title">{current_action}</h2>
+              <LinearProgress variant="determinate" value={progress} />
+              <LinearProgress variant="determinate" value={progress} color="secondary" />
+            </div>
           </div>
         </Fade>
       </Modal>
