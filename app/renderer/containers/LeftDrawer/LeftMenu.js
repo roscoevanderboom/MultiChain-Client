@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 import { GlobalState } from '../../state/state';
 
 // Components
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ChainList from './ChainList';
 import Divider from '@material-ui/core/Divider';
@@ -53,9 +52,6 @@ export default (side, toggleDrawer) => {
       className={classes.drawer}
       role="presentation"
       onKeyDown={toggleDrawer(side, false)} >
-      <Typography variant="h6" className={classes.header}>
-        Local chains
-      </Typography>
       <Divider />
       <br />
       <div className={classes.header}>

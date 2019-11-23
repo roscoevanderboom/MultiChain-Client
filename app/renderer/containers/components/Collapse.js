@@ -61,8 +61,8 @@ export default ({ name, props, newStyle }) => {
             <ListItemText
               style={newStyle !== undefined ? newStyle.listItem : style.listItem}
               key={i}
-              primary={key.toUpperCase()}
-              secondary={`${dataValues[i]}`} />
+              primary={key}
+              secondary={name === 'CONSENSUS' ? `${dataValues[i]*100}%` : `${dataValues[i]}`} />
           )}
         </div>
       </Collapse>

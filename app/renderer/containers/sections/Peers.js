@@ -1,14 +1,11 @@
 // Services
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 // State
 import { GlobalState } from '../../state/state';
 
-// Actions
-import { getPeerInfo } from '../../actions/Peers';
-
 // Components
-import { Typography, Toolbar } from '@material-ui/core';
+import { Toolbar } from '@material-ui/core';
 import List from './components/peers/List';
 
 // Styles
@@ -21,21 +18,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
-
 export default () => {
   const classes = useStyles();
   const { state } = useContext(GlobalState);
   const { peers } = state;
 
   return (peers &&
-    <React.Fragment>
-      <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" component="h3">
-          Peers:
-        </Typography>
-      </Toolbar>
+    <Toolbar className={classes.toolbar}>
       {peers.length === 0 ? 'No peers' : <List peers={peers} />}
-    </React.Fragment>
+    </Toolbar>
   );
 }

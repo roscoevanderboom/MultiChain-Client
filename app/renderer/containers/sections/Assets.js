@@ -1,15 +1,11 @@
 // Services
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 // State
 import { GlobalState } from '../../state/state';
 
-// Actions
-import { listAssets } from '../../actions/Assets';
-
 // Components
 import {
-  Typography,
   List,
   Toolbar,
 } from '@material-ui/core';
@@ -25,9 +21,6 @@ export default ({ classes }) => {
   return (assets &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" component="h3">
-          Assets:
-        </Typography>
         <NewAsset />
       </Toolbar>
 

@@ -30,6 +30,20 @@ export const GlobalStatePovider = (props) => {
   const [assets, setAssets] = useState(false);
   const [streams, setStreams] = useState(false);
 
+  const setStateArray = [
+    setChainInfo,
+    setAddresses,
+    setParams,
+    setPermissions,
+    setPeers,
+    setAssets,
+    setStreams
+  ]
+
+  const reset = () => {
+    setStateArray.map(val => val(false))
+  }
+
   // Methods for user feedback
   const { enqueueSnackbar } = useSnackbar();
   const feedback = (variant, message) => {
@@ -176,7 +190,8 @@ export const GlobalStatePovider = (props) => {
     closeModal,
     feedback,
     // Sections setState
-    update
+    update,
+    reset
   };
 
 

@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { GlobalState } from '../../state/state';
 
 // Components
-import { Toolbar, Typography, List } from '@material-ui/core';
+import { Toolbar, List } from '@material-ui/core';
 import StreamCard from './components/streams/StreamCard';
 
 // Modal
@@ -18,9 +18,6 @@ export default ({ classes }) => {
   return (streams &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" component="h3">
-          Streams:
-        </Typography>
         <CreateStream />
       </Toolbar>
 

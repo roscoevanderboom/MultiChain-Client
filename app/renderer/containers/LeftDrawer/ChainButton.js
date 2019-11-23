@@ -15,25 +15,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-  active: {
-    border: '2px solid green',
-    borderRadius: '8px',
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  chainBtn: {
-    borderRadius: '8px',
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  actionBtn: {
-    justifyContent: 'flex-end'
-  },
   actionsDiv: {
-    display: 'flex'
-  },
-  connected: {
-    backgroundColor: 'steelblue'
+
   }
 });
 
@@ -52,7 +35,6 @@ export default ({ chain, state, methods }) => {
       }
     })
   }
-
   const connect = () => {
     if (!connected) {
       feedback('error', 'Daemon is not running')
@@ -79,7 +61,6 @@ export default ({ chain, state, methods }) => {
       .catch(err => console.log(err))
   }
 
-
   useEffect(() => {
     load_Multichain_Node(setMultichain_Instance)
   }, [chain_credentials])
@@ -92,25 +73,22 @@ export default ({ chain, state, methods }) => {
     }
   }, [multichain])
 
-
   return (
-    <ListItem
-      button
-      className={chain === activeChain && connected ? classes.active : classes.chainBtn}>
+    <div
+      className={chain === activeChain ? 'chainBtn activeChain' : 'chainBtn'}>
 
       <ListItemText
+        className={classes.actionsDiv}
         primary={chain}
         onClick={connect} />
 
-      <div className={classes.actionsDiv}>
-        <Switch
-          checked={connected}
-          onClick={daemon}
-          value="start-stop"
-          color="primary"
-          inputProps={{ 'aria-label': 'primary checkbox' }} />
-      </div>
+      <Switch
+        checked={connected}
+        onClick={daemon}
+        value="start-stop"
+        color="primary"
+        inputProps={{ 'aria-label': 'primary checkbox' }} />
 
-    </ListItem>
+    </div>
   )
 };

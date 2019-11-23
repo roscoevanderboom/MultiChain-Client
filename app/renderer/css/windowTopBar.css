@@ -29,7 +29,8 @@ input {
 .windowbarTitle {
     display: flex;;
     align-items: center;
-    padding-left: 5px
+    padding-left: 5px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .minimizeBtn:hover {
@@ -62,10 +63,4 @@ a.windowbarIcon:hover {
         display: block;
         margin: 0.4em auto;
     }
-}
-
-#toolbar {
-  justify-content: space-between;
-  padding: 0;
-  background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
 }

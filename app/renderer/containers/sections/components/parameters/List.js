@@ -7,10 +7,11 @@ import Collapse from '../../../components/Collapse';
 const newStyle = {
   footer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexWrap: 'wrap'
   },
   listItem: {
     margin: 10,
+    width: '33%'
   }
 }
 
@@ -64,11 +65,11 @@ export default ({ params }) => {
 
   const sortedParameters = () => {
     const sortedArrays = {
-      genesis: [],
+      parameters: [],
       consensus: [],
       mining: [],
+      genesis: [],
       network: [],
-      parameters: [],
     };
     const keys = Object.keys(sortedArrays);
     keys.forEach(val => {

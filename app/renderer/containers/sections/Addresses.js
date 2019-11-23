@@ -1,12 +1,11 @@
 // Services
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 // State
 import { GlobalState } from '../../state/state';
 
 // Components
 import {
-  Typography,
   List,
   Toolbar,
   Button,
@@ -37,13 +36,7 @@ export default ({ classes }) => {
   return (addresses &&
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" component="h3">
-          Addresses:
-        </Typography>
-        <div>
-          <Button onClick={getNewAddress} variant="outlined" >New Address</Button>
-
-        </div>
+        <Button onClick={getNewAddress} variant="outlined" >New Address</Button>
       </Toolbar>
       <List >
         {addresses.map(address =>

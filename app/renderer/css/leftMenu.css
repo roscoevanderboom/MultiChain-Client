@@ -1,0 +1,16 @@
+
+.chainBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: -webkit-fill-available;
+  padding-left: 12px;
+}
+
+.chainBtn:hover {
+  background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+}
+
+.activeChain {
+  background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+}

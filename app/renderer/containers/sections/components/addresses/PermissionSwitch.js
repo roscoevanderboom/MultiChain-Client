@@ -20,17 +20,25 @@ export default ({ name, address, globalState }) => {
     if (status) {
       multichain.revoke({ addresses: address.address, permissions: name },
         (err, res) => {
-          err
-            ? feedback('error', err.message)
-            : update('permissions')
+          if (err) {
+            feedback('error', err.message);
+            console.log(err);
+            return;
+          }
+          update('permissions')
+          update('addresses')
         })
       return;
     }
     multichain.grant({ addresses: address.address, permissions: name },
       (err, res) => {
-        err
-          ? feedback('error', err.message)
-          : update('permissions')
+        if (err) {
+          feedback('error', err.message);
+          console.log(err);
+          return;
+        }
+        update('permissions')
+        update('addresses')
       })
   };
 

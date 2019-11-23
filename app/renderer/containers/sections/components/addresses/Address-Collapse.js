@@ -1,5 +1,5 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // Components
 import {
   Collapse,
@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 // Icons
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import NewSwitch from './NewSwitch';
+import PermissionSwitch from './PermissionSwitch';
 
 // Constants
 import { address_permissions } from '../../../../constants/Permissions';
@@ -51,7 +51,7 @@ export default ({ address, globalState }) => {
           {address_permissions.map((val) =>
             <div style={style.item}>
               <span style={style.span}>{val}</span>
-              <NewSwitch
+              <PermissionSwitch
                 name={val}
                 address={address}
                 globalState={globalState} />

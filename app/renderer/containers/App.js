@@ -11,7 +11,7 @@ import Topnav from './Topnav';
 import SectionTabs from './SectionTabs';
 
 // Modals
-import Modals from './Modals';
+import Modals from './Modals/All-Modals';
 
 require('events').EventEmitter.defaultMaxListeners = 100;
 
@@ -25,6 +25,7 @@ const Root = () => {
   const {
     getChainList,
     update,
+    reset,
     load_credentials,
     openModal
   } = methods;
@@ -56,7 +57,9 @@ const Root = () => {
   useEffect(() => {
     if (multichain) {
       update()
+      return;
     }
+    reset();
   }, [multichain]);
 
   return (

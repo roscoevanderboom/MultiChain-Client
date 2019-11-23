@@ -4,9 +4,6 @@ import React, { useState, useEffect, useContext } from 'react';
 // State
 import { GlobalState } from '../../state/state';
 
-// Actions
-import { getInfo } from '../../actions/ChainInfo';
-
 // Components
 import { Typography, Toolbar, List, ListItemText } from '@material-ui/core';
 
@@ -46,12 +43,6 @@ export default () => {
 
   return (keys.length > 0 &&
     <React.Fragment>
-      <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" component="h3">
-          Chain Details:
-        </Typography>
-      </Toolbar>
-
       <List className={classes.list}>
         {keys.map((key, i) =>
           <ListItemText
