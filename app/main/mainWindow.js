@@ -60,7 +60,7 @@ module.exports = (iconpath) => {
         }
         if (isDevelopment) {
             // auto-open dev tools
-            mainWindow.webContents.openDevTools();   
+            // mainWindow.webContents.openDevTools();   
         }
     });
 

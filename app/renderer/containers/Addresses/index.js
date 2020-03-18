@@ -4,11 +4,11 @@ import { Typography } from '@material-ui/core';
 import Section from '../../components/Section';
 
 export default () => {
-    const { state } = useContext(store);
+    const { setState } = useContext(store);
 
     useEffect(() => {
-        console.log(state);        
-    }, [state])
+        setState.setTitle('Addresses'); 
+    }, [])
     
     return (
         <Section>

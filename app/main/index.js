@@ -4,6 +4,7 @@ import path from 'path';
 import BrowserWindow from './mainWindow';
 import TrayWindow from './TrayWindow';
 import Tray from './Tray';
+import { trayControl, show_Window_Title } from './ipcMain';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 const iconPath = path.join(__dirname, 'icon.jpg');
@@ -38,11 +39,12 @@ app.on('ready', async () => {
   if (isDevelopment) {
     await installExtensions();
   }
-
+  
   mainWindow = BrowserWindow(iconPath);
   trayWindow = new TrayWindow();
-  tray = new Tray(iconPath,trayWindow)
-
+  tray = new Tray(iconPath, trayWindow)
+  trayControl(trayWindow);
+  show_Window_Title(trayWindow);
 });
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar

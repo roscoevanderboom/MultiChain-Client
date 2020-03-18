@@ -1,8 +1,5 @@
 import React from "react";
-import {
-    BrowserRouter as Router,
-    Switch, Route, Redirect
-} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import { store } from './store';
 
@@ -11,14 +8,16 @@ import Setup from './containers/Setup';
 import Home from './containers/Home';
 
 export default function App() {
-    const { state, hist, reducers } = React.useContext(store);
+    const { hist } = React.useContext(store);
 
     const checkLocalStorage = () => {
         let binariesPath = localStorage.getItem('binariesPath');
         let blockchainsPath = localStorage.getItem('blockchainsPath');
         if (binariesPath !== null && blockchainsPath !== null) {
-            reducers.handleSetup(true);
+            hist.push('/home/dashboard');
+            return;
         }
+        hist.push('/setup/about');
     }
 
     React.useEffect(() => {
@@ -26,7 +25,7 @@ export default function App() {
     }, [])
 
     return (
-        <Router>
+        <div>
             <WindowBar />
             <Switch>
                 <Route path="/setup">
@@ -36,8 +35,7 @@ export default function App() {
                     <Home />
                 </Route>
             </Switch>
-            {state.setupComplete ? <Redirect to='/home' /> : <Redirect to='/setup' />}
-        </Router>
+        </div>
     );
 }
 

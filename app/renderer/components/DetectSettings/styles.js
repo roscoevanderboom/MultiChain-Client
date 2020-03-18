@@ -1,7 +1,7 @@
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    defaultFont, body, flex_center_column, link
+    defaultFont, flex_center_column, link
 } from '../../assets/jss/material-kit-react';
 const useStyles = makeStyles({
     body: {        

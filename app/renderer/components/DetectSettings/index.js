@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ipcRenderer } from 'electron';
-import { Link } from 'react-router-dom';
 import { store } from '../../store';
 // Components
 import { Container, Typography, ListItemText } from '@material-ui/core';
 import Button from '../CustomButtons/Button';
-import { ApplyButton, BackButton } from '../NavButtons';
+import { GoBack } from '../NavButtons';
+
+import Step1 from './Step1';
+import Step2 from './Step2';
 // Styles
 import useStyles from './styles';
 
 export default () => {
     const classes = useStyles();
-    const { state, hist } = useContext(store);
+    const { hist } = useContext(store);
     const [step, setStep] = useState('step1');
     const [binariesPath, setBinariesPath] = useState('');
     const [blockchainsPath, setBlockchainsPath] = useState('');
@@ -40,7 +42,6 @@ export default () => {
         let str = e.target.files[0].path;
         let folderPath = str.slice(0, str.lastIndexOf(`\\`) + 1)
         let fileNames = files.map(file => file.name.slice(0, -4));
-        console.log(fileNames);
         if (step === 'step1' && handleBinaries(fileNames, folderPath)) {
             return;
         }
@@ -52,46 +53,8 @@ export default () => {
     const handleApplySettings = () => {
         localStorage.setItem("binariesPath", binariesPath);
         localStorage.setItem("blockchainsPath", blockchainsPath);
+        hist.push('/home/dashboard');
     }
-
-    const Step1 = () => {
-        return (
-            <div>
-                <Typography
-                    variant='subtitle1'
-                    align='center'
-                    className={classes.text}>
-                    Select <strong>multihain-cli</strong> and <strong>multichaind</strong> files
-                </Typography>
-                <Typography
-                    variant='subtitle1'
-                    align='center'
-                    className={classes.text}>
-                    <input onChange={handlefolderPath} type="file" multiple />
-                </Typography>
-
-            </div>
-        )
-    }
-    const Step2 = () => {
-        return (
-            <div>
-                <Typography
-                    variant='subtitle1'
-                    align='center'
-                    className={classes.text}>
-                    Select multichain.conf in the root folder where all blockchains are stored.
-                    IMPORTANT: Do not select multichain.conf for a specific blockchain.
-                </Typography>
-                <Typography
-                    variant='subtitle1'
-                    align='center'
-                    className={classes.text}>
-                    <input onChange={handlefolderPath} type="file" />
-                </Typography>
-            </div>
-        )
-    }    
 
     useEffect(() => {
         ipcRenderer.send('location:installation-page');
@@ -123,16 +86,21 @@ export default () => {
                     className={classes.text} />
             }
             <br />
-            {step === 'step1' ? <Step1 /> : null}
-            {step === 'step2' ? <Step2 /> : null}
+            {step === 'step1' ? <Step1 handlefolderPath={handlefolderPath} /> : null}
+            {step === 'step2' ? <Step2 handlefolderPath={handlefolderPath} /> : null}
 
             <Container className={classes.actions}>
                 {step !== null ? null :
-                    <ApplyButton
-                        path={'/home/profile'}
-                        onClick={handleApplySettings} />
+                    <Button
+                        block={true}
+                        color='github'
+                        onClick={handleApplySettings}>
+                        Apply settings
+                    </Button>
                 }
-                <BackButton path='/setup/about' />
+                <GoBack path='/setup/about'>
+                    <Button color='danger'>Back</Button>
+                </GoBack>
             </Container>
         </Container>
     );

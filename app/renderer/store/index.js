@@ -8,15 +8,21 @@ export const GlobalStatePovider = (props) => {
   // Router history
   const hist = useHistory();
   // General App State
-  const [state, setState] = useState(initialState);
+  const [title, setTitle] = useState('');
+  const [loading, setLoading] = useState(true);
+   // General App State
+   const [multichain, setMultichain] = useState(false);
+   const [localChains, setLocalChains] = useState([]);
+   const [activeChain, setActiveChain] = useState(false);
 
-  const handleSetup = (value) => {
-    setState({ ...state, setupComplete: value })
+  const state = {
+    title,
   }
-
-
+  const setState = {
+    setTitle
+  }
   const reducers = {
-    handleSetup
+
   };
 
 

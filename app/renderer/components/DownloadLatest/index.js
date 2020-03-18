@@ -4,13 +4,13 @@ import { store } from '../../store';
 // Components
 import { Container, Typography } from '@material-ui/core';
 import Button from '../CustomButtons/Button';
-import { BackButton } from '../NavButtons';
+import { GoBack } from '../NavButtons';
 // Styles
 import useStyles from './styles';
 
 export default () => {
   const classes = useStyles();
-  const { reducers } = useContext(store); 
+  const { hist } = useContext(store);
 
   const [progress, setProgress] = useState(0);
   const [current_action, setCurrent_action] = useState('Click confirm to start download');
@@ -22,22 +22,22 @@ export default () => {
   useEffect(() => {
     ipcRenderer.on('download:progress', (e, data) => {
       setCurrent_action('Downloading...')
-      setProgress((data * 100).toFixed(0))
+      setProgress((data * 100).toFixed(0));
     });
     ipcRenderer.on('download:complete', () => {
       setProgress(100)
-      setCurrent_action('Download complete')
+      setCurrent_action('Download complete');
     });
     ipcRenderer.on('unzip:begin', () => {
       setCurrent_action('Extracting source files...');
     });
-    ipcRenderer.on('unzip:complete', (e, { chainpaths, target }) => {     
+    ipcRenderer.on('unzip:complete', (e, { chainpaths, target }) => {
       localStorage.setItem("binariesPath", target);
       localStorage.setItem("blockchainsPath", chainpaths);
-      reducers.handleSetup(true);
+      hist.push('/home/dashboard');
     });
     ipcRenderer.on('unzip:error', (e, err) => {
-      console.log(err)
+      console.log(err);
     });
     return () => {
       ipcRenderer.removeAllListeners('download:progress');
@@ -49,7 +49,7 @@ export default () => {
   }, [])
 
   return (
-    <Container>     
+    <Container>
       <Typography
         variant='h4'
         component='header'
@@ -77,7 +77,12 @@ export default () => {
           onClick={handleConfirm}>
           Confirm
         </Button>
-        <BackButton path='/setup/about' />
+        <GoBack path='/setup/about'>
+          <Button
+            color='danger'>
+            back
+          </Button>
+        </GoBack>
       </Container>
     </Container>
   );

@@ -10,7 +10,7 @@ import chainpaths from '../renderer/constants/multichain/Chainpaths';
 export const browserWindows = {
     setupWindow: (mainWindow) => {
         ipcMain.on('window:setupWindow', () => {
-            mainWindow.setBounds({ width: 500, height: 300 });
+            mainWindow.setBounds({ width: 600, height: 400 });
         });
     },
     homeWindow: (mainWindow) => {
@@ -19,7 +19,6 @@ export const browserWindows = {
         });
     }
 }
-
 export const show_Window_Title = (mainWindow) => {
     ipcMain.on('window:get-Title', () => {
         let title = mainWindow.getTitle();
@@ -27,15 +26,15 @@ export const show_Window_Title = (mainWindow) => {
     });
 
 }
-
 export const receive_message_from_tray = (mainWindow) => {
     ipcMain.on('tray:message', (e, message) => {        
         mainWindow.send('mainWindow:message', message);
     });
 }
-
 export const windowControl = (mainWindow) => {
     ipcMain.on('windowControl', (e, action) => {
+        console.log(action);
+        
         switch (action) {
             case 'minimize':
                 mainWindow.minimize();
@@ -46,7 +45,11 @@ export const windowControl = (mainWindow) => {
         }
     });
 }
-
+export const trayControl = (mainWindow) => {
+    ipcMain.on('trayControl', () => {
+        mainWindow.hide();
+    });
+}
 export const download_lastest_multichain = (mainWindow) => {
     ipcMain.on('download:confirmed', () => {
         console.log('confirm');
@@ -72,7 +75,6 @@ export const download_lastest_multichain = (mainWindow) => {
         })
     })
 }
-
 const extract_source_files = (mainWindow) => {
     mainWindow.webContents.send('unzip:begin');
     readdir(process.resourcesPath, (err, res) => {
@@ -91,3 +93,4 @@ const extract_source_files = (mainWindow) => {
         })
     })
 }
+

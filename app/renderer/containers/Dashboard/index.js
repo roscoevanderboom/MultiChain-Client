@@ -5,7 +5,11 @@ import { Typography } from '@material-ui/core';
 import Section from '../../components/Section';
 
 export default () => {
-    const { state } = useContext(store);
+    const { setState } = useContext(store);
+
+    useEffect(() => {
+        setState.setTitle('Dashboard');
+    }, [])
 
     useEffect(() => {
         ipcRenderer.on('mainWindow:message', (e, message) => {
@@ -15,12 +19,12 @@ export default () => {
         return () => {
             ipcRenderer.removeAllListeners();
         }
-    }, [state])
+    }, [])
 
     return (
         <Section>
             <Typography paragraph>
-                Dashbboard
+                Dashboard
             </Typography>
         </Section>
     )

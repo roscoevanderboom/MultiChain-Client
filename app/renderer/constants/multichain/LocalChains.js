@@ -1,9 +1,8 @@
 //
 const fs = require('fs');
-const chainpath = require('./Chainpaths')
 
-module.exports = () => {
-  return new Promise((resolve, reject) => {
+module.exports = (chainpath) => {
+  return new Promise((resolve, reject) => {   
     const localchains = [];
     fs.readdir(chainpath, (err, stat) => {
       if (err) {

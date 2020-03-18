@@ -1,29 +1,41 @@
 // Services
 import React, { useState, createContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import initialState from './initialState';
+import getCreds from '../constants/multichain/GetCreds';
 
 export const store = createContext();
 export const GlobalStatePovider = (props) => {
-  // Router history
-  const hist = useHistory();
   // General App State
-  const [state, setState] = useState(initialState);
+  const [chain_credentials, setChain_credentials] = useState([]);
+  const [multichain, setMultichain] = useState(false);
+  const [activeChain, setActiveChain] = useState(false);
 
-  const handleSetup = (value) => {
-    setState({ ...state, setupComplete: value })
+  const load_credentials = (localChains) => {
+    localChains.forEach(chain => {
+      getCreds(chain)
+        .then(creds => {
+          setChain_credentials(chain_credentials => [...chain_credentials, creds])
+        })
+        .catch(() => {
+          console.log('error')
+        })
+    });
   }
 
-
+  const state = {
+    chain_credentials, multichain, activeChain
+  }
+  const setState = {
+    setMultichain, setActiveChain
+  }
   const reducers = {
-    handleSetup
+    load_credentials
   };
 
 
   // Create provider
   return (
     <store.Provider
-      value={{ state, setState, reducers, hist }}>
+      value={{ state, setState, reducers }}>
       {props.children}
     </store.Provider>
   )

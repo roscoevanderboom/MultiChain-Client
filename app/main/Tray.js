@@ -3,8 +3,7 @@ const { Tray, Menu, app } = require('electron');
 class AppTray extends Tray {
     constructor(iconPath, mainWindow) {
         super(iconPath);
-        this.mainWindow = mainWindow;
-        this.setToolTip('Black Box')
+        this.mainWindow = mainWindow;        
         this.on('click', this.onClick.bind(this));
         this.on('right-click', this.onRightClick.bind(this))
     }

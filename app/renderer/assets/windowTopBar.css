@@ -15,9 +15,6 @@ body {
     z-index: 1000;
     height: 36px;
 }
-.windowbar:hover {
-    cursor: grab;
-}
 
 .windowbar button,
 a,

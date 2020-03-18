@@ -1,4 +1,5 @@
 export default {
     setupComplete: false,
-    user: ''    
+    user: '',
+    title: '' 
 }

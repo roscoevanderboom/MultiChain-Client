@@ -24,13 +24,13 @@ const Setup = () => {
     return (
         <div style={{ ...body }}>           
             <Switch>
-                <Route exact path="/setup/about">
+                <Route path="/setup/about">
                     <About />
                 </Route>
-                <Route exact path="/setup/detectCurrentSettings">
+                <Route path="/setup/detectCurrentSettings">
                     <DetectSettings />
                 </Route>
-                <Route exact path="/setup/downloadLatest">
+                <Route path="/setup/downloadLatest">
                     <DownloadLatest />
                 </Route>
             </Switch>

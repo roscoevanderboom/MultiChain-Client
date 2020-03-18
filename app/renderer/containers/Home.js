@@ -1,35 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { ipcRenderer } from 'electron';
 import {
     Switch, Route, Redirect
 } from "react-router-dom";
-// materialui components
-import {
-    Button, AppBar, Toolbar
-} from '@material-ui/core'
+import { store } from '../store';
 // custom components
 import WindowBar from '../components/WindowBar';
-import LeftDrawer from '../components/LeftDrawer';
+import AppBar from '../components/AppBar/index';
 
 import routes from '../routes';
 
 // Styles
-import { body, appBarMargin } from '../assets/jss/material-kit-react';
+import { body } from '../assets/jss/material-kit-react';
 
 const Home = () => {
+    const { state } = useContext(store);
+
     useEffect(() => {
-        ipcRenderer.send('window:homeWindow');
-        console.log(routes);
-        
+        ipcRenderer.send('window:homeWindow');  
     }, []);
+;
     return (
         <div style={{ ...body }}>
             <WindowBar />
-            <AppBar style={{...appBarMargin}}>
-                <Toolbar>
-                    <LeftDrawer />
-                </Toolbar>
-            </AppBar>
+            <AppBar />
             <Switch>
                 {routes.map((route, i) => (
                     <Route
