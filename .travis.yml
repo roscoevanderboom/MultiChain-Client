@@ -1,0 +1,17 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - '10'
+cache: npm
+services:
+  - xvfb
+
+install:
+  - npm install
+
+script:
+  - npm run check-format
+  - npm run lint
+  - npm test
