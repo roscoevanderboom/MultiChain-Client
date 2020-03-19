@@ -1,10 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { ipcRenderer } from 'electron';
 import { store } from '../../store';
-import { Typography } from '@material-ui/core';
+import {
+    Paper, Card, Typography, Grid, CardContent
+} from '@material-ui/core';
 import Section from '../../components/Section';
-
+import StreamsCard from './StreamsCard';
+import AssetsCard from './AssetsCard';
+import ChainInfoCard from './ChainInfoCard';
+import ParametersCard from './ParametersCard';
+// Styles
+import useStyles from './styles';
 export default () => {
+    const classes = useStyles();
     const { reducers } = useContext(store);
 
     useEffect(() => {
@@ -23,9 +31,12 @@ export default () => {
 
     return (
         <Section>
-            <Typography paragraph>
-                Dashboard
-            </Typography>
-        </Section>
+            <Paper className={classes.paper}>
+                <StreamsCard />
+                <AssetsCard />
+                <ChainInfoCard />
+                <ParametersCard />                
+            </Paper>
+        </Section >
     )
 }

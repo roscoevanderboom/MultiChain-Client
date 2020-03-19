@@ -21,10 +21,6 @@ export default () => {
             setChainName(state.chainInfo.chainname)
         }
     }, [state.chainInfo])
-    
-    useEffect(() => {
-        console.log(state);
-    }, [state])
 
     return (
         <AppBar className={classes.appBar}>

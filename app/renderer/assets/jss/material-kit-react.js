@@ -30,6 +30,13 @@ const defaultFont = {
   fontWeight: "300",
   lineHeight: "1.5em"
 };
+const title = {
+  color: "#3C4858",
+  margin: "1.75rem 0 0.875rem",
+  textDecoration: "none",
+  fontWeight: "700",
+  fontFamily: `"Roboto Slab", "Times New Roman", serif`
+};
 
 const link = {
   textDecoration: 'none',
@@ -71,21 +78,6 @@ const container = {
   }
 };
 
-const boxShadow = {
-  boxShadow:
-    "0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
-};
-
-const card = {
-  display: "inline-block",
-  position: "relative",
-  width: "100%",
-  margin: "25px 0",
-  boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
-  borderRadius: "3px",
-  color: "rgba(0, 0, 0, 0.87)",
-  background: "#fff"
-};
 
 const flex_center_row = {
   display: 'flex',
@@ -107,6 +99,28 @@ const successColor = "#4caf50";
 const infoColor = "#00acc1";
 const roseColor = "#e91e63";
 const grayColor = "#999999";
+
+const primaryGradient = {
+  background: 'linear-gradient(90deg, #4b6cb7 0%, #182848 100%)'
+}
+const secondaryGradient = {
+  background: 'linear-gradient(90deg, #d53369 0%, #daae51 100%)'
+}
+
+
+const boxShadow = {
+  boxShadow:
+    "0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
+};
+
+const defaultBoxShadow = {
+  border: "0",
+  borderRadius: "3px",
+  boxShadow:
+    "0 10px 20px -12px rgba(0, 0, 0, 0.42), 0 3px 20px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
+  padding: "10px 0",
+  transition: "all 150ms ease 0s"
+};
 
 const primaryBoxShadow = {
   boxShadow:
@@ -171,27 +185,21 @@ const cardActions = {
   ...defaultFont
 };
 
+const card = {
+  display: "inline-block",
+  position: "relative",
+  width: "100%",
+  margin: "25px 0",
+  boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
+  borderRadius: "3px",
+  color: "rgba(0, 0, 0, 0.87)",
+  background: "#fff"
+};
+
 const cardHeader = {
   margin: "-30px 15px 0",
   borderRadius: "3px",
   padding: "15px"
-};
-
-const defaultBoxShadow = {
-  border: "0",
-  borderRadius: "3px",
-  boxShadow:
-    "0 10px 20px -12px rgba(0, 0, 0, 0.42), 0 3px 20px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
-  padding: "10px 0",
-  transition: "all 150ms ease 0s"
-};
-
-const title = {
-  color: "#3C4858",
-  margin: "1.75rem 0 0.875rem",
-  textDecoration: "none",
-  fontWeight: "700",
-  fontFamily: `"Roboto Slab", "Times New Roman", serif`
 };
 
 const cardTitle = {
@@ -210,12 +218,14 @@ const cardSubtitle = {
   marginTop: "-.375rem"
 };
 
-const primaryGradient = {
-  background: 'linear-gradient(90deg, #4b6cb7 0%, #182848 100%)'
+const cardList = {
+  overflowY: 'scroll',
+  height: 150
 }
-const secondaryGradient = {
-  background: 'linear-gradient(90deg, #d53369 0%, #daae51 100%)'
-}
+
+
+
+
 
 
 export {
@@ -223,8 +233,7 @@ export {
   drawerWidth,
   transition,
   container,
-  containerFluid,
-  boxShadow,
+  containerFluid,  
   card,
   body,
   defaultFont,
@@ -239,6 +248,7 @@ export {
   roseColor,
   grayColor,
   // box shadow
+  boxShadow,
   defaultBoxShadow,
   primaryBoxShadow,
   infoBoxShadow,
@@ -259,6 +269,7 @@ export {
   cardTitle,
   cardLink,
   cardSubtitle,
+  cardList,
   // Gradients
   primaryGradient,
   secondaryGradient,

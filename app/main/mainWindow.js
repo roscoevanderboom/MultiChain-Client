@@ -23,7 +23,8 @@ module.exports = (iconpath) => {
             nodeIntegration: true,
             backgroundThrottling: false            
         },
-        icon: iconpath   
+        icon: iconpath,
+        center: true   
     });
 
     mainWindow.loadFile(path.resolve(path.join(__dirname, '../renderer/index.html')));
