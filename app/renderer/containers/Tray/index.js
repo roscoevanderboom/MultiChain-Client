@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { ipcRenderer } from 'electron';
 import { store } from '../../store/tray';
 import getLocalChains from '../../constants/multichain/LocalChains';
 import TopBar from '../../components/TrayTopBar';
@@ -24,13 +25,9 @@ const Tray = () => {
   }, [list]);
 
   useEffect(() => {
-    console.log(state.chain_credentials);
-
-  }, [state.chain_credentials]);
-
-  useEffect(() => {
-    console.log(state.multichain);
-
+    if (state.multichain) {    
+      ipcRenderer.send('multichain:tray', state.activeChain);
+    }
   }, [state.multichain]);
 
   return (

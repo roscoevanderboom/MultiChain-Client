@@ -14,12 +14,25 @@ import routes from '../routes';
 import { body } from '../assets/jss/material-kit-react';
 
 const Home = () => {
-    const { state } = useContext(store);
+    const { state, reducers } = useContext(store);
 
     useEffect(() => {
-        ipcRenderer.send('window:homeWindow');  
+        ipcRenderer.send('window:homeWindow');
+        ipcRenderer.on('multichain:mainWindow', (e, activeChain) => {                    
+            reducers.load_Multichain_Node(activeChain);
+        })
+        return () => {
+            ipcRenderer.removeAllListeners();
+        }
     }, []);
-;
+
+    useEffect(() => {
+        if (!state.multichain) {
+            reducers.reset_sections()
+            return;
+        }
+        reducers.getChainData();
+      }, [state.multichain]);
     return (
         <div style={{ ...body }}>
             <WindowBar />

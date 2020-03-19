@@ -60,7 +60,7 @@ module.exports = (iconpath) => {
         }
         if (isDevelopment) {
             // auto-open dev tools
-            // mainWindow.webContents.openDevTools();   
+            mainWindow.webContents.openDevTools();   
         }
     });
 
@@ -81,10 +81,16 @@ module.exports = (iconpath) => {
 
     // *************  IPC  *****************
     // 
-    ipcMain.show_Window_Title(mainWindow)
+    // Show title in windowbar
+    ipcMain.show_Window_Title(mainWindow);
+    // Resizes browseer window
     ipcMain.browserWindows.setupWindow(mainWindow);
     ipcMain.browserWindows.homeWindow(mainWindow);
+    // Control window visibility
     ipcMain.windowControl(mainWindow);
-    ipcMain.receive_message_from_tray(mainWindow);    
+    // Test message from tray
+    ipcMain.receive_message_from_tray(mainWindow);
+    // Handle multichain ipc  
     ipcMain.download_lastest_multichain(mainWindow);
+    ipcMain.handle_Multichain_config(mainWindow);
 }

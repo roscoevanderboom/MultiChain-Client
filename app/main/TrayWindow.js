@@ -16,7 +16,7 @@ class TrayWindow extends BrowserWindow {
             alwaysOnTop: true
         });
         this.loadFile(path.resolve(path.join(__dirname, '../renderer/tray.html')))
-        this.webContents.openDevTools();   
+        // this.webContents.openDevTools();   
     }   
 }
 

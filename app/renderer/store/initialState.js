@@ -1,5 +1,14 @@
-export default {
-    setupComplete: false,
+export default {    
     user: '',
-    title: '' 
+    title: '',
+    multichain: false,
+    chainData: {
+        chainInfo: false,
+        addresses: false,
+        params: false,
+        permissions: false,
+        peers: false,
+        assets: false,
+        streams: false
+    }
 }

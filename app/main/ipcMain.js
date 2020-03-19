@@ -27,14 +27,14 @@ export const show_Window_Title = (mainWindow) => {
 
 }
 export const receive_message_from_tray = (mainWindow) => {
-    ipcMain.on('tray:message', (e, message) => {        
+    ipcMain.on('tray:message', (e, message) => {
         mainWindow.send('mainWindow:message', message);
     });
 }
 export const windowControl = (mainWindow) => {
     ipcMain.on('windowControl', (e, action) => {
         console.log(action);
-        
+
         switch (action) {
             case 'minimize':
                 mainWindow.minimize();
@@ -91,6 +91,11 @@ const extract_source_files = (mainWindow) => {
                 })
             }
         })
+    })
+}
+export const handle_Multichain_config = (mainWindow) => {
+    ipcMain.on('multichain:tray', (e, multichain) => {
+        mainWindow.send('multichain:mainWindow', multichain);
     })
 }
 

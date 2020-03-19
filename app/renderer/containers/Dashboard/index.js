@@ -5,10 +5,10 @@ import { Typography } from '@material-ui/core';
 import Section from '../../components/Section';
 
 export default () => {
-    const { setState } = useContext(store);
+    const { reducers } = useContext(store);
 
     useEffect(() => {
-        setState.setTitle('Dashboard');
+        reducers.setTitle('Dashboard');
     }, [])
 
     useEffect(() => {
