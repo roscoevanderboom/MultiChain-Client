@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 // State
-import { GlobalState } from '../../../state/state';
+import { GlobalState } from '../../../state';
 // IPC
 import { ipcRenderer, remote } from 'electron';
 

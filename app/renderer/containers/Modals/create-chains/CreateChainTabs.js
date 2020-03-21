@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 
 // State
-import { GlobalState } from '../../../state/state';
+import { GlobalState } from '../../../state';
 
 // Components
 import Tabs from '@material-ui/core/Tabs';

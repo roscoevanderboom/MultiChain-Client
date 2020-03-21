@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 // State
-import { GlobalState } from '../../../state/state';
+import { GlobalState } from '../../../state';
 
 // Components
 import Tabs from './CreateChainTabs';

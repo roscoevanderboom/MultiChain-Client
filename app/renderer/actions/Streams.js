@@ -3,7 +3,7 @@
 const { execFile } = require('child_process');
 const path = require('path');
 
-const binaryPath = require('../multichain/BinaryPaths')
+const binaryPath = require('../constants/multichain/BinaryPaths')
 const mcCLI = path.join(binaryPath, 'multichain-cli');
 
 module.exports = {

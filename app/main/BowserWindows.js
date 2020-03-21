@@ -5,11 +5,12 @@ import path from 'path';
 import { readdir } from 'fs';
 import extract from 'extract-zip';
 import { download } from 'electron-dl';
-import download_url from '../renderer/multichain/Download-URLS'
+import download_url from '../renderer/constants/multichain/Download-URLS'
 import contextMenu from './ContextMenu';
-import Chainpaths from '../renderer/multichain/Chainpaths';
-import BinaryPaths from '../renderer/multichain/BinaryPaths';
-import { createChain } from '../renderer/multichain/Daemons';
+import Chainpaths from '../renderer/constants/multichain/Chainpaths';
+import { createChain } from '../renderer/constants/multichain/Daemons';
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 let mainWindow = null;
 let forceQuit = false;
@@ -19,7 +20,7 @@ module.exports = () => {
   // *********** WINDOW BEHAVIOUR **************
   //
   mainWindow = new BrowserWindow({
-    fullscreen: false,
+    fullscreen: true,
     height: 1000,
     width: 1600,
     minWidth: 640,
@@ -50,7 +51,10 @@ module.exports = () => {
   // 2. Click on icon in dock should re-open the window
   // 3. ⌘+Q should close the window and quit the app
   mainWindow.webContents.on('did-finish-load', () => {
-
+    if (isDevelopment) {
+      // auto-open dev tools
+      mainWindow.webContents.openDevTools();
+    }
     if (process.platform === 'darwin') {
       mainWindow.on('close', function (e) {
         if (!forceQuit) {
@@ -75,6 +79,9 @@ module.exports = () => {
 
   // *************  IPC  *****************
 
+  ipcMain.on('multichain:tray', (e, multichain) => {
+    mainWindow.send('multichain:mainWindow', multichain);
+  })
 
   ipcMain.on('download', () => {
     readdir(process.resourcesPath, (err, res) => {

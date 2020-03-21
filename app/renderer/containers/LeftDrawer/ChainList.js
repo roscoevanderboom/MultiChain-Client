@@ -2,7 +2,9 @@
 import React, { useContext } from 'react';
 
 // State
-import { GlobalState } from '../../state/state';
+import { GlobalState } from '../../state';
+
+import routes from '../../routes';
 
 // Components
 import List from '@material-ui/core/List';
@@ -24,16 +26,15 @@ export default () => {
   const classes = useStyles();
   const { state, methods } = useContext(GlobalState);
   const { localChains } = state;
+  const sections = []
 
   return (
     <React.Fragment>
       <List className={classes.list}>
-        {localChains.map((chain, i) => (
+        {routes.map((route, i) => (
           <ChainButton
             key={i}
-            chain={chain}
-            state={state}
-            methods={methods} />
+            section={route.path} />
         ))}
       </List>
     </React.Fragment>
