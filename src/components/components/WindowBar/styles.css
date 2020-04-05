@@ -1,0 +1,24 @@
+
+body {
+  margin: 0;
+}
+
+.windowbar {
+    -webkit-app-region: drag;
+    background-color: rgb(34, 31, 31);
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 36px;
+}
+
+.windowbar button,
+a,
+select,
+input {
+    -webkit-app-region: no-drag;
+}
