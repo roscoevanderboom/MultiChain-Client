@@ -84,6 +84,7 @@ export default () => {
         onchain: true,
       })
     }
+    // eslint-disable-next-line
   }, [restrict.read])
 
   return (

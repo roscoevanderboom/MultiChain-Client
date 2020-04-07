@@ -24,6 +24,7 @@ const Home = () => {
             return;
         }
         reducers.getChainData();
+        // eslint-disable-next-line
     }, [state.multichain]);
 
     useEffect(() => {

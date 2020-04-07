@@ -81,6 +81,7 @@ export default () => {
       ...assetDetails,
       restrict
     })
+    // eslint-disable-next-line
   }, [restrict])
 
   useEffect(() => {

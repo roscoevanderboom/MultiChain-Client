@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { ipcRenderer } from 'electron';
 import { store } from '../../store';
 // Multichain
 import { startMultichain, stopMultichain } from '../../constants/multichain/Daemons';
@@ -33,7 +32,7 @@ export default ({ chain }) => {
   const [multichain, setMultichain_Instance] = useState(false)
 
   const load_Multichain_Node = (setState) => {
-    chain_credentials.map(creds => {
+    chain_credentials.forEach(creds => {
       if (creds.name === chain) {
         setState(require("multichain-node")(creds));
         return;
@@ -67,7 +66,8 @@ export default ({ chain }) => {
   }
 
   useEffect(() => {
-    load_Multichain_Node(setMultichain_Instance)
+    load_Multichain_Node(setMultichain_Instance);
+    //eslint-disable-next-line
   }, [chain_credentials])
 
   useEffect(() => {

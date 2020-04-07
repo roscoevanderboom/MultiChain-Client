@@ -13,7 +13,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import useStyles from './styles';
 
 export default function TemporaryDrawer() {
-    const { state, reducers } = useContext(store);
+    const { reducers } = useContext(store);
     const classes = useStyles();
     const [open, setOpen] = useState(false);
 

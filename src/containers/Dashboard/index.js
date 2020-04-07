@@ -13,6 +13,7 @@ export default () => {
 
     useEffect(() => {
         reducers.setTitle('Dashboard');
+        // eslint-disable-next-line
     }, [])
 
     return (

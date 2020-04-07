@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import extract from 'extract-zip';
-import tar from 'tar';
-import { exec, spawn, execFile } from 'child_process';
+import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { ipcRenderer, shell } from 'electron';
+import { ipcRenderer } from 'electron';
 import { store } from '../../store';
 // Multichain constants
 import download_url from '../../constants/multichain/Download-URLS';
-import binary_filenames from '../../constants/multichain/BinaryFileNames';
 // Components
 import { Container, Typography } from '@material-ui/core';
 import Button from '../CustomButtons/Button';
@@ -41,10 +39,38 @@ export default () => {
       let resourcesPath = path.join(process.resourcesPath);
       let file_path = path.join(resourcesPath, zipfile);
 
-      exec(`tar -xvzf ${file_path}`, (err, res) => {
-        if (err) throw err;
-        hist.push('/setup/detectCurrentSettings')
-      })
+      switch (process.platform) {
+        case
+          'win32':
+          fs.readdir(resourcesPath, (err, res) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            res.forEach(file => {
+              if (file.includes('.zip')) {
+                let source = path.join(resourcesPath, file);
+                let target = path.join(resourcesPath, 'multichain');
+                extract(source, { dir: target }, function (err) {
+                  if (err) {
+                    console.log(err)
+                    return;
+                  }
+                  setCurrent_action('Extraction complete');
+                })
+              }
+            })
+          })
+          break;
+
+        default:
+          exec(`tar -xvzf ${file_path}`, (err, stdout) => {
+            if (err) throw err;
+            console.log(stdout);            
+            hist.push('/setup/detectCurrentSettings')
+          })
+          break;
+      }
 
     });
     ipcRenderer.on('unzip:complete', (e, { chainpaths, target }) => {
@@ -62,6 +88,7 @@ export default () => {
       ipcRenderer.removeAllListeners('unzip:complete');
       ipcRenderer.removeAllListeners('unzip:error');
     }
+    // eslint-disable-next-line
   }, [])
 
   return (

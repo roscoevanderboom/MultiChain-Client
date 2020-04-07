@@ -22,12 +22,12 @@ export const listPermissions = (multichain, setState) => {
             return;
         }
         let obj = {}
-        address_permissions.map(key => {
+        address_permissions.forEach(key => {
             obj[key] = res.filter(val => val.type === key)
         })
         let values = Object.values(obj);
         let sorted_permissions = {};
-        address_permissions.map((key, i) => {
+        address_permissions.forEach((key, i) => {
             sorted_permissions[key] = values[i].map(val => val.address)
         })
         setState(sorted_permissions);

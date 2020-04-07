@@ -22,6 +22,7 @@ export default function ChainList() {
         if (list.length > 0) {
             reducers.load_credentials(list)
         }
+        // eslint-disable-next-line
     }, [list]);
 
     return (

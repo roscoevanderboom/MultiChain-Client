@@ -20,17 +20,19 @@ export default function App() {
             hist.push('/home/streams');
             return;
         }
-        hist.push('/setup/about');
+        hist.push('/setup/about');        
     }
 
     React.useEffect(() => {
         ipcRenderer.on('multichain:mainWindow', (e, activeChain) => {
             reducers.load_Multichain_Node(activeChain);
         })
+        // eslint-disable-next-line
     }, []);
 
     React.useEffect(() => {
         handleLocalStorage();
+        // eslint-disable-next-line
     }, [])
 
     return (

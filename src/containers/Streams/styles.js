@@ -7,7 +7,8 @@ import {
 const useStyles = makeStyles({
     title: {
         ...title,
-        paddingTop: 20
+        paddingTop: 20,
+        fontSize: '1.5em'
     },
     card: {
         margin: 5,
@@ -18,9 +19,6 @@ const useStyles = makeStyles({
         display: 'inline-block',
         margin: '0 2px',
         transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: '1.5em',
     },
     pos: {
         marginBottom: 12,

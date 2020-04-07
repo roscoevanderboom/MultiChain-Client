@@ -102,6 +102,7 @@ export default () => {
       ipcRenderer.removeAllListeners('chain-create:success');
       ipcRenderer.removeAllListeners('chain-create:fail');
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

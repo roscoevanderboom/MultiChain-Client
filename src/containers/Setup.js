@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { ipcRenderer } from 'electron';
+import React from 'react';
 import {
     Switch, Route, Redirect
 } from "react-router-dom";
@@ -12,9 +11,6 @@ import DownloadLatest from '../components/DownloadLatest';
 import { body } from '../assets/jss/material-kit-react';
 
 const Setup = () => {
-
-
-
     return (
         <div style={{ ...body }}>           
             <Switch>

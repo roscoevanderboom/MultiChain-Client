@@ -3,7 +3,6 @@ import { store } from '../../store';
 import { Grid } from '@material-ui/core';
 import Section from '../../components/Section';
 import SectionHeader from '../../components/SectionHeader';
-import CustomFrame from '../../components/CustomFrame';
 import CreateStream from './CreateStream';
 import StreamCard from './StreamCard';
 
@@ -13,6 +12,7 @@ export default () => {
 
     useEffect(() => {
         reducers.setTitle('Streams');
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -21,24 +21,19 @@ export default () => {
         }
     }, [state.streams])
 
-    return (
+    return (state.streams &&
         <Section>
-            {!state.streams ?
-                <CustomFrame url='https://www.multichain.com/developers/data-streams/' /> :
-                <React.Fragment>
-                    <SectionHeader>
-                        <CreateStream />
-                    </SectionHeader>
-                    <Grid container>
-                        {streams.map((stream, i) =>
-                            <Grid item xs={4}
-                                key={i}>
-                                <StreamCard stream={stream} />
-                            </Grid>
-                        )}
+            <SectionHeader>
+                <CreateStream />
+            </SectionHeader>
+            <Grid container>
+                {streams.map((stream, i) =>
+                    <Grid item xs={4}
+                        key={i}>
+                        <StreamCard stream={stream} />
                     </Grid>
-                </React.Fragment>
-            }
+                )}
+            </Grid>
         </Section>
     )
 }

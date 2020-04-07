@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "rescripts start",
+    "electron": "electron .",
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "react-scripts eject",

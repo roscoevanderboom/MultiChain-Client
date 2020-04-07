@@ -60,12 +60,14 @@ export default ({ stream, streamMethods, streamState }) => {
 
   useEffect(() => {
     setItems(key_Search(keys));
+    // eslint-disable-next-line
   }, [keys])
 
   useEffect(() => {
     if (stream) {
       updateAll()
     }
+    // eslint-disable-next-line
   }, [stream]);
 
   useEffect(() => {

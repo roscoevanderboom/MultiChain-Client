@@ -19,14 +19,12 @@ export default () => {
             <React.Fragment>
                 <Typography
                     variant='h5'
-                    component='body'
                     align='center'
                     className={classes.text}>
                     No Download Available for Mac
                 </Typography>
                 <Container className={classes.macTextContainer}>
-                    <Typography paragraph
-                        
+                    <Typography paragraph                        
                         component='details'
                         align='center'
                         className={classes.text}>

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { store } from '../../store';
+import React, { useEffect, useState } from 'react';
 
 import Card from '../../components/DashboardCard';
 import { Item } from '../../components/CustomListItems';
@@ -8,7 +7,6 @@ import { List } from '@material-ui/core';
 import styles from './styles';
 export default (props) => {
     const classes = styles();
-    const { state } = useContext(store);
     const [data, setData] = useState({
         'Total': 0,
         'Subscribed': 0,
@@ -26,7 +24,7 @@ export default (props) => {
             }
             setData(data);
         }
-    }, [state])
+    }, [props.data])
 
     return (
         <Card title={props.title}>

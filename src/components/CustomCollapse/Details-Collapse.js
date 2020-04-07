@@ -40,6 +40,7 @@ export default ({ details }) => {
     if (details) {
       handleDetails()
     }
+    // eslint-disable-next-line
   }, [details])
 
 

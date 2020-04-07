@@ -17,6 +17,7 @@ export default () => {
 
     useEffect(() => {
         reducers.setTitle('Chain Info');
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -27,7 +28,7 @@ export default () => {
         }
     }, [state.chainInfo])
 
-    return (
+    return (state.chainInfo &&
         <Section>
             <Typography
                 align='center'
