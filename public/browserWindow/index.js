@@ -1,9 +1,10 @@
 const electron = require('electron');
-const { BrowserWindow, ipcMain } = electron;
+const { app,BrowserWindow, ipcMain } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
 
 let mainWindow;
+let forceQuit = false;
 
 const iconPath = path.join(__dirname, '../icon.png');
 
