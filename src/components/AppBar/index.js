@@ -7,6 +7,7 @@ import {
 
 // custom components
 import LeftDrawer from '../LeftDrawer';
+import RightDrawer from '../RightDrawer';
 
 // Styles
 import useStyles from './styles';
@@ -26,7 +27,7 @@ export default () => {
         <AppBar position='fixed' className={classes.appBar}>
             <Toolbar>
                 <Grid item sm={3}
-                className={classes.appBarLeftDiv}>
+                    className={classes.appBarLeftDiv}>
                     <LeftDrawer />
                     <Typography className={classes.title}>
                         {state.title}
@@ -40,8 +41,9 @@ export default () => {
                         {chainName}
                     </Typography>
                 </Grid>
-                <Grid item sm={3}>
-
+                <Grid item sm={3}
+                    className={classes.appBarRightDiv}>
+                    <RightDrawer />
                 </Grid>
             </Toolbar>
         </AppBar>

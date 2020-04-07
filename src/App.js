@@ -1,8 +1,8 @@
 import React from "react";
 import { ipcRenderer } from 'electron';
 import { Switch, Route } from "react-router-dom";
-
 import { store } from './store';
+import checkLocalStorage from './constants/multichain/CheckLocalStorage';
 
 import WindowBar from './components/WindowBar';
 import Setup from './containers/Setup';
@@ -11,14 +11,16 @@ import Home from './containers/Home';
 export default function App() {
     const { hist, reducers } = React.useContext(store);
 
-    const checkLocalStorage = () => {
-        let binariesPath = localStorage.getItem('binariesPath');
-        let blockchainsPath = localStorage.getItem('blockchainsPath');
+    const handleLocalStorage = () => {
+
+        let { binariesPath, blockchainsPath } = checkLocalStorage();
+
         if (binariesPath !== null && blockchainsPath !== null) {
-            hist.push('/setup/about');
+            reducers.handleLocalPaths({ binariesPath, blockchainsPath });
+            hist.push('/home/streams');
             return;
         }
-        hist.push('/home');
+        hist.push('/setup/about');
     }
 
     React.useEffect(() => {
@@ -28,7 +30,7 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        checkLocalStorage();
+        handleLocalStorage();
     }, [])
 
     return (

@@ -5,7 +5,8 @@ import {
   } from '../../assets/jss/material-kit-react';
   const useStyles = makeStyles({
     body: {
-      ...flex_center_column
+      ...flex_center_column,
+      paddingTop: 80
     },
     text: {
       ...defaultFont,

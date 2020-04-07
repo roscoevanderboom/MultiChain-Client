@@ -15,9 +15,9 @@
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "concurrently \"npm run start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
-    "preelectron-pack": "yarn build",
+    "preelectron-pack": "npm run build",
     "electron-pack": "electron-builder"
   },
   "build": {
@@ -41,18 +41,19 @@
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",    
+    "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.2.6",
     "electron-dl": "^3.0.0",
-    "extract-zip": "^1.6.7",
     "electron-is-dev": "^1.1.0",
+    "extract-zip": "^1.6.7",
     "history": "^4.10.1",
     "multichain-node": "^2.2.0-version1.0.4",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "tar": "^6.0.1"
   },
   "eslintConfig": {
     "extends": "react-app"

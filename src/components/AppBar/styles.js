@@ -10,6 +10,11 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center'
     },
+    appBarRightDiv: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+    },
     title: {
         ...title,
         margin: `0px 0px 0px 12px`,

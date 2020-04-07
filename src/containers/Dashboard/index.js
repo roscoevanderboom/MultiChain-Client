@@ -3,15 +3,13 @@ import { store } from '../../store';
 // Components
 import Section from '../../components/Section';
 import SectionHeader from '../../components/SectionHeader';
-import StreamsCard from './StreamsCard';
-import AssetsCard from './AssetsCard';
-import ChainInfoCard from './ChainInfoCard';
-import ParametersCard from './ParametersCard';
+import SmallCard from './SmallCard';
+import BigCard from './BigCard';
 // Styles
 import useStyles from './styles';
 export default () => {
     const classes = useStyles();
-    const { reducers } = useContext(store);
+    const { reducers, state } = useContext(store);
 
     useEffect(() => {
         reducers.setTitle('Dashboard');
@@ -23,10 +21,10 @@ export default () => {
                 Summary
             </SectionHeader>
             <div className={classes.mainRaised}>
-                <StreamsCard />
-                <AssetsCard />
-                <ChainInfoCard />
-                <ParametersCard />
+                <SmallCard title="Streams" data={state.streams} />
+                <SmallCard title="Assets" data={state.assets} />
+                <BigCard title="Chain Info" data={state.chainInfo} />
+                <BigCard title="Parameters" data={state.params} />
             </div>
         </Section>
 

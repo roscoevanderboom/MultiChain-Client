@@ -1,12 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { ipcRenderer } from 'electron';
 import {
-    Switch, Route, Redirect
+    Switch, Route
 } from "react-router-dom";
 import { store } from '../store';
 // custom components
 import WindowBar from '../components/WindowBar';
 import AppBar from '../components/AppBar/index';
+import Modals from '../components/Modals/All-Modals';
 
 import routes from '../routes';
 
@@ -44,7 +45,7 @@ const Home = () => {
                         component={route.component} />
                 ))}
             </Switch>
-            <Redirect to='/home/dashboard' />
+            <Modals />
         </div>
     )
 }

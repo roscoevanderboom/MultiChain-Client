@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     paper: {
         background: "#FFFFFF",
         position: "relative",      
-        marginTop: 12
+        marginTop: 12,
     },
    
 })

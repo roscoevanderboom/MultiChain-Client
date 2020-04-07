@@ -11,6 +11,8 @@ export const GlobalStatePovider = (props) => {
   // App State
   const [title, setAppBarTitle] = useState('');
   const [multichain, setMultichain] = useState(false);
+  const [chain_credentials, setChain_credentials] = useState([]);
+  const [localPaths, setLocalPaths] = useState({})
 
   // Sections State
   const [chainInfo, setChainInfo] = useState(false);
@@ -31,13 +33,36 @@ export const GlobalStatePovider = (props) => {
     setStreams
   ]
 
+  // Modals
+  const [modals, setModals] = useState({
+    CreateChain: false,
+    ConnectRemote: false
+  })
+  const handleModals = (modal, value) => {
+    setModals({ ...modals, [modal]: value })
+  }
+
   const reset_sections = () => {
     setStateArray.map(val => val(false))
   }
 
   // Reducers 
+  const handleLocalPaths = (pathNames) => {
+    setLocalPaths(pathNames)
+  }
   const setTitle = value => {
     setAppBarTitle(value);
+  }
+  const load_credentials = (localChains) => {
+    localChains.forEach(chain => {
+      getCreds(chain)
+        .then(creds => {
+          setChain_credentials(chain_credentials => [...chain_credentials, creds])
+        })
+        .catch(() => {
+          console.log('error')
+        })
+    });
   }
   const load_Multichain_Node = (chain) => {
     getCreds(chain)
@@ -88,6 +113,8 @@ export const GlobalStatePovider = (props) => {
   const state = {
     title,
     multichain,
+    chain_credentials,
+    localPaths,
     // Sections
     chainInfo,
     addresses,
@@ -95,20 +122,28 @@ export const GlobalStatePovider = (props) => {
     permissions,
     peers,
     assets,
-    streams
+    streams,
+    // Modals
+    modals
+  };
+  const setState = {
+    setChain_credentials, setMultichain
   }
 
   const reducers = {
+    load_credentials,
     load_Multichain_Node,
     setTitle,
     getChainData,
-    reset_sections
+    reset_sections,
+    handleLocalPaths,
+    handleModals
   };
 
   // Create provider
   return (
     <store.Provider
-      value={{ state, reducers, hist }}>
+      value={{ state, setState, reducers, hist }}>
       {props.children}
     </store.Provider>
   )

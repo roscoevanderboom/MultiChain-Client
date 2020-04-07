@@ -29,7 +29,7 @@ export default () => {
         return false
     }
     const handleBlockchains = (fileNames, folderPath) => {
-        if (fileNames[0] === 'multichain.'
+        if (fileNames[0].includes('multichain.')
             && fileNames.length === 1) {
             setBlockchainsPath(folderPath);
             setStep(null);
@@ -38,14 +38,19 @@ export default () => {
         return false
     }
     const handlefolderPath = (e) => {
-        let files = Object.values(e.target.files)
-        let str = e.target.files[0].path;
-        let folderPath = str.slice(0, str.lastIndexOf(`\\`) + 1)
-        let fileNames = files.map(file => file.name.slice(0, -4));
-        if (step === 'step1' && handleBinaries(fileNames, folderPath)) {
+        let files = Object.values(e.target.files);
+        let file_paths = files.map(file => file.path);
+        let file_names = files.map(file => file.name);
+        let folderPath = file_paths[0].slice(0, file_paths[0].lastIndexOf('multichain'))
+
+        if (process.platform === 'win32') {
+            file_names = files.map(file => file.name.slice(0, -4));
+        }
+
+        if (step === 'step1' && handleBinaries(file_names, folderPath)) {
             return;
         }
-        if (step === 'step2' && handleBlockchains(fileNames, folderPath)) {
+        if (step === 'step2' && handleBlockchains(file_names, folderPath)) {
             return;
         }
         window.alert('An error occured. Please try again.');

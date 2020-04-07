@@ -1,22 +1,10 @@
 const { execFile } = require('child_process');
 const path = require('path');
-const binaryPath = require('./BinaryPaths')
-
-const mcUtil = path.join(binaryPath, 'multichain-util');
-const mcd = path.join(binaryPath, 'multichaind');
-const mcCLI = path.join(binaryPath, 'multichain-cli');
 
 module.exports = {
-  getInfo: (chainName) => {
+  subscribe: (chainName, asset, binaryPath) => {
     return new Promise((resolve, reject) => {
-      execFile(mcCLI, [chainName, 'getinfo'], (err, res) => {
-        err ? reject(err) : resolve(JSON.parse(res));
-      });
-    });
-  },
-  subscribe: (chainName, asset) => {
-    return new Promise((resolve, reject) => {
-      execFile(mcCLI, [
+      execFile(path.join(binaryPath, 'multichain-cli'), [
         chainName,
         'subscribe',
         `${asset.name}`
@@ -25,9 +13,9 @@ module.exports = {
       });
     });
   },
-  unSubscribe: (chainName, asset) => {
+  unSubscribe: (chainName, asset, binaryPath) => {
     return new Promise((resolve, reject) => {
-      execFile(mcCLI, [
+      execFile(path.join(binaryPath, 'multichain-cli'), [
         chainName,
         'unsubscribe',
         `${asset.name}`

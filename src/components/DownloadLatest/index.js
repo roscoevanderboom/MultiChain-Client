@@ -1,5 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ipcRenderer } from 'electron';
+import extract from 'extract-zip';
+import tar from 'tar';
+import { exec, spawn, execFile } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { ipcRenderer, shell } from 'electron';
 import { store } from '../../store';
 // Multichain constants
 import download_url from '../../constants/multichain/Download-URLS';
@@ -31,8 +36,16 @@ export default () => {
       setProgress(100)
       setCurrent_action('Download complete');
     });
-    ipcRenderer.on('unzip:begin', () => {
+    ipcRenderer.on('unzip:begin', (e, zipfile) => {
       setCurrent_action('Extracting source files...');
+      let resourcesPath = path.join(process.resourcesPath);
+      let file_path = path.join(resourcesPath, zipfile);
+
+      exec(`tar -xvzf ${file_path}`, (err, res) => {
+        if (err) throw err;
+        hist.push('/setup/detectCurrentSettings')
+      })
+
     });
     ipcRenderer.on('unzip:complete', (e, { chainpaths, target }) => {
       localStorage.setItem("binariesPath", target);
@@ -52,7 +65,7 @@ export default () => {
   }, [])
 
   return (
-    <Container>
+    <Container className={classes.body}>
       <Typography
         variant='h4'
         component='header'
