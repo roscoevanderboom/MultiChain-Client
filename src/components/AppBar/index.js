@@ -15,7 +15,7 @@ import useStyles from './styles';
 export default () => {
     const classes = useStyles();
     const { state } = useContext(store);
-    const [chainName, setChainName] = useState('No blockchain config found')
+    const [chainName, setChainName] = useState('No blockchain configured')
 
     useEffect(() => {
         if (state.chainInfo) {

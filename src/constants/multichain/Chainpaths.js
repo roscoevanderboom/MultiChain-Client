@@ -10,9 +10,7 @@ switch (process.platform) {
   case 'linux':  
     chainpath = path.join('/home/user','.multichain', '/');
     break;
-  default:
-    // add paths for darwin. need help
-    // /Home/Username/.multichain
+  default:    
     break;
 }
 
