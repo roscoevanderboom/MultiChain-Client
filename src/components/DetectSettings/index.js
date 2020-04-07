@@ -98,7 +98,6 @@ export default () => {
             <Container className={classes.actions}>
                 {step !== null ? null :
                     <Button
-                        block={true}
                         color='github'
                         onClick={handleApplySettings}>
                         Apply settings

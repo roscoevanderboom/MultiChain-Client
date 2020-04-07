@@ -24,9 +24,6 @@ export default function TemporaryDrawer() {
         setOpen(open);
     };
 
-
-
-
     return (
         <div>
             <Button

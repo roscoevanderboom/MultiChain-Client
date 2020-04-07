@@ -10,7 +10,9 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <Router>
-    <SnackbarProvider maxSnack={5} autoHideDuration={3000}>
+    <SnackbarProvider 
+    maxSnack={5} 
+    autoHideDuration={3000}>
       <GlobalStatePovider>
         <App />
       </GlobalStatePovider>

@@ -36,9 +36,9 @@ export const GlobalStatePovider = (props) => {
   ];
 
   // Methods for user feedback
-  const { enqueueSnackbar } = useSnackbar();
-  const feedback = (variant, message) => {
-    create_feedback(variant, message, enqueueSnackbar);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const feedback = (variant, message) => {    
+    create_feedback(variant, message, enqueueSnackbar, closeSnackbar);
   };
 
   // Modals

@@ -6,11 +6,12 @@ import {
 const useStyles = makeStyles({
     body: {        
         ...flex_center_column,
-        paddingTop: 80
+        paddingTop: 80,
     },
     text: {
         ...defaultFont,
-        padding: 5
+        padding: 5,
+        maxWidth: '50%'
     },
     listItemText: {
         flex: 0

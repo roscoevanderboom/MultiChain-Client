@@ -65,16 +65,9 @@ export default () => {
       feedback('error', 'Please give a name')
       return;
     }
-
     createStream(chainInfo.chainname, options, localPaths.binariesPath)
-      .then(() => {
-        console.log('Stream created');
-
-        getChainData('streams')
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      .then(() => { getChainData('streams') })
+      .catch(err => { feedback('error', err) })
   }
 
   useEffect(() => {

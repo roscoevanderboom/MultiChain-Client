@@ -82,10 +82,11 @@ export default ({ feedback, handleSubmit, handleModal }) => {
     }];
     setInputFields(newInput)
   }
-  const removeField = (i) => () => {
-    let newInput = [...inputFields];
-    newInput.splice(i, 1);
-    setInputFields(newInput);
+  const removeField = (value) => () => {
+    // let newInput = [...inputFields];
+    // newInput.splice(i, 1);
+    // setInputFields(newInput);
+    setInputFields(inputFields.filter(input => input.key !== value.key))
   }
   const handleDetails = (e) => {
     e.preventDefault()
@@ -126,7 +127,7 @@ export default ({ feedback, handleSubmit, handleModal }) => {
             <TextField
               placeholder={`${input.type}`}
               type={input.type} />
-            <IconButton onClick={removeField(i)} >
+            <IconButton onClick={removeField(input)} >
               <Clear />
             </IconButton>
           </ListItem>

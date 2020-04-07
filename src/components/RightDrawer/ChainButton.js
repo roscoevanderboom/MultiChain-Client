@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 });
 
 export default ({ chain }) => {
-  const { state, setState } = useContext(store);
+  const { state, setState, reducers } = useContext(store);
   const { chain_credentials, chainInfo, localPaths } = state;
   const { setMultichain } = setState;
   const classes = useStyles();
@@ -42,12 +42,12 @@ export default ({ chain }) => {
 
   const connect = () => {
     if (!connected) {
-      window.alert('Daemon is not running')
+      reducers.feedback('info','Daemon is not running')
       return;
     }
     load_Multichain_Node(setMultichain);
   }
-  
+
   const daemon = () => {
     if (connected) {
       stopMultichain(chain, localPaths.binariesPath)
@@ -55,14 +55,14 @@ export default ({ chain }) => {
           setConnected(false);
           setMultichain_Instance(false);
         })
-        .catch(err => console.log(err))
+        .catch(err => reducers.feedback('error', err))
       return;
     }
     startMultichain(chain, localPaths.binariesPath)
       .then(res => {
         setConnected(true);
       })
-      .catch(err => console.log(err))
+      .catch(err => reducers.feedback('error', err))
   }
 
   useEffect(() => {

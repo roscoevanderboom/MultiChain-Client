@@ -8,7 +8,7 @@ import useStyles from './styles';
 export default ({ handlefolderPath }) => {
     const classes = useStyles();
     return (
-        <div>
+        <React.Fragment>
             <Typography
                 variant='subtitle1'
                 align='center'
@@ -21,6 +21,6 @@ export default ({ handlefolderPath }) => {
                 className={classes.text}>
                 <input onChange={handlefolderPath} type="file" multiple />
             </Typography>
-        </div>
+        </React.Fragment>
     )
 }
