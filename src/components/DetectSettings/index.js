@@ -13,7 +13,7 @@ import useStyles from './styles';
 
 export default () => {
     const classes = useStyles();
-    const { hist } = useContext(store);
+    const { hist, reducers } = useContext(store);
     const [step, setStep] = useState('step1');
     const [binariesPath, setBinariesPath] = useState('');
     const [blockchainsPath, setBlockchainsPath] = useState('');
@@ -58,6 +58,7 @@ export default () => {
     const handleApplySettings = () => {
         localStorage.setItem("binariesPath", binariesPath);
         localStorage.setItem("blockchainsPath", blockchainsPath);
+        reducers.handleLocalPaths({ binariesPath, blockchainsPath });
         hist.push('/home/dashboard');
     }
 

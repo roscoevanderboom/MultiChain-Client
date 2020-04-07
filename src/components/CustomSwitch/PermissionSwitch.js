@@ -1,19 +1,20 @@
 // Services
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { store } from '../../store';
 // Components
-import {
-  Switch
-} from '@material-ui/core';
+import { Switch } from '@material-ui/core';
 
-export default ({ name, address, globalState }) => {
+export default ({ name, address }) => {
+  const { state, reducers } = useContext(store);
   const [status, setStatus] = useState(false);
-  const { multichain, permissions } = globalState.state;
-  const { update, feedback } = globalState.methods;
+  const { multichain, permissions } = state;
+  const { getChainData, feedback } = reducers;
 
   useEffect(() => {
     permissions[name].includes(address.address)
       ? setStatus(true)
       : setStatus(false)
+      //eslint-disable-next-line
   }, [permissions])
 
   const togglePermission = () => {
@@ -25,8 +26,8 @@ export default ({ name, address, globalState }) => {
             console.log(err);
             return;
           }
-          update('permissions')
-          update('addresses')
+          getChainData('permissions')
+          getChainData('addresses')
         })
       return;
     }
@@ -37,8 +38,8 @@ export default ({ name, address, globalState }) => {
           console.log(err);
           return;
         }
-        update('permissions')
-        update('addresses')
+        getChainData('permissions')
+        getChainData('addresses')
       })
   };
 

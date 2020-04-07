@@ -1,10 +1,9 @@
 const electron = require('electron');
-const { app, BrowserWindow, ipcMain } = electron;
+const { BrowserWindow, ipcMain } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
 
 let mainWindow;
-let forceQuit = false;
 
 const iconPath = path.join(__dirname, '../icon.png');
 
@@ -17,14 +16,14 @@ function createWindow() {
         hasShadow: true,
         center: true,
         icon: iconPath,
-        webPreferences:{
+        webPreferences: {
             webviewTag: true,
             nodeIntegration: false,
             allowRunningInsecureContent: false,
             scrollBounce: true
         }
     });
-    mainWindow.loadURL(isDev ? `file://${path.join(__dirname,'../browserWindow.html')}` : `file://${path.join(__dirname, '../../build/browserWindow.html')}`);
+    mainWindow.loadURL(isDev ? `file://${path.join(__dirname, '../browserWindow.html')}` : `file://${path.join(__dirname, '../../build/browserWindow.html')}`);
 
     // Handle window logic properly on macOS:
     // 1. App should not terminate if window has been closed
@@ -39,14 +38,14 @@ function createWindow() {
                 }
             });
 
+            app.on('activate', () => {
+                mainWindow.show();
+            });
+
             app.on('before-quit', () => {
                 forceQuit = true;
             });
-        } else {
-            mainWindow.on('closed', () => {
-                mainWindow = null;
-            });
-        }
+        } 
         if (isDev) {
             // Open the DevTools.        
             // mainWindow.webContents.openDevTools();

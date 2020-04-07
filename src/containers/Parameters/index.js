@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { store } from '../../store';
 import Section from '../../components/Section';
 import SectionHeader from '../../components/SectionHeader';
+import SectionToolbar from '../../components/SectionToolbar';
+import List from './List';
 
 
 export default () => {
@@ -14,9 +16,13 @@ export default () => {
 
     return (state.params &&
         <Section>
-            <SectionHeader>
-                Parameters
-            </SectionHeader>
+            <SectionToolbar
+                left={
+                    <SectionHeader>
+                        Set runtime params
+                    </SectionHeader>
+                } />
+            <List params={state.params} />
         </Section>
     )
 }

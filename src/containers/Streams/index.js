@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { store } from '../../store';
 import { Grid } from '@material-ui/core';
 import Section from '../../components/Section';
-import SectionHeader from '../../components/SectionHeader';
+import SectionToolbar from '../../components/SectionToolbar';
 import CreateStream from './CreateStream';
 import StreamCard from './StreamCard';
 
@@ -23,9 +23,8 @@ export default () => {
 
     return (state.streams &&
         <Section>
-            <SectionHeader>
-                <CreateStream />
-            </SectionHeader>
+            <SectionToolbar
+                left={<CreateStream />} />
             <Grid container>
                 {streams.map((stream, i) =>
                     <Grid item xs={4}

@@ -5,10 +5,13 @@ const webBrowser = require('./browserWindow');
 
 app.allowRendererProcessReuse = true;
 
+let appWindow;
+let browserWindow;
+
 app.whenReady()
     .then(() => {
-        mainWindow();
-        webBrowser()
+       appWindow = mainWindow();
+       browserWindow = webBrowser();
     });
 
 app.on('window-all-closed', () => {
@@ -16,6 +19,11 @@ app.on('window-all-closed', () => {
         app.quit();
     }
 });
+
+
+ipcMain.on('browser:open', () => {
+    webBrowser()    
+})
 
 app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

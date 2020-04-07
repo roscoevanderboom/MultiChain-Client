@@ -17,7 +17,7 @@ export default function App() {
 
         if (binariesPath !== null && blockchainsPath !== null) {
             reducers.handleLocalPaths({ binariesPath, blockchainsPath });
-            hist.push('/home/streams');
+            hist.push('/home/peers');
             return;
         }
         hist.push('/setup/about');        
@@ -31,6 +31,7 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
+        reducers.feedback('success', "this is app")
         handleLocalStorage();
         // eslint-disable-next-line
     }, [])

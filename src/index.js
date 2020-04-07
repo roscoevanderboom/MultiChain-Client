@@ -1,19 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createMemoryHistory } from 'history';
 import { GlobalStatePovider } from './store';
 import { BrowserRouter as Router, } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const routerHistory = createMemoryHistory();
+// const routerHistory = createMemoryHistory();
 
-ReactDOM.render( 
+ReactDOM.render(
   <Router>
-    <GlobalStatePovider
-      routerHistory={routerHistory}>
-      <App />
-    </GlobalStatePovider>
+    <SnackbarProvider maxSnack={5} autoHideDuration={3000}>
+      <GlobalStatePovider>
+        <App />
+      </GlobalStatePovider>
+    </SnackbarProvider>
   </Router>,
   document.getElementById('root')
 );

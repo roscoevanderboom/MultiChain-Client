@@ -11,10 +11,18 @@ export default () => {
         // eslint-disable-next-line
     }, [])
 
+    useEffect(() => {
+        if (state.peers) {
+            console.log(state.peers);
+
+        }
+    }, [state.peers])
+
     return (state.peers &&
         <Section>
             <SectionHeader>
-                Peers
+                {state.peers.length !== 0 ? null :
+                    'No peers connected'}
             </SectionHeader>
         </Section>
     )

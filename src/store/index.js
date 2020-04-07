@@ -1,8 +1,10 @@
 // Services
 import React, { useState, createContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import getCreds from '../constants/multichain/GetCreds';
 import * as mc_reducers from '../reducers/multichain';
+import create_feedback from '../components/Feedback';
 
 export const store = createContext();
 export const GlobalStatePovider = (props) => {
@@ -31,7 +33,13 @@ export const GlobalStatePovider = (props) => {
     setPeers,
     setAssets,
     setStreams
-  ]
+  ];
+
+  // Methods for user feedback
+  const { enqueueSnackbar } = useSnackbar();
+  const feedback = (variant, message) => {
+    create_feedback(variant, message, enqueueSnackbar);
+  };
 
   // Modals
   const [modals, setModals] = useState({
@@ -139,7 +147,8 @@ export const GlobalStatePovider = (props) => {
     getChainData,
     reset_sections,
     handleLocalPaths,
-    handleModals
+    handleModals,
+    feedback
   };
 
   // Create provider

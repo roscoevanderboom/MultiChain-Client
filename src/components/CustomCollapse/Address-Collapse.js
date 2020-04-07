@@ -11,7 +11,7 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import PermissionSwitch from '../CustomSwitch/PermissionSwitch';
 
 // Constants
-import { address_permissions } from '../../../constants/Permissions';
+import { address_permissions } from '../../constants/multichain/Permissions';
 
 // Styles
 const style = {
@@ -33,7 +33,7 @@ const style = {
   }
 }
 
-export default ({ address, globalState }) => {
+export default ({ address }) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -48,13 +48,13 @@ export default ({ address, globalState }) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <div style={style.list}>
-          {address_permissions.map((val) =>
-            <div style={style.item}>
+          {address_permissions.map((val, i) =>
+            <div key={i}
+              style={style.item}>
               <span style={style.span}>{val}</span>
               <PermissionSwitch
                 name={val}
-                address={address}
-                globalState={globalState} />
+                address={address} />
             </div>
           )}
         </div>

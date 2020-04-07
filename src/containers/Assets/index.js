@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { store } from '../../store';
 import Grid from '@material-ui/core/Grid';
 import Section from '../../components/Section';
-import SectionHeader from '../../components/SectionHeader';
+import SectionToolbar from '../../components/SectionToolbar';
 import AssetCard from './AssetCard';
 import NewAsset from './NewAsset';
 
@@ -17,9 +17,9 @@ export default () => {
 
     return (state.assets &&
         <Section>
-            <SectionHeader>
-                <NewAsset />
-            </SectionHeader>
+            <SectionToolbar
+                left={<NewAsset />} />
+
             <Grid container>
                 {state.assets.map((asset, i) =>
                     <Grid item xs={4}
