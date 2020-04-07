@@ -25,7 +25,7 @@ export default ({ details }) => {
       keys: Object.keys(details),
       values: Object.values(details)
     }
-    obj.keys.map((key, i) => {
+    obj.keys.forEach((key, i) => {
       if (key === 'json') {
         handleJSON(obj.values[0])
         return;

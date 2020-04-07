@@ -10,16 +10,6 @@ import {
 // Icons
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
-// Style
-const style = {
-  footer: {
-    display: 'flex',
-    justifyContent: 'space-evenly',
-    flexWrap: 'wrap'
-  },
-}
-
-
 export default ({ name, props }) => {
   const [open, setOpen] = useState(false);
   const [dataValues, setDataValues] = useState([]);

@@ -14,7 +14,7 @@ export default ({ props }) => {
     let keys = [];
     let values = [];
 
-    propvalues.map((val, i) => {
+    propvalues.forEach((val, i) => {
       if (typeof (val) === 'string' || typeof (val) === 'boolean' || typeof (val) === 'number') {
         values.push(val);
         keys.push(propkeys[i]);

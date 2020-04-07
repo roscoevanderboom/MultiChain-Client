@@ -41,7 +41,7 @@ export default ({ name, props, newStyle }) => {
     let keys = [];
     let values = [];
 
-    props.map(val => {
+    props.forEach(val => {
       keys.push(Object.keys(val)[0]);
       values.push(Object.values(val)[0]);
     })

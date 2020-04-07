@@ -9,7 +9,6 @@ export default ({ indexes }) => {
   const [dataValues, setDataValues] = useState([]);
 
   useEffect(() => {
-
     setDataKeys(Object.keys(indexes));
     setDataValues(Object.values(indexes));
   }, [indexes])
