@@ -54,23 +54,25 @@ export const GlobalStatePovider = (props) => {
     setAppBarTitle(value);
   }
   const load_credentials = (localChains) => {
+    console.log(localPaths.blockchainsPath);
+
     localChains.forEach(chain => {
-      getCreds(chain)
+      getCreds(chain, localPaths.blockchainsPath)
         .then(creds => {
           setChain_credentials(chain_credentials => [...chain_credentials, creds])
         })
-        .catch(() => {
-          console.log('error')
+        .catch((err) => {
+          console.log(err)
         })
     });
   }
   const load_Multichain_Node = (chain) => {
-    getCreds(chain)
+    getCreds(chain, localPaths.blockchainsPath)
       .then(creds => {
         setMultichain(require("multichain-node")(creds))
       })
-      .catch(() => {
-        console.log('error')
+      .catch((err) => {
+        console.log(err)
       })
   }
   // Multichain data collection
