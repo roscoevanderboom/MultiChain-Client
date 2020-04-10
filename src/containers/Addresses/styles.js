@@ -1,18 +1,42 @@
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
-import {
-    sectionTitle
-} from '../../assets/jss/material-kit-react';
+import { collapseContainer } from '../../assets/jss/material-kit-react';
 const useStyles = makeStyles({
-    sectionTitle: {
-        ...sectionTitle
+    select: {
+        paddingTop: 12,
+        margin: '0px 6px'
     },
-    gridContainer: {
-        padding: '5px 12px'
+    list: {
+        padding: 12,
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
     },
-    iframe: {
-        height: `-webkit-fill-available`,
-        width: `-webkit-fill-available`,
+    listItem: {
+        borderTop: 'solid 1px slategrey'
+    },
+    item: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '20%',
+        alignItems: 'center',
+        border: 'solid slategrey 1px',
+        margin: 1
+    },
+    span: {
+        marginLeft: 15
+    },
+    badge: {
+        backgroundColor: 'black',
+        color: 'white',
+        fontSize: '1.2rem'
+    },
+    detailsContainer: {
+        ...collapseContainer
+    },
+    listItemText: {
+        border: 'solid 1px slategray',
+        padding: 15
     }
 })
 

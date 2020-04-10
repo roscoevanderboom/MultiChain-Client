@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { store } from '../../store';
 import Section from '../../components/Section';
-import SectionHeader from '../../components/SectionHeader';
 import SectionToolbar from '../../components/SectionToolbar';
+import Button from '../../components/CustomButtons/Button';
 import List from './List';
 
 
@@ -18,9 +18,9 @@ export default () => {
         <Section>
             <SectionToolbar
                 left={
-                    <SectionHeader>
-                        Set runtime params
-                    </SectionHeader>
+                    <Button color='github'>
+                        Edit runtime params
+                    </Button>
                 } />
             <List params={state.params} />
         </Section>

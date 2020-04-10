@@ -1,18 +1,17 @@
 // Styles
 import { makeStyles } from '@material-ui/core/styles';
-import { defaultBoxShadow, flex_center_column } from '../../assets/jss/material-kit-react';
-import {
-    title
-} from '../../assets/jss/material-kit-react';
+import { defaultBoxShadow, defaultFont, collapseContainer } from '../../assets/jss/material-kit-react';
+
 const useStyles = makeStyles({
     title: {
-        ...title,
-        paddingTop: 20,
-        fontSize: '1.5em'
+        fontSize: '1.5em',
+        ...defaultFont
     },
-    card: {
-        margin: 5,
-        ...flex_center_column,
+    streamCardDiv: {
+        padding: '0px 5px'
+    },
+    listItem: {
+        paddingLeft: 20,
         ...defaultBoxShadow
     },
     bullet: {
@@ -20,8 +19,8 @@ const useStyles = makeStyles({
         margin: '0 2px',
         transform: 'scale(0.8)',
     },
-    pos: {
-        marginBottom: 12,
+    collapseContainer: {
+        ...collapseContainer
     },
     filters: {
         display: 'flex',
@@ -50,6 +49,9 @@ const useStyles = makeStyles({
     },
     btn: {
         marginLeft: 4
+    },
+    red: {
+        backgroundColor: 'red'
     }
 })
 

@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { store } from '../../store';
 import Section from '../../components/Section';
-import SectionHeader from '../../components/SectionHeader';
+import SectionToolbar from '../../components/SectionToolbar';
+import SectionParagraph from '../../components/SectionParagraph';
+import Button from '../../components/CustomButtons/Button';
 
 export default () => {
     const { reducers, state } = useContext(store);
@@ -20,10 +22,18 @@ export default () => {
 
     return (state.peers &&
         <Section>
-            <SectionHeader>
-                {state.peers.length !== 0 ? null :
-                    'No peers connected'}
-            </SectionHeader>
+            <SectionToolbar
+                left={
+                    <Button color='github'>
+                        Add peer node
+                    </Button>
+                } />
+            {state.peers.length !== 0 ? null :
+                <SectionParagraph>
+                    No peers connected
+                </SectionParagraph>
+            }
+
         </Section>
     )
 }

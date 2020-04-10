@@ -16,7 +16,8 @@ const style = {
   footer: {
     display: 'flex',
     justifyContent: 'space-evenly',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    padding: '5px 25px'
   },
   listItem: {
     marginLeft: 10,

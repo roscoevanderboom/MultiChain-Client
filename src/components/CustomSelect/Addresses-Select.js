@@ -4,7 +4,8 @@ import { store } from '../../store';
 // Components
 import { MenuItem, TextField } from '@material-ui/core';
 
-export default ({ value, onChange }) => {
+export default (props) => {
+  const { value, onChange } = props;
   const { state } = useContext(store);
   const { addresses } = state;
 
@@ -14,9 +15,14 @@ export default ({ value, onChange }) => {
       fullWidth
       value={value}
       helperText={'Select an address'}
-      onChange={onChange} >
+      onChange={onChange}
+      {...props}>
       {addresses.map((add, i) =>
-        <MenuItem value={add.address} key={i}>{add.address}</MenuItem>
+        <MenuItem
+          key={i}          
+          value={add.address}>
+          {add.address}
+        </MenuItem>
       )}
     </TextField>
   )

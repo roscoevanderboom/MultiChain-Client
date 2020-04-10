@@ -1,12 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { store } from '../../store';
-import { Grid } from '@material-ui/core';
 import Section from '../../components/Section';
 import SectionToolbar from '../../components/SectionToolbar';
-import CreateStream from './CreateStream';
+import CreateStream from './CreateStream/index';
 import StreamCard from './StreamCard';
+import styles from './styles';
 
 export default () => {
+    const classes = styles();
     const { reducers, state } = useContext(store);
 
     useEffect(() => {
@@ -18,14 +19,12 @@ export default () => {
         <Section>
             <SectionToolbar
                 left={<CreateStream />} />
-            <Grid container>
+
+            <div className={classes.streamCardDiv}>
                 {state.streams.map((stream, i) =>
-                    <Grid item xs={4}
-                        key={i}>
-                        <StreamCard stream={stream} />
-                    </Grid>
+                    <StreamCard key={i} stream={stream} />
                 )}
-            </Grid>
+            </div>
         </Section>
     )
 }

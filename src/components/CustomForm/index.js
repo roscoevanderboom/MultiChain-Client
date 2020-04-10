@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 // Components
 import {
-  Button,
   Divider,
   TextField,
   IconButton,
@@ -11,6 +10,7 @@ import {
   Typography,
   MenuItem
 } from '@material-ui/core';
+import Button from '../CustomButtons/Button';
 // Icons
 import {
   Add, Clear
@@ -22,7 +22,8 @@ const style = {
     justifyContent: 'space-between',
     paddingTop: 12,
     paddingLeft: 12,
-    paddingRight: 12
+    paddingRight: 12,
+    borderBottom: 'solid 2px slategrey'
   },
   listItem: {
     display: 'flex',
@@ -34,7 +35,8 @@ const style = {
   footer: {
     paddingTop: 12,
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    borderTop: 'solid 2px slategrey'
   }
 }
 
@@ -51,7 +53,6 @@ export default ({ feedback, handleSubmit, handleModal }) => {
   const handleNewType = (e) => {
     setNewType(e.target.value)
   }
-
   const checkKeys = () => {
     let result = true;
     let usedKeys = inputFields.map(input => input.key);
@@ -83,9 +84,6 @@ export default ({ feedback, handleSubmit, handleModal }) => {
     setInputFields(newInput)
   }
   const removeField = (value) => () => {
-    // let newInput = [...inputFields];
-    // newInput.splice(i, 1);
-    // setInputFields(newInput);
     setInputFields(inputFields.filter(input => input.key !== value.key))
   }
   const handleDetails = (e) => {
@@ -135,10 +133,10 @@ export default ({ feedback, handleSubmit, handleModal }) => {
       </form>
       <Divider />
       <div style={style.footer}>
-        <Button onClick={handleDetails} color="primary">
+        <Button onClick={handleDetails} color="github">
           Create
         </Button>
-        <Button onClick={handleModal} color="primary">
+        <Button onClick={handleModal} color="danger">
           Cancel
         </Button>
       </div>

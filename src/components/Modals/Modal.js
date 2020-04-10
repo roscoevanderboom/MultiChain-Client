@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ name, body, closeModal }) => {
+export default ({ name, body, closeModal }, props) => {
   const classes = useStyles();
 
   const handleClose = () => {

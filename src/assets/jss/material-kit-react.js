@@ -40,7 +40,7 @@ const title = {
 
 const sectionTitle = {
   ...title,
-  paddingTop: 20
+  margin: '1rem 0rem'
 }
 
 const link = {
@@ -223,15 +223,13 @@ const cardSubtitle = {
   marginTop: "-.375rem"
 };
 
-const cardList = {
-  overflowY: 'scroll',
-  height: 150
+// Collapse component
+const collapseContainer = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  margin: '0px 25px'
 }
-
-
-
-
-
 
 export {
   //variables
@@ -276,7 +274,8 @@ export {
   cardTitle,
   cardLink,
   cardSubtitle,
-  cardList,
+  // Collapse
+  collapseContainer,
   // Gradients
   primaryGradient,
   secondaryGradient,

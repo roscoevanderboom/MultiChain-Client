@@ -17,7 +17,7 @@ export default function App() {
 
         if (binariesPath !== null && blockchainsPath !== null) {
             reducers.handleLocalPaths({ binariesPath, blockchainsPath });
-            hist.push('/home/dashboard');
+            hist.push('/home/streams');
             return;
         }
         hist.push('/setup/about');        

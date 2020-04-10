@@ -7,8 +7,8 @@ import {
   CardContent,
 } from '@material-ui/core';
 
-import DetailsCollapse from '../../components/CustomCollapse/Details-Collapse';
-import InfoCollapse from '../../components/CustomCollapse/Info-Collapse';
+import DetailsCollapse from './Details-Collapse';
+import InfoCollapse from './Info-Collapse';
 import PublishersCollapse from './Publishers-Collapse';
 import KeysCollapse from './Keys-Collapse';
 

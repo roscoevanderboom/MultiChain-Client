@@ -1,7 +1,7 @@
 // Services
 import React, { useState, useEffect } from 'react';
 
-import CollapseArray from '../../components/CustomCollapse/Collapse-Array'
+import CollapseArray from '../../../components/CustomCollapse/Collapse-Array'
 
 export default ({ keys }) => {
   const [dataValues, setDataValues] = useState([]);
