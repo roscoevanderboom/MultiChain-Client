@@ -4,19 +4,19 @@ import React, { useState, useEffect } from 'react';
 
 // Components
 import {
-  Button,
   Card,
   Dialog,
   CardContent,
   Grid
 } from '@material-ui/core';
+import Button from '../../../components/CustomButtons/Button';
 import ItemDetails from './ItemDetails';
 import NewStreamItems from './NewStreamItems';
-import KeyItemSearch from './streamQueries/Key-Items';
-import PublisherItemSearch from './streamQueries/Publisher-Items';
-import SectionHeader from '../../components/SectionHeader';
+import KeyItemSearch from '../streamQueries/Key-Items';
+import PublisherItemSearch from '../streamQueries/Publisher-Items';
+import SectionHeader from '../../../components/SectionHeader';
 // Styles
-import styles from './styles';
+import styles from '../styles';
 
 export default ({ stream, streamMethods, streamState }) => {
   const classes = styles();
@@ -78,7 +78,7 @@ export default ({ stream, streamMethods, streamState }) => {
 
   return (
     <React.Fragment>
-      <Button variant='outlined' onClick={handleModal}>Items</Button>
+      <Button color='warning' onClick={handleModal}>Items</Button>
       <Dialog
         open={open}
         onClose={handleModal}

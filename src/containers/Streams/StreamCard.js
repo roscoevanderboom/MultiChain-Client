@@ -7,40 +7,23 @@ import { store } from '../../store';
 // Components
 import {
   Switch,
-  Card,
-  CardHeader,
-  CardActions,
   Typography,
+  ListItem,
+  Grid,
+  ListItemIcon,
+  ListItemText
+
 } from '@material-ui/core';
 
 import StreamDetails from './StreamDetails';
-import ItemsList from './ItemsList';
+import ItemsList from './StreamItems/ItemsList';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { defaultBoxShadow, flex_center_column } from '../../assets/jss/material-kit-react';
-const useStyles = makeStyles({
-  card: {
-    margin: 5,
-    ...flex_center_column,
-    ...defaultBoxShadow
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: '1.5em',
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
+import styles from './styles';
 export default ({ stream, activeStream, setActiveStream }) => {
-  const classes = useStyles();
+  const classes = styles();
   const { state, reducers } = useContext(store);
   const { multichain } = state;
-  const { getChainData } = reducers;
+  const { getChainData, feedback } = reducers;
   const [streamKeys, setStreamKeys] = useState([]);
   const [streamPublishers, setStreamPublishers] = useState([]);
   const [streamItems, setStreamItems] = useState([]);
@@ -54,7 +37,7 @@ export default ({ stream, activeStream, setActiveStream }) => {
         .then(() => {
           getChainData('streams')
         })
-        .catch(err => console.log('error', err.message))
+        .catch(err => feedback('error', err.message))
       return;
     }
     multichain.subscribe({
@@ -63,7 +46,7 @@ export default ({ stream, activeStream, setActiveStream }) => {
       .then(() => {
         getChainData('streams')
       })
-      .catch(err => console.log('error', err.message))
+      .catch(err => feedback('error', err.message))
   }
   const listStreamItems = ({ count }) => {
     multichain.listStreamItems({
@@ -140,34 +123,40 @@ export default ({ stream, activeStream, setActiveStream }) => {
   }
 
   return (
-    <Card className={classes.card}>
-      <CardHeader
-        title={`${stream.name}`} />
-      <CardActions
-        children={
-          <React.Fragment>
-            <StreamDetails stream={stream} />
-            <ItemsList
-              streamMethods={streamMethods}
-              streamState={streamState}
-              stream={stream} />
-          </React.Fragment>
-        } />
-      <CardActions
-        children={
-          <React.Fragment>
-            <Typography className={classes.title} color="textSecondary" gutterBottom>
-              Subscribe:
-            </Typography>
-            <Switch
-              checked={stream.subscribed}
-              onClick={handleSubscribe}
-              value="subscribed"
-              color="primary"
-              inputProps={{ 'aria-label': 'primary checkbox' }} />
-          </React.Fragment>
-        } />
-    </Card>
+    <ListItem className={classes.listItem}>
+      <Grid item xs={6}>
+        <ListItemText>
+          <Typography
+            className={classes.title}>
+            {stream.name}
+          </Typography>
+        </ListItemText>
+      </Grid>
+
+      <Grid item xs={4}>
+        <ListItemText>
+        <StreamDetails stream={stream} />
+        <ItemsList
+          streamMethods={streamMethods}
+          streamState={streamState}
+          stream={stream} />
+        </ListItemText>
+      </Grid>
+
+      <ListItemIcon>
+        <div className={classes.bullet}>
+          <Typography className={classes.title}>
+            Subscribed
+          </Typography>
+          <Switch
+            checked={stream.subscribed}
+            onClick={handleSubscribe}
+            value="subscribed"
+            color="primary"
+            inputProps={{ 'aria-label': 'primary checkbox' }} />
+        </div>
+      </ListItemIcon>
+    </ListItem>
   )
 }
 

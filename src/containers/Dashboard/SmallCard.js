@@ -3,10 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Card from '../../components/DashboardCard';
 import { Item } from '../../components/CustomListItems';
 import { List } from '@material-ui/core';
-// Styles
-import styles from './styles';
+
 export default (props) => {
-    const classes = styles();
     const [data, setData] = useState({
         'Total': 0,
         'Subscribed': 0,
@@ -28,10 +26,9 @@ export default (props) => {
 
     return (
         <Card title={props.title}>
-            <List className={classes.smallCards}>
+            <List>
                 <Item text='Total' data={`${data['Total']}`} />
                 <Item text='Subscribed' data={`${data['Subscribed']}`} />
-                <Item text='Unsubscribed' data={`${data['Unsubscribed']}`} />
             </List>
         </Card>
     )

@@ -7,8 +7,7 @@ import { store } from '../../store';
 import { issue } from '../../actions/Assets';
 
 // Components
-import {
-  Button,
+import {  
   TextField,
   Dialog,
   DialogContent,
@@ -16,7 +15,7 @@ import {
   DialogTitle,
   MenuItem,
 } from '@material-ui/core';
-
+import Button from '../../components/CustomButtons/Button';
 import Form from '../../components/CustomForm';
 import Switch from '../../components/CustomSwitch'
 
@@ -31,7 +30,7 @@ const style = {
 export default () => {
   const [open, setOpen] = useState(false);
   const { state, reducers } = useContext(store);
-  const { multichain, addresses, chainInfo,localPaths } = state;
+  const { multichain, addresses, chainInfo, localPaths } = state;
   const { feedback, getChainData } = reducers;
   const [assetDetails, setAssetDetails] = useState({})
   const [available_addresses, setAvailable_addresses] = useState([])
@@ -66,7 +65,6 @@ export default () => {
     const binaryPath = localPaths.binariesPath
     issue(chainInfo.chainname, assetDetails, json, binaryPath)
       .then(res => {
-        console.log(res);
         getChainData('assets')
       })
       .catch(err => {
@@ -92,7 +90,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleModal}>
+      <Button color="github" onClick={handleModal}>
         New Asset
       </Button>
       <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
@@ -111,7 +109,7 @@ export default () => {
               <TextField
                 id="issueAddress"
                 select
-                value={assetDetails.address !== undefined ? assetDetails.address : 'Select Address'}
+                value={assetDetails.address !== undefined ? assetDetails.address : ''}
                 helperText='Select Issue Address'
                 onChange={handleChange('address')}
                 margin="normal"

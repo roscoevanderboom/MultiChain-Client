@@ -17,21 +17,23 @@ import {
 } from '@material-ui/core';
 
 import AssetDetails from './AssetDetails';
+import AssetMenu from './AssetMenu';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { defaultBoxShadow, flex_center_column } from '../../assets/jss/material-kit-react';
+import { defaultBoxShadow, defaultFont } from '../../assets/jss/material-kit-react';
 const useStyles = makeStyles({
-  card: {    
+  card: {
     margin: 5,
-    ...flex_center_column,
     ...defaultBoxShadow
   },
   title: {
+    ...defaultFont,
     fontSize: '1.5em',
   }
 });
 
-export default ({ asset }) => {
+export default ({ props }) => {
+  const { asset } = props;
   const classes = useStyles();
   const [subscribed, setSubscribed] = useState(false);
   const { state, reducers } = useContext(store);
@@ -55,9 +57,14 @@ export default ({ asset }) => {
   return (
     <Card className={classes.card}>
       <CardHeader
-        title={`${asset.name}`} />
+        className={classes.title}
+        title={`${asset.name}`}
+        action={<AssetMenu {...props} />} />
       <CardActions>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
+        <Typography
+          variant='h5'
+          color="textSecondary"
+          gutterBottom>
           Subscribe:
           </Typography>
         <Switch

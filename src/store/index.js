@@ -44,7 +44,8 @@ export const GlobalStatePovider = (props) => {
   // Modals
   const [modals, setModals] = useState({
     CreateChain: false,
-    ConnectRemote: false
+    ConnectRemote: false,
+    SendAsset: false
   })
   const handleModals = (modal, value) => {
     setModals({ ...modals, [modal]: value })
@@ -62,15 +63,13 @@ export const GlobalStatePovider = (props) => {
     setAppBarTitle(value);
   }
   const load_credentials = (localChains) => {
-    console.log(localPaths.blockchainsPath);
-
     localChains.forEach(chain => {
       getCreds(chain, localPaths.blockchainsPath)
         .then(creds => {
           setChain_credentials(chain_credentials => [...chain_credentials, creds])
         })
         .catch((err) => {
-          console.log(err)
+          feedback('error', err)
         })
     });
   }
@@ -80,7 +79,7 @@ export const GlobalStatePovider = (props) => {
         setMultichain(require("multichain-node")(creds))
       })
       .catch((err) => {
-        console.log(err)
+        feedback('error', err)
       })
   }
   // Multichain data collection

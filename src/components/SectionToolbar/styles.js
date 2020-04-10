@@ -5,7 +5,8 @@ import { flex_center_row } from '../../assets/jss/material-kit-react';
 const useStyles = makeStyles({
     toolbar: {
         ...flex_center_row,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+        margin: '20px 0px'
     },
     itemsLeft: {
         ...flex_center_row,
@@ -13,7 +14,8 @@ const useStyles = makeStyles({
     },
     itemsCenter: {
         ...flex_center_row,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: '0px 12px'
     },
     itemsRight: {
         ...flex_center_row,

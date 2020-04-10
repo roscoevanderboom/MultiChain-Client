@@ -1,14 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 
 // State
-import { store } from '../../store';
+import { store } from '../../../store';
 
 // Actions
-import { createStream } from '../../actions/Streams';
+import { createStream } from '../../../actions/Streams';
 
 // Components
 import {
-  Button,
   TextField,
   Dialog,
   DialogContent,
@@ -17,9 +16,9 @@ import {
   Divider,
   Typography,
 } from '@material-ui/core';
-
-import CustomForm from '../../components/CustomForm'
-import Switch from '../../components/CustomSwitch';
+import Button from '../../../components/CustomButtons/Button';
+import CustomForm from '../../../components/CustomForm'
+import Switch from '../../../components/CustomSwitch';
 
 const style = {
   options: {
@@ -82,7 +81,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleModal}>
+      <Button color="github" onClick={handleModal}>
         New Stream
       </Button>
       <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">

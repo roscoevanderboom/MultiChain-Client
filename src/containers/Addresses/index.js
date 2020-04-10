@@ -1,45 +1,75 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { store } from '../../store';
 // Components
-import { Button } from '@material-ui/core';
+import { TextField, } from '@material-ui/core';
+import Button from '../../components/CustomButtons/Button';
 import Section from '../../components/Section';
 import SectionToolbar from '../../components/SectionToolbar';
-import Collapse from '../../components/CustomCollapse/Address-Collapse';
+import Permissions from './Permission-Collapse';
+import Transactions from './Transactions-Collapse';
+import Balance from './Balance-Collapse';
+import AddressSelect from '../../components/CustomSelect/Addresses-Select';
 // Styles
-// import useStyles from './styles';
+import useStyles from './styles';
 
 export default () => {
     const { reducers, state } = useContext(store);
-    // const classes = useStyles();
+    const [selected_address, set_selected_address] = useState({});
+    const classes = useStyles();
+
+    const handleChange = (e) => {
+        let newAddress = state.addresses.filter(add => add.address.includes(e.target.value));
+        if (newAddress.length > 0) {
+            set_selected_address(newAddress[0]);
+        } else if (newAddress.length === 0) {
+            set_selected_address({});
+        }
+
+    }
 
     const getNewAddress = () => {
         state.multichain.getNewAddress()
             .then((res) => {
                 reducers.getChainData('addresses');
+                reducers.feedback('success', 'New address created')
             })
             .catch((err) => {
-                console.log(err)
+                reducers.feedback('error', err.message)
             })
     }
 
     useEffect(() => {
         reducers.setTitle('Addresses');
         // eslint-disable-next-line
-    }, [state.addresses])
+    }, [])
 
     return (state.addresses &&
         <Section>
             <SectionToolbar
-                left={<Button onClick={getNewAddress} variant="outlined" >New Address</Button>}
-                center={`Hello`}
-                right={`Right`} />
+                left={
+                    <Button onClick={getNewAddress} color="github" >New Address</Button>
+                }
+                center={
+                    <React.Fragment>
+                        <AddressSelect
+                            className={classes.select}
+                            value={selected_address.address === undefined ? '' : selected_address.address}
+                            onChange={handleChange} />
+                        <TextField
+                            type='text'
+                            fullWidth
+                            helperText='Enter an address'
+                            className={classes.select}
+                            onChange={handleChange} />
+                    </React.Fragment>
+                } />
 
-            {state.addresses.map((add, i) =>
-                <Collapse
-                    key={i}
-                    address={add}
-                    state={state} />
-            )}
+            {selected_address.address === undefined ? null :
+                <React.Fragment>
+                    <Permissions address={selected_address} />
+                    <Balance address={selected_address} />
+                    <Transactions address={selected_address} />
+                </React.Fragment>}
         </Section>
     )
 }

@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 
 // State
-import { store } from '../../store';
+import { store } from '../../../store';
 
 // Components
 import {
@@ -10,11 +10,12 @@ import {
   Dialog,
   DialogContent,
   Input,
-  Typography
+  Typography,
+  Switch
 } from '@material-ui/core';
 
-import CustomForm from '../../components/CustomForm';
-import AddressSelect from '../../components/CustomSelect/Addresses-Select';
+import CustomForm from '../../../components/CustomForm';
+import AddressSelect from '../../../components/CustomSelect/Addresses-Select';
 
 
 // Style
@@ -31,9 +32,10 @@ const style = {
 export default ({ stream, updateAll }) => {
   const [open, setOpen] = useState(false);
   const [keys, setKeys] = useState([]);
-  const [address, setAddress] = useState(false);
+  const [address, setAddress] = useState('');
+  const [offchain, setOffchain] = useState(false)
 
-  const { state } = useContext(store);
+  const { state, reducers } = useContext(store);
   const { multichain } = state;
 
   const handleModal = () => {
@@ -53,6 +55,9 @@ export default ({ stream, updateAll }) => {
   const handleAddress = (e) => {
     setAddress(e.target.value)
   }
+  const handleOffchain = () => {
+    setOffchain(offchain ? false : true)
+  }
 
   const handleSubmit = (json) => {
     multichain.publishFrom({
@@ -61,15 +66,11 @@ export default ({ stream, updateAll }) => {
       key: keys,
       data: {
         json: json
-      }
+      },
+      options: offchain ? 'offchain' : ''
     })
-      .then(res => {
-        console.log(res);
-        updateAll();
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      .then(() => { updateAll() })
+      .catch(err => { reducers.feedback('error', err.message) })
   }
 
   return (
@@ -86,6 +87,8 @@ export default ({ stream, updateAll }) => {
             value={address}
             onChange={handleAddress} />
           <br></br>
+          <Typography variant='h6' component='h6'>Offchain</Typography>
+          <Switch checked={offchain} onClick={handleOffchain} />
           <br></br>
           <Typography variant='h5' component='h5'>Item Keys</Typography>
           <Input

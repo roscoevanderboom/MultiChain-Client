@@ -15,7 +15,7 @@ export default ({ name, address }) => {
       ? setStatus(true)
       : setStatus(false)
       //eslint-disable-next-line
-  }, [permissions])
+  })
 
   const togglePermission = () => {
     if (status) {
