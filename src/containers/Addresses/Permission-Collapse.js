@@ -9,7 +9,7 @@ import { address_permissions } from '../../constants/multichain/Permissions';
 // Styles
 import useStyles from './styles';
 
-export default ({ address }) => {
+const PermissionCollapse = ({ address }) => {
   const classes = useStyles();
 
 
@@ -31,4 +31,4 @@ export default ({ address }) => {
   )
 }
 
-
+export default PermissionCollapse;

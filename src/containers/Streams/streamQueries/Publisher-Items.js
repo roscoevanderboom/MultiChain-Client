@@ -6,7 +6,7 @@ import {
   Typography, MenuItem, TextField, Grid
 } from '@material-ui/core';
 
-export default ({ streamPublishers, listStreamPublisherItems, style }) => {
+const PubItems = ({ streamPublishers, listStreamPublisherItems, style }) => {
   const [value, setValue] = useState('')
 
   const pubsearch = (e) => {
@@ -39,3 +39,4 @@ export default ({ streamPublishers, listStreamPublisherItems, style }) => {
     </React.Fragment>
   )
 }
+export default PubItems;

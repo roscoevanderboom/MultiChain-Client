@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // Components
 import {Input, Button, Typography} from '@material-ui/core';
 
-export default ({ createChain }) => {
+const Preset = ({ createChain }) => {
   const [chainName, setChainName] = useState(''); ;
 
   const nameInput = (e) => {
@@ -24,6 +24,7 @@ export default ({ createChain }) => {
     <React.Fragment>
       <Typography gutterBottom>
         Preset chains have been configured to make setting up new blockchains quicker.
+        **The name "New Chain" is not useable as a chain name.
       </Typography>
       <br></br>
       <form onSubmit={presetChain}>
@@ -37,3 +38,4 @@ export default ({ createChain }) => {
     </React.Fragment>
   );
 }
+export default Preset;

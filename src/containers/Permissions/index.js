@@ -8,7 +8,7 @@ import Section from '../../components/Section';
 import SectionToolbar from '../../components/SectionToolbar';
 import PermissionSelect from '../../components/CustomSelect/Permission-Select';
 
-export default () => {
+const Permissions = () => {
     const { reducers, state } = useContext(store);
     const [selectedPermission, setSelectedPermission] = useState('')
 
@@ -53,3 +53,4 @@ export default () => {
         </Section>
     )
 }
+export default Permissions;

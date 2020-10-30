@@ -20,7 +20,7 @@ const style = {
   },
 }
 
-export default ({ item }) => {
+const ItemDetails = ({ item }) => {
   return (
     <Card raised={true} style={style.card}>
       <CardContent>
@@ -32,3 +32,4 @@ export default ({ item }) => {
     </Card>
   )
 }
+export default ItemDetails;

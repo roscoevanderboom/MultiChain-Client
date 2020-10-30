@@ -56,7 +56,7 @@ function tabProps(index) {
   };
 }
 
-export default () => {
+const CustomTabPanel = () => {
   const { reducers, state } = useContext(store);
   const { feedback } = reducers;
   const classes = useStyles();
@@ -74,18 +74,19 @@ export default () => {
       .then(() => {
         switch (option) {
           case 'generic':
-            console.log('Generic success');
+            feedback('success', `${chainName} has been created`);
             break;
           case 'preset':
-            console.log('Preset success');
+            feedback('success', `${chainName} has been created`);
             break;
           default:
-            console.log('Costum success');
-            shell.openItem(path.join(state.localPaths.blockchainsPath, chainName, 'params.dat'));
+            feedback('info', `${chainName} has been created. Remember to edit params.dat before starting chain.`);
+            shell.openExternal(path.join(state.localPaths.blockchainsPath, chainName, 'params.dat'));
             break;
         }
+        reducers.handleLocalChainList();
       })
-      .catch(err => console.log(err));
+      .catch(err => feedback('error', err.message));
   }
 
   useEffect(() => {
@@ -131,11 +132,4 @@ export default () => {
     </div>
   );
 }
-
-
-
-
-
-
-
-
+export default CustomTabPanel;

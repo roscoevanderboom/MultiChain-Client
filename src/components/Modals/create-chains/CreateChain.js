@@ -6,7 +6,7 @@ import { store } from '../../../store';
 import Tabs from './CreateChainTabs';
 import Modal from '../Modal';
 
-export default () => {
+const CreateChain = () => {
   const { state, reducers } = useContext(store);
   const { CreateChain } = state.modals;
   const { handleModals } = reducers;
@@ -28,3 +28,4 @@ export default () => {
     />
   );
 }
+export default CreateChain;

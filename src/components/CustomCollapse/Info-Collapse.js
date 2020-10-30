@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import Collapse from './Collapse';
 
-export default ({ props }) => {
+const InfoCollapse = ({ props }) => {
 
   const [dataKeys, setDataKeys] = useState([]);
   const [dataValues, setDataValues] = useState([]);
@@ -34,3 +34,5 @@ export default ({ props }) => {
     <Collapse name={'Item Info'} props={{ dataKeys, dataValues }} />
   )
 }
+
+export default InfoCollapse;

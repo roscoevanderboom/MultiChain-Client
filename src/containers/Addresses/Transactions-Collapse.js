@@ -8,7 +8,7 @@ import InfoCollapse from '../../components/CustomCollapse/Collapse-Object';
 // Styles
 import useStyles from './styles';
 
-export default ({ address }) => {
+const TransactionCollapse = ({ address }) => {
     const { state, reducers } = useContext(store);
     const classes = useStyles();
     const [transactions, setTransactions] = useState([]);
@@ -44,3 +44,4 @@ export default ({ address }) => {
         </Collapse>
     )
 }
+export default TransactionCollapse;

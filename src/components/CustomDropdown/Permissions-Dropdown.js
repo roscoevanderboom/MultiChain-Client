@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ options, name, handleClick, switchValues }) => {
+const Dropdown = ({ options, name, handleClick, switchValues }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -68,3 +68,5 @@ export default ({ options, name, handleClick, switchValues }) => {
     </div>
   );
 }
+
+export default Dropdown;

@@ -29,7 +29,7 @@ const style = {
   }
 }
 
-export default ({ stream, updateAll }) => {
+const NewStreamItem = ({ stream, updateAll }) => {
   const [open, setOpen] = useState(false);
   const [keys, setKeys] = useState([]);
   const [address, setAddress] = useState('');
@@ -115,3 +115,5 @@ export default ({ stream, updateAll }) => {
     </React.Fragment>
   )
 }
+
+export default NewStreamItem;

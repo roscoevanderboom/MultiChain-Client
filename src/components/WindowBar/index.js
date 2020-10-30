@@ -8,7 +8,7 @@ import useStyles from './styles';
 
 import '../../assets/windowTopBar.css'
 
-export default () => {
+const WindowBar = () => {
     const classes = useStyles();
     // const { state, setState, reducers, hist } = useContext(store);
     const [title, setTitle] = useState('No title');
@@ -58,3 +58,5 @@ export default () => {
     );
 
 }
+
+export default WindowBar;

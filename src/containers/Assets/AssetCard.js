@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default ({ props }) => {
+const AssetCard = ({ props }) => {
   const { asset } = props;
   const classes = useStyles();
   const [subscribed, setSubscribed] = useState(false);
@@ -78,3 +78,4 @@ export default ({ props }) => {
     </Card>
   )
 }
+export default AssetCard;

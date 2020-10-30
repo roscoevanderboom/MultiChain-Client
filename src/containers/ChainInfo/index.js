@@ -6,7 +6,7 @@ import Section from '../../components/Section';
 // Styles
 import useStyles from './styles';
 
-export default () => {
+const Chaininfo = () => {
     const { reducers, state } = useContext(store);
     const classes = useStyles();
 
@@ -44,3 +44,4 @@ export default () => {
         </Section>
     )
 }
+export default Chaininfo;

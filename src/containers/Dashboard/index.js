@@ -7,7 +7,8 @@ import SmallCard from './SmallCard';
 import BigCard from './BigCard';
 // Styles
 import useStyles from './styles';
-export default () => {
+
+const Dashboard = () => {
     const classes = useStyles();
     const { reducers, state } = useContext(store);
 
@@ -17,7 +18,7 @@ export default () => {
     }, [])
 
     return (
-        <Section>
+        <div className={classes.body}>
             <SectionHeader>
                 Summary
             </SectionHeader>
@@ -27,7 +28,8 @@ export default () => {
                 <BigCard title="Chain Info" data={state.chainInfo} />
                 <BigCard title="Parameters" data={state.params} />
             </div>
-        </Section>
+        </div>
 
     )
 }
+export default Dashboard;

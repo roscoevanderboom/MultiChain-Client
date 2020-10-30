@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // Components
 import {Input, Button, Typography} from '@material-ui/core';
 
-export default ({ createChain }) => {
+const Generic = ({ createChain }) => {
   const [chainName, setChainName] = useState('');
 
   const nameInput = (e) => {
@@ -15,7 +15,7 @@ export default ({ createChain }) => {
       alert('No name given');
       return;
     }
-    createChain({ chainName, option: 'generic' });
+    createChain({ chainName, option: 'generic' })
   };
 
 
@@ -24,7 +24,7 @@ export default ({ createChain }) => {
       <Typography gutterBottom>
         A generic chain will be created with default settings. This is a secure chain with most permissions
         set to false. Generic chains are useful for testing purposes. Custom chains are recommentded for
-        production environmets.
+        production environmets. **The name "New Chain" is not useable as a chain name.
       </Typography>
       <br></br>
       <Input onChange={nameInput} placeholder="Chain name" />
@@ -36,3 +36,4 @@ export default ({ createChain }) => {
     </React.Fragment>
   );
 }
+export default Generic;

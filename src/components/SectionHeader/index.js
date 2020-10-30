@@ -9,7 +9,7 @@ const styles = makeStyles({
     }
 })
 
-export default (props) => {
+const SectionHeader = (props) => {
     const classes = styles();
     return (
         <Typography
@@ -21,3 +21,4 @@ export default (props) => {
         </Typography>
     )
 }
+export default SectionHeader;

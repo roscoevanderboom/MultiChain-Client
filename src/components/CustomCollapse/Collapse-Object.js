@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ListItemText } from '@material-ui/core';
 import Collapse from '../CustomCollapse';
 
-export default (props) => {
+const CollapseObject = (props) => {
     const { data, title, containerStyles, listItemStyles } = props;
     const [dataKeys, setDataKeys] = useState([]);
     const [dataValues, setDataValues] = useState([]);
@@ -47,3 +47,5 @@ export default (props) => {
         </Collapse>
     )
 }
+
+export default CollapseObject;

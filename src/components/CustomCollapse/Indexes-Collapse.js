@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import Collapse from './Collapse';
 
-export default ({ indexes }) => {
+const IndexCollapse = ({ indexes }) => {
 
   const [dataKeys, setDataKeys] = useState([]);
   const [dataValues, setDataValues] = useState([]);
@@ -17,3 +17,5 @@ export default ({ indexes }) => {
     <Collapse name={'Indexes'} props={{ dataKeys, dataValues }} />
   )
 }
+
+export default IndexCollapse;

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import Collapse from './Collapse';
 
-export default ({ restrict }) => {
+const ParamsCollapse = ({ restrict }) => {
 
   const [dataKeys, setDataKeys] = useState([]);
   const [dataValues, setDataValues] = useState([]);
@@ -19,3 +19,5 @@ export default ({ restrict }) => {
     <Collapse name={'Restrictions'} props={{ dataKeys, dataValues }} />
   )
 }
+
+export default ParamsCollapse;

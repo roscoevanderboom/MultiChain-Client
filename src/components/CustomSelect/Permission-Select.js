@@ -4,7 +4,7 @@ import { address_permissions } from '../../constants/multichain/Permissions';
 // Components
 import { MenuItem, TextField } from '@material-ui/core';
 
-export default ({ value, onChange }) => {
+const CustomSelect = ({ value, onChange }) => {
 
     return (
         <TextField
@@ -20,4 +20,4 @@ export default ({ value, onChange }) => {
     )
 }
 
-
+export default CustomSelect;

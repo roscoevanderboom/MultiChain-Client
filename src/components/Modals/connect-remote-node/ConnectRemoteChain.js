@@ -13,7 +13,7 @@ import {
 import Modal from '../Modal';
 
 
-export default () => {
+const ConnectChainModal = () => {
   const [address, setAddress] = useState(false);
   const { state, reducers } = useContext(store);
   const { ConnectRemote } = state.modals;
@@ -56,3 +56,5 @@ export default () => {
     />
   );
 }
+
+export default ConnectChainModal;

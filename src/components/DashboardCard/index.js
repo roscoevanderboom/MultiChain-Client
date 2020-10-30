@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 // Styles
 import useStyles from './styles';
-export default (props) => {
+const DashboardCard = (props) => {
     const classes = useStyles();
 
     return (
@@ -27,3 +27,5 @@ export default (props) => {
         </Grid>
     )
 }
+
+export default DashboardCard;

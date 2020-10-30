@@ -26,7 +26,7 @@ const styles = makeStyles({
     }
 })
 
-export default (props) => {
+const CustomCollapse = (props) => {
     const {
         listitemchildren, title
     } = props;
@@ -68,3 +68,5 @@ export default (props) => {
         </React.Fragment>
     )
 }
+
+export default CustomCollapse;

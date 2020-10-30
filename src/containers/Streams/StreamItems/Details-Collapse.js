@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import Collapse from '../../../components/CustomCollapse/Collapse';
 
-export default ({ details }) => {
+const DetailsCollapse = ({ details }) => {
 
   const [dataKeys, setDataKeys] = useState([]);
   const [dataValues, setDataValues] = useState([]);
@@ -48,3 +48,5 @@ export default ({ details }) => {
     <Collapse name={'Details'} props={{ dataKeys, dataValues }} />
   )
 }
+
+export default DetailsCollapse;

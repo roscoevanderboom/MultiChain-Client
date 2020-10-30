@@ -1,4 +1,4 @@
-export default {    
+const initState = {    
     user: '',
     title: '',
     multichain: false,
@@ -12,3 +12,4 @@ export default {
         streams: false
     }
 }
+export default initState;

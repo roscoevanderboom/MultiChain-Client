@@ -12,7 +12,7 @@ import AddressSelect from '../../components/CustomSelect/Addresses-Select';
 // Styles
 import useStyles from './styles';
 
-export default () => {
+const Addresses = () => {
     const { reducers, state } = useContext(store);
     const [selected_address, set_selected_address] = useState({});
     const classes = useStyles();
@@ -73,3 +73,4 @@ export default () => {
         </Section>
     )
 }
+export default Addresses;

@@ -11,7 +11,7 @@ import Step2 from './Step2';
 // Styles
 import useStyles from './styles';
 
-export default () => {
+const DetectSettings = () => {
     const classes = useStyles();
     const { hist, reducers } = useContext(store);
     const [step, setStep] = useState('step1');
@@ -110,3 +110,5 @@ export default () => {
         </Container>
     );
 }
+
+export default DetectSettings;

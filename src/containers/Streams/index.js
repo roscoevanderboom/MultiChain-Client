@@ -6,7 +6,7 @@ import CreateStream from './CreateStream/index';
 import StreamCard from './StreamCard';
 import styles from './styles';
 
-export default () => {
+const Steams = () => {
     const classes = styles();
     const { reducers, state } = useContext(store);
 
@@ -28,3 +28,4 @@ export default () => {
         </Section>
     )
 }
+export default Steams;

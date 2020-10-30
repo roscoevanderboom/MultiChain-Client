@@ -5,7 +5,8 @@ import Card from '../../components/DashboardCard';
 import { ListItemText, Grid } from '@material-ui/core';
 // Styles
 import styles from './styles';
-export default (props) => {
+
+const BigCard = (props) => {
     const classes = styles();
     const [keys, setKeys] = useState([]);
     const [values, setValues] = useState([]);
@@ -34,3 +35,4 @@ export default (props) => {
     </Card>
     )
 }
+export default BigCard;

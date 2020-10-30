@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 // customized
 
 
-export default (variant, message, enqueueSnackbar, closeSnackbar) => {
+const Feedback = (variant, message, enqueueSnackbar, closeSnackbar) => {
   const dismiss = key => (
     <React.Fragment>
       <Button onClick={() => closeSnackbar(key)}>
@@ -17,7 +17,7 @@ export default (variant, message, enqueueSnackbar, closeSnackbar) => {
     case 'success':
       enqueueSnackbar(message, {
         variant: variant,
-        autoHideDuration: 1000
+        autoHideDuration: 2000
       });
       break;
     case 'error':
@@ -47,3 +47,5 @@ export default (variant, message, enqueueSnackbar, closeSnackbar) => {
       break;
   }
 };
+
+export default Feedback;

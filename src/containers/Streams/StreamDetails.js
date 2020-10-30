@@ -16,7 +16,7 @@ import IndexesCollapse from '../../components/CustomCollapse/Collapse-Object';
 
 import styles from './styles';
 
-export default ({ stream }) => {
+const StreamDetails = ({ stream }) => {
   const classes = styles();
   const [open, setOpen] = useState(false);
 
@@ -57,3 +57,4 @@ export default ({ stream }) => {
     </React.Fragment>
   )
 }
+export default StreamDetails;

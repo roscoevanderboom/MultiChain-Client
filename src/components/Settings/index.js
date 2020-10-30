@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Typography } from '@material-ui/core'
 
-export default () => {
+const Settings = () => {
     return (
         <Container style={{
             paddingTop: 64
@@ -12,3 +12,4 @@ export default () => {
         </Container>
     )
 }
+export default Settings;

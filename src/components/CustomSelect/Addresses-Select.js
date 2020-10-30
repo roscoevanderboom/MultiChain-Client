@@ -4,7 +4,7 @@ import { store } from '../../store';
 // Components
 import { MenuItem, TextField } from '@material-ui/core';
 
-export default (props) => {
+const CustomSelect = (props) => {
   const { value, onChange } = props;
   const { state } = useContext(store);
   const { addresses } = state;
@@ -28,4 +28,4 @@ export default (props) => {
   )
 }
 
-
+export default CustomSelect;

@@ -27,7 +27,7 @@ const style = {
   }
 }
 
-export default () => {
+const NewAsset = () => {
   const [open, setOpen] = useState(false);
   const { state, reducers } = useContext(store);
   const { multichain, addresses, chainInfo, localPaths } = state;
@@ -174,3 +174,4 @@ export default () => {
     </React.Fragment>
   );
 }
+export default NewAsset;

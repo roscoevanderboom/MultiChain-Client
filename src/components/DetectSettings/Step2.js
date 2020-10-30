@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 // Styles
 import useStyles from './styles';
 
-export default ({ handlefolderPath }) => {
+const Step2 = ({ handlefolderPath }) => {
     const classes = useStyles();
     return (
         <React.Fragment>
@@ -25,3 +25,5 @@ export default ({ handlefolderPath }) => {
         </React.Fragment>
     )
 }
+
+export default Step2;

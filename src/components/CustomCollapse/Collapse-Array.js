@@ -10,7 +10,7 @@ import {
 // Icons
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
-export default ({ name, props }) => {
+const CollapseArray = ({ name, props }) => {
   const [open, setOpen] = useState(false);
   const [dataValues, setDataValues] = useState([]);
 
@@ -40,3 +40,5 @@ export default ({ name, props }) => {
     </React.Fragment>
   )
 }
+
+export default CollapseArray;

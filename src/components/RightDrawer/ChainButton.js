@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({ chain }) => {
+const ChainButton = ({ chain }) => {
   const { state, setState, reducers } = useContext(store);
   const { chain_credentials, chainInfo, localPaths } = state;
   const { setMultichain } = setState;
@@ -36,8 +36,7 @@ export default ({ chain }) => {
       if (creds.name === chain) {
         setState(require("multichain-node")(creds));
         return;
-      }
-    })
+      }})
   }
 
   const connect = () => {
@@ -97,3 +96,4 @@ export default ({ chain }) => {
     </ListItem>
   )
 };
+export default ChainButton;

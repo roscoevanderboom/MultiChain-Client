@@ -12,7 +12,7 @@ import RightDrawer from '../RightDrawer';
 // Styles
 import useStyles from './styles';
 
-export default () => {
+const Appbar = () => {
     const classes = useStyles();
     const { state } = useContext(store);
     const [chainName, setChainName] = useState('No blockchain configured')
@@ -49,3 +49,5 @@ export default () => {
         </AppBar>
     )
 }
+
+export default Appbar;

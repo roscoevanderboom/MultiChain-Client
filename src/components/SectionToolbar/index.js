@@ -5,7 +5,7 @@ import React from 'react';
 import { Toolbar, Grid } from '@material-ui/core';
 import styles from './styles'
 
-export default (props) => {
+const SectionToolbar = (props) => {
     const classes = styles();
     const { left, center, right } = props;
 
@@ -29,3 +29,4 @@ export default (props) => {
         </Toolbar>
     );
 }
+export default SectionToolbar;

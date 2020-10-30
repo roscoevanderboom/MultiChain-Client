@@ -11,10 +11,12 @@ const useStyles = makeStyles({
     }
 })
 
-export default (props) => {
+const CustomFrame = (props) => {
     const { url } = props;
     const classes = useStyles();
     return (
         <iframe className={classes.iframe} title='mc' src={url}></iframe>
     )
 }
+
+export default CustomFrame;

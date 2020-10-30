@@ -40,7 +40,7 @@ const style = {
   }
 }
 
-export default ({ feedback, handleSubmit, handleModal }) => {
+const CustomForm = ({ feedback, handleSubmit, handleModal }) => {
   const [inputFields, setInputFields] = useState([]);
   const [newkey, setNewKey] = useState(false);
   const [newType, setNewType] = useState('');
@@ -143,3 +143,5 @@ export default ({ feedback, handleSubmit, handleModal }) => {
     </React.Fragment>
   )
 }
+
+export default CustomForm;

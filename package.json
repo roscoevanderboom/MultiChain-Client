@@ -38,23 +38,23 @@
     }
   },
   "dependencies": {
-    "@material-ui/core": "^4.9.8",
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/jest-dom": "^5.11.5",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
     "classnames": "^2.2.6",
-    "electron-dl": "^3.0.0",
-    "electron-is-dev": "^1.1.0",
-    "extract-zip": "^1.6.7",
+    "electron-dl": "^3.0.2",
+    "electron-is-dev": "^1.2.0",
+    "extract-zip": "^2.0.1",
     "multichain-node": "^2.2.0-version1.0.4",
-    "notistack": "^0.9.9",
+    "notistack": "^1.0.1",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
-    "tar": "^6.0.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.0",
+    "tar": "^6.0.5"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -74,10 +74,10 @@
   "devDependencies": {
     "@rescripts/cli": "^0.0.14",
     "@rescripts/rescript-env": "^0.0.12",
-    "concurrently": "^5.1.0",
-    "electron": "^8.2.0",
-    "electron-builder": "^22.4.1",
-    "typescript": "^3.8.3",
-    "wait-on": "^4.0.1"
+    "concurrently": "^5.3.0",
+    "electron": "^10.1.5",
+    "electron-builder": "^22.9.1",
+    "typescript": "^4.0.5",
+    "wait-on": "^5.2.0"
   }
 }

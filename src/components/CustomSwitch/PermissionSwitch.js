@@ -4,17 +4,17 @@ import { store } from '../../store';
 // Components
 import { Switch } from '@material-ui/core';
 
-export default ({ name, address }) => {
+const CustomSwitch = ({ name, address }) => {
   const { state, reducers } = useContext(store);
   const [status, setStatus] = useState(false);
   const { multichain, permissions } = state;
   const { getChainData, feedback } = reducers;
 
   useEffect(() => {
-    permissions[name].includes(address.address)
+    // eslint-disable
+    permissions[name].includes(address.address)    
       ? setStatus(true)
       : setStatus(false)
-      //eslint-disable-next-line
   })
 
   const togglePermission = () => {
@@ -51,3 +51,5 @@ export default ({ name, address }) => {
       value={name} />
   )
 }
+
+export default CustomSwitch;

@@ -13,7 +13,7 @@ const styles = makeStyles({
     }
 })
 
-export default (props) => {
+const SectionParagraph = (props) => {
     const classes = styles();
     return (
         <Container className={classes.container}>
@@ -27,3 +27,5 @@ export default (props) => {
         </Container>
     )
 }
+
+export default SectionParagraph;

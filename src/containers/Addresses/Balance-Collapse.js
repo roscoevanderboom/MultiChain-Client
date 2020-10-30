@@ -8,7 +8,7 @@ import Collapse from '../../components/CustomCollapse';
 // Styles
 import useStyles from './styles';
 
-export default ({ address }) => {
+const BalanceCollapse = ({ address }) => {
     const { state, reducers } = useContext(store);
     const classes = useStyles();
     const [list, setList] = useState([])
@@ -54,3 +54,4 @@ export default ({ address }) => {
         </Collapse>
     )
 }
+export default BalanceCollapse;

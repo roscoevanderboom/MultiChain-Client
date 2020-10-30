@@ -14,7 +14,7 @@ import ParamsCollapse from '../../components/CustomCollapse/Params-Collapse';
 import InfoCollapse from '../../components/CustomCollapse/Info-Collapse';
 
 
-export default ({ asset }) => {
+const AssetDetails = ({ asset }) => {
   const [open, setOpen] = useState(false);
 
   const handleModal = () => {
@@ -35,3 +35,4 @@ export default ({ asset }) => {
     </React.Fragment>
   )
 }
+export default AssetDetails;

@@ -13,7 +13,7 @@ const defaultStyle = {
   alignItems: 'center'
 }
 
-export default ({ switchValue, handleClick, checkedValue, style }) => {
+const CustomSwitch = ({ switchValue, handleClick, checkedValue, style }) => {
 
   return (
     <div style={style === undefined ? defaultStyle : style}>
@@ -28,3 +28,5 @@ export default ({ switchValue, handleClick, checkedValue, style }) => {
     </div>
   );
 }
+
+export default CustomSwitch;

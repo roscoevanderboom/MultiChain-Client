@@ -3,6 +3,7 @@ import React, { useState, createContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import getCreds from '../constants/multichain/GetCreds';
+import getLocalChains from '../constants/multichain/LocalChains';
 import * as mc_reducers from '../reducers/multichain';
 import create_feedback from '../components/Feedback';
 
@@ -14,7 +15,8 @@ export const GlobalStatePovider = (props) => {
   const [title, setAppBarTitle] = useState('');
   const [multichain, setMultichain] = useState(false);
   const [chain_credentials, setChain_credentials] = useState([]);
-  const [localPaths, setLocalPaths] = useState({})
+  const [localPaths, setLocalPaths] = useState({});
+  const [localChains, setLocaChains] = useState([]);
 
   // Sections State
   const [chainInfo, setChainInfo] = useState(false);
@@ -37,7 +39,7 @@ export const GlobalStatePovider = (props) => {
 
   // Methods for user feedback
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const feedback = (variant, message) => {    
+  const feedback = (variant, message) => {
     create_feedback(variant, message, enqueueSnackbar, closeSnackbar);
   };
 
@@ -82,6 +84,15 @@ export const GlobalStatePovider = (props) => {
         feedback('error', err)
       })
   }
+
+  const handleLocalChainList = () => {
+    let chainPath = localStorage.getItem('blockchainsPath');
+    getLocalChains(chainPath)
+      .then((chains) => {
+        setLocaChains(chains);
+      })
+  }
+
   // Multichain data collection
   const getChainData = (varient) => {
     switch (varient) {
@@ -124,6 +135,7 @@ export const GlobalStatePovider = (props) => {
     multichain,
     chain_credentials,
     localPaths,
+    localChains,
     // Sections
     chainInfo,
     addresses,
@@ -147,7 +159,8 @@ export const GlobalStatePovider = (props) => {
     reset_sections,
     handleLocalPaths,
     handleModals,
-    feedback
+    feedback,
+    handleLocalChainList
   };
 
   // Create provider

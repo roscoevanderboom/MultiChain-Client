@@ -7,7 +7,7 @@ import AssetCard from './AssetCard';
 import NewAsset from './NewAsset';
 import SendAsset from './SendAsset';
 
-export default () => {
+const Assets = () => {
     const { reducers, state } = useContext(store);
     const [current_asset, setCurrentAsset] = useState({});
     const [open, setOpen] = useState(false);
@@ -43,3 +43,4 @@ export default () => {
         </Section>
     )
 }
+export default Assets;

@@ -4,7 +4,7 @@ import Card from '../../components/DashboardCard';
 import { Item } from '../../components/CustomListItems';
 import { List } from '@material-ui/core';
 
-export default (props) => {
+const SmallCard = (props) => {
     const [data, setData] = useState({
         'Total': 0,
         'Subscribed': 0,
@@ -33,3 +33,5 @@ export default (props) => {
         </Card>
     )
 }
+
+export default SmallCard;

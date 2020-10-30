@@ -12,7 +12,7 @@ import LinkIcon from '@material-ui/icons/Link';
 
 import useStyles from './styles';
 
-export default function TemporaryDrawer() {
+const RightDrawer = () => {
     const { reducers } = useContext(store);
     const classes = useStyles();
     const [open, setOpen] = useState(false);
@@ -53,3 +53,5 @@ export default function TemporaryDrawer() {
         </div>
     );
 }
+
+export default RightDrawer;

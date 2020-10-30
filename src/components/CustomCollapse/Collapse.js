@@ -24,7 +24,7 @@ const style = {
   }
 }
 
-export default ({ name, props, newStyle }) => {
+const CustomCollapse = ({ name, props, newStyle }) => {
   const [dataKeys, setDataKeys] = useState([]);
   const [dataValues, setDataValues] = useState([]);
   const [open, setOpen] = useState(false);
@@ -70,3 +70,5 @@ export default ({ name, props, newStyle }) => {
     </React.Fragment>
   )
 }
+
+export default CustomCollapse;

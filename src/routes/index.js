@@ -9,7 +9,7 @@ import Permissions from '../containers/Permissions';
 import Streams from '../containers/Streams';
 
 
-export default [
+const routes = [
   {
     path: 'dashboard',
     component: Dashboard
@@ -43,3 +43,4 @@ export default [
     component: ChainInfo
   },
 ]
+export default routes;

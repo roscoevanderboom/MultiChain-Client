@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 // Components
-import {Input, Button, Typography} from '@material-ui/core';
+import { Input, Button, Typography } from '@material-ui/core';
 
-export default ({ createChain }) => {
+const Custom = ({ createChain }) => {
   const [chainName, setChainName] = useState('');
 
   const nameInput = (e) => {
@@ -16,7 +16,7 @@ export default ({ createChain }) => {
       alert('No name given');
       return;
     }
-    createChain({ chainName, option: 'custom' });
+    createChain({ chainName, option: 'custom' })
   };
 
   return (
@@ -25,7 +25,7 @@ export default ({ createChain }) => {
         Custom blockchains allow the admin to configure every detail of the blockchain.
         Once the chain has been created, the params.dat file will be opened in your
         default text editor. Configure parameters to fit your use-case BEFORE starting
-        blockchain.
+        blockchain. **The name "New Chain" is not useable as a chain name.
       </Typography>
       <br></br>
       <Input onChange={nameInput} placeholder="Chain name" />
@@ -37,3 +37,4 @@ export default ({ createChain }) => {
     </React.Fragment>
   );
 }
+export default Custom;

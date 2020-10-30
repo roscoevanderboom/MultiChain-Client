@@ -6,7 +6,7 @@ import {
   Typography, Button, TextField, Grid, MenuItem
 } from '@material-ui/core';
 
-export default ({ streamKeys, keys, setKeys, style }) => {
+const KeyItems = ({ streamKeys, keys, setKeys, style }) => {
   const [select, setSelect] = useState('')
 
   const handleSetKey = (e) => {
@@ -61,3 +61,4 @@ export default ({ streamKeys, keys, setKeys, style }) => {
     </React.Fragment>
   )
 }
+export default KeyItems;

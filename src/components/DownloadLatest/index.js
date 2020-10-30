@@ -14,7 +14,7 @@ import { GoBack } from '../NavButtons';
 // Styles
 import useStyles from './styles';
 
-export default () => {
+const DownloadLatest = () => {
   const classes = useStyles();
   const { hist } = useContext(store);
 
@@ -130,3 +130,5 @@ export default () => {
     </Container>
   );
 }
+
+export default DownloadLatest;

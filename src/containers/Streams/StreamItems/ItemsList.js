@@ -18,7 +18,7 @@ import SectionHeader from '../../../components/SectionHeader';
 // Styles
 import styles from '../styles';
 
-export default ({ stream, streamMethods, streamState }) => {
+const ItemList = ({ stream, streamMethods, streamState }) => {
   const classes = styles();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([]);
@@ -129,3 +129,5 @@ export default ({ stream, streamMethods, streamState }) => {
     </React.Fragment>
   )
 }
+
+export default ItemList;

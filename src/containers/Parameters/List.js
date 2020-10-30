@@ -16,7 +16,7 @@ const newStyle = {
   }
 }
 
-export default ({ params }) => {
+const List = ({ params }) => {
   const [dataKeys, setDataKeys] = useState([]);
   const [dataValues, setDataValues] = useState([]);
   const paramKeys = {
@@ -102,3 +102,5 @@ export default ({ params }) => {
     </React.Fragment>
   );
 }
+
+export default List;

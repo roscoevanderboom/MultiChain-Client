@@ -5,7 +5,7 @@ import SectionToolbar from '../../components/SectionToolbar';
 import SectionParagraph from '../../components/SectionParagraph';
 import Button from '../../components/CustomButtons/Button';
 
-export default () => {
+const Peers = () => {
     const { reducers, state } = useContext(store);
 
     useEffect(() => {
@@ -37,3 +37,5 @@ export default () => {
         </Section>
     )
 }
+
+export default Peers;

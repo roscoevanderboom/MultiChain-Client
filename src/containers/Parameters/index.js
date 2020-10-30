@@ -6,7 +6,7 @@ import Button from '../../components/CustomButtons/Button';
 import List from './List';
 
 
-export default () => {
+const Parameters = () => {
     const { reducers, state } = useContext(store);
 
     useEffect(() => {
@@ -26,3 +26,4 @@ export default () => {
         </Section>
     )
 }
+export default Parameters;

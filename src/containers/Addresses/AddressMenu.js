@@ -5,7 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { MoreVertOutlined } from '@material-ui/icons'
 
-export default function AddressMenu({ address }) {
+function AddressMenu({ address }) {
     const { state, reducers } = useContext(store);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -54,3 +54,5 @@ export default function AddressMenu({ address }) {
         </div>
     );
 }
+
+export default AddressMenu;

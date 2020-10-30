@@ -27,7 +27,7 @@ const style = {
   }
 }
 
-export default () => {
+const CreateSteam =() => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(false);
   const [restrict, setRestrict] = useState({
@@ -121,3 +121,5 @@ export default () => {
     </React.Fragment>
   );
 }
+
+export default CreateSteam;

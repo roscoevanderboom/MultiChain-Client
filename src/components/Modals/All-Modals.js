@@ -6,7 +6,7 @@ import React from 'react'
 import CreateChain from './create-chains/CreateChain';
 import ConnectRemoteChain from './connect-remote-node/ConnectRemoteChain';
 
-export default () => {
+const AllModals = () => {
   return (
     <React.Fragment>
       <CreateChain />
@@ -14,3 +14,4 @@ export default () => {
     </React.Fragment>
   )
 }
+export default AllModals;

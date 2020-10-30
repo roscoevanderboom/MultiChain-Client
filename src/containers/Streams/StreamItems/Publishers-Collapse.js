@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import CollapseArray from '../../../components/CustomCollapse/Collapse-Array'
 
-export default ({ publishers }) => {
+const PublishersCollapse = ({ publishers }) => {
   const [dataValues, setDataValues] = useState([]);
   useEffect(() => {
     if (publishers) {
@@ -14,3 +14,5 @@ export default ({ publishers }) => {
     <CollapseArray  name={'Publishers'}  props={dataValues}/>
   )
 }
+
+export default PublishersCollapse;

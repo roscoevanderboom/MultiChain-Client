@@ -3,7 +3,7 @@ import { Container, Paper } from '@material-ui/core'
 // Styles
 import useStyles from './styles';
 
-export default (props) => {
+const Section = (props) => {
     const classes = useStyles();
     return (
         <Container className={classes.container}>
@@ -13,3 +13,5 @@ export default (props) => {
         </Container>
     )
 }
+
+export default Section;

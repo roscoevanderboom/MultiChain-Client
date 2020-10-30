@@ -19,7 +19,8 @@ import StreamDetails from './StreamDetails';
 import ItemsList from './StreamItems/ItemsList';
 
 import styles from './styles';
-export default ({ stream, activeStream, setActiveStream }) => {
+
+const StreamCard = ({ stream, activeStream, setActiveStream }) => {
   const classes = styles();
   const { state, reducers } = useContext(store);
   const { multichain } = state;
@@ -159,8 +160,4 @@ export default ({ stream, activeStream, setActiveStream }) => {
     </ListItem>
   )
 }
-
-
-
-
-
+export default StreamCard;

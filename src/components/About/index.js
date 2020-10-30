@@ -6,7 +6,7 @@ import { Container, Button, Typography, Divider } from '@material-ui/core';
 // Styles
 import useStyles from './styles';
 
-export default () => {
+const About =  () => {
     const classes = useStyles();
 
     const openLink = () =>{
@@ -80,3 +80,5 @@ export default () => {
         </Container>
     )
 }
+
+export default About

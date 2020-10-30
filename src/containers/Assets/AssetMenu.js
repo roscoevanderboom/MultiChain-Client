@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {IconButton, Menu, MenuItem} from '@material-ui/core';
 import { MoreVertOutlined } from '@material-ui/icons';
 
-export default function AssetMenu(props) {    
+function AssetMenu(props) {    
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
@@ -35,3 +35,5 @@ export default function AssetMenu(props) {
         </div>
     );
 }
+
+export default AssetMenu;
