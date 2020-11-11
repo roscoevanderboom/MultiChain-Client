@@ -21,9 +21,9 @@ import ItemsList from './StreamItems/ItemsList';
 
 import styles from './styles';
 
-const StreamCard = ({ stream, activeStream, setActiveStream }) => {
+const StreamCard = ({ stream }) => {
   const classes = styles();
-  const { state, reducers } = useContext(store);
+  const { state, reducers, hist } = useContext(store);
   const { multichain } = state.multichain_state;
   const { currentStream } = state.streams_state;
   const { feedback, dispatch_streams } = reducers;
@@ -113,16 +113,15 @@ const StreamCard = ({ stream, activeStream, setActiveStream }) => {
   const streamState = {
     streamKeys,
     streamPublishers,
-    streamItems,
-    activeStream
+    streamItems
   }
   const streamMethods = {
     listStreamItems,
     listStreamPublishers,
     listStreamKeys,
     listStreamKeyItems,
-    listStreamPublisherItems,
-    setActiveStream
+    listStreamPublisherItems
+
   }
 
   const handleSelect = () => {
@@ -130,6 +129,7 @@ const StreamCard = ({ stream, activeStream, setActiveStream }) => {
     s.listStreamItems({ multichain, stream, count: 100, reducers });
     s.listStreamPublishers({ multichain, stream, count: 100, reducers });
     s.listStreamKeys({ multichain, stream, count: 100, reducers });
+    hist.push('/home/streamBrowser')
   }
 
   return (

@@ -7,6 +7,7 @@ import Parameters from '../containers/Parameters';
 import Peers from '../containers/Peers';
 import Permissions from '../containers/Permissions';
 import Streams from '../containers/Streams';
+import StreamBrowser from '../containers/Streams/StreamBrowser';
 
 
 const routes = [
@@ -41,6 +42,10 @@ const routes = [
   {
     path: 'chainInfo',
     component: ChainInfo
+  },
+  {
+    path: 'streamBrowser',
+    component: StreamBrowser
   },
 ]
 export default routes;
