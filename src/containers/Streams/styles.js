@@ -5,17 +5,24 @@ import { defaultBoxShadow, defaultFont, collapseContainer } from '../../assets/j
 const useStyles = makeStyles({
     title: {
         fontSize: '1.5em',
-        ...defaultFont
+        ...defaultFont,
+        cursor: 'pointer',
+        paddingLeft: 20,
     },
     streamCardDiv: {
         padding: '0px 5px'
     },
     listItem: {
         paddingLeft: 20,
-        ...defaultBoxShadow
+        paddingTop: 0,
+        paddingBottom: 0,
+        transition: 'all 0.5s',
+        '&:hover': {
+            ...defaultBoxShadow,
+        }
     },
     bullet: {
-        display: 'inline-block',
+        display: 'flex',
         margin: '0 2px',
         transform: 'scale(0.8)',
     },

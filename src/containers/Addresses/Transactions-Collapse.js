@@ -37,8 +37,8 @@ const TransactionCollapse = ({ address }) => {
                         key={i}
                         title={`${transaction.txid}`}
                         data={transaction}
-                        containerStyles={classes.detailsContainer}
-                        listItemStyles={classes.listItemText} />
+                        containerstyles={classes.detailsContainer}
+                        listitemstyles={classes.listItemText} />
                 )}
             </List>
         </Collapse>

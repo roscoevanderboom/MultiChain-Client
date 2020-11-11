@@ -9,6 +9,7 @@ import SendAsset from './SendAsset';
 
 const Assets = () => {
     const { reducers, state } = useContext(store);
+    const { multichain_state } = state;
     const [current_asset, setCurrentAsset] = useState({});
     const [open, setOpen] = useState(false);
 
@@ -22,13 +23,13 @@ const Assets = () => {
     }, [current_asset])
 
 
-    return (state.assets &&
+    return (multichain_state.assets &&
         <Section>
             <SectionToolbar
                 left={<NewAsset />} />
 
             <Grid container>
-                {state.assets.map((asset, i) =>
+                {multichain_state.assets.map((asset, i) =>
                     <Grid item xs={4}
                         key={i}>
                         <AssetCard

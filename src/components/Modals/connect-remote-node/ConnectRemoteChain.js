@@ -16,11 +16,11 @@ import Modal from '../Modal';
 const ConnectChainModal = () => {
   const [address, setAddress] = useState(false);
   const { state, reducers } = useContext(store);
-  const { ConnectRemote } = state.modals;
+  const { ConnectRemote } = state.app_state.modals;
   const { handleModals } = reducers;
 
   const handleClose = () => {
-    handleModals('ConnectRemote', false);
+    handleModals('ConnectRemote');
   };
   function handleName(e) {
     setAddress(e.target.value);

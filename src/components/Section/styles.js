@@ -13,7 +13,8 @@ const useStyles = makeStyles({
         position: "relative",      
         marginTop: 12,
         maxWidth: 900,
-        width: '90%'
+        width: '90%',
+        paddingBottom: 12
     },
    
 })

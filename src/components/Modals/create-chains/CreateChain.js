@@ -8,11 +8,11 @@ import Modal from '../Modal';
 
 const CreateChain = () => {
   const { state, reducers } = useContext(store);
-  const { CreateChain } = state.modals;
+  const { CreateChain } = state.app_state.modals;
   const { handleModals } = reducers;
 
   const handleClose = () => {
-    handleModals('CreateChain', false);
+    handleModals('CreateChain');
   };
 
   return (

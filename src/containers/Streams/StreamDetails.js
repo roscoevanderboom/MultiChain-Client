@@ -26,7 +26,7 @@ const StreamDetails = ({ stream }) => {
 
   return (
     <React.Fragment>
-      <Button color='info' onClick={handleModal}>Details</Button>
+      <Button color='info' size='sm' onClick={handleModal}>Details</Button>
       <Dialog open={open} onClose={handleModal}>
         <DialogContent style={{ width: 550 }}>
           <Typography variant="h4">{`${stream.name}`}</Typography>
@@ -34,23 +34,23 @@ const StreamDetails = ({ stream }) => {
           <DetailsCollapse
             title='Details'
             data={stream.details}
-            containerStyles={classes.collapseContainer} />
+            containerstyles={classes.collapseContainer} />
 
           <ParamsCollapse
             title='Restriction'
             data={stream.restrict}
-            containerStyles={classes.collapseContainer}  />
+            containerstyles={classes.collapseContainer}  />
 
           <InfoCollapse
             title='Info'
             data={stream.restrict} 
-            containerStyles={classes.collapseContainer} />
+            containerstyles={classes.collapseContainer} />
 
           {!stream.subscribed ? null :
             <IndexesCollapse
               title='Indexes'
               data={stream.indexes}
-              containerStyles={classes.collapseContainer}  />}
+              containerstyles={classes.collapseContainer}  />}
 
         </DialogContent>
       </Dialog>

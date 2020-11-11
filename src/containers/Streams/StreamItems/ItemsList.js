@@ -78,7 +78,7 @@ const ItemList = ({ stream, streamMethods, streamState }) => {
 
   return (
     <React.Fragment>
-      <Button color='warning' onClick={handleModal}>Items</Button>
+      <Button color='warning' size='sm' onClick={handleModal}>Items</Button>
       <Dialog
         open={open}
         onClose={handleModal}

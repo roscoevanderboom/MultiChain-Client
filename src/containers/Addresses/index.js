@@ -14,11 +14,12 @@ import useStyles from './styles';
 
 const Addresses = () => {
     const { reducers, state } = useContext(store);
+    const { multichain_state } = state;
     const [selected_address, set_selected_address] = useState({});
     const classes = useStyles();
 
     const handleChange = (e) => {
-        let newAddress = state.addresses.filter(add => add.address.includes(e.target.value));
+        let newAddress = multichain_state.addresses.filter(add => add.address.includes(e.target.value));
         if (newAddress.length > 0) {
             set_selected_address(newAddress[0]);
         } else if (newAddress.length === 0) {
@@ -28,7 +29,7 @@ const Addresses = () => {
     }
 
     const getNewAddress = () => {
-        state.multichain.getNewAddress()
+        multichain_state.multichain.getNewAddress()
             .then((res) => {
                 reducers.getChainData('addresses');
                 reducers.feedback('success', 'New address created')
@@ -43,7 +44,7 @@ const Addresses = () => {
         // eslint-disable-next-line
     }, [])
 
-    return (state.addresses &&
+    return (multichain_state.addresses &&
         <Section>
             <SectionToolbar
                 left={

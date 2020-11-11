@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 
 // Components
 import {
-  Button,
   Dialog,
   DialogContent,
   Typography
 } from '@material-ui/core';
 
+import Button from '../../components/CustomButtons/Button';
 import DetailsCollapse from '../../components/CustomCollapse/Details-Collapse';
 import ParamsCollapse from '../../components/CustomCollapse/Params-Collapse';
 import InfoCollapse from '../../components/CustomCollapse/Info-Collapse';
@@ -23,7 +23,7 @@ const AssetDetails = ({ asset }) => {
 
   return (
     <React.Fragment>
-      <Button variant='outlined' onClick={handleModal}>Details</Button>
+     <Button color='info' size='sm' onClick={handleModal}>Details</Button>
       <Dialog open={open} onClose={handleModal}>
         <DialogContent style={{ width: 550 }}>
           <Typography variant="h4">{`${asset.name}`}</Typography>

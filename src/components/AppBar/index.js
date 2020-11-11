@@ -15,13 +15,14 @@ import useStyles from './styles';
 const Appbar = () => {
     const classes = useStyles();
     const { state } = useContext(store);
+    const { multichain_state, app_state } = state;
     const [chainName, setChainName] = useState('No blockchain configured')
 
     useEffect(() => {
-        if (state.chainInfo) {
-            setChainName(state.chainInfo.chainname)
+        if (multichain_state.chainInfo) {
+            setChainName(multichain_state.chainInfo.chainname)
         }
-    }, [state.chainInfo])
+    }, [multichain_state.chainInfo])
 
     return (
         <AppBar position='fixed' className={classes.appBar}>
@@ -30,7 +31,7 @@ const Appbar = () => {
                     className={classes.appBarLeftDiv}>
                     <LeftDrawer />
                     <Typography className={classes.title}>
-                        {state.title}
+                        {app_state.title}
                     </Typography>
                 </Grid>
 

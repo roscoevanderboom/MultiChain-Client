@@ -1,8 +1,9 @@
 // Services
 import React, { useState, useContext } from 'react';
-
 // State
 import { store } from '../../store';
+import { listStreams } from '../../reducers/multichain';
+import * as s from '../../reducers/streams';
 
 // Components
 import {
@@ -23,8 +24,9 @@ import styles from './styles';
 const StreamCard = ({ stream, activeStream, setActiveStream }) => {
   const classes = styles();
   const { state, reducers } = useContext(store);
-  const { multichain } = state;
-  const { getChainData, feedback } = reducers;
+  const { multichain } = state.multichain_state;
+  const { currentStream } = state.streams_state;
+  const { feedback, dispatch_streams } = reducers;
   const [streamKeys, setStreamKeys] = useState([]);
   const [streamPublishers, setStreamPublishers] = useState([]);
   const [streamItems, setStreamItems] = useState([]);
@@ -36,7 +38,7 @@ const StreamCard = ({ stream, activeStream, setActiveStream }) => {
         stream: stream.name,
       })
         .then(() => {
-          getChainData('streams')
+          listStreams(multichain, reducers)
         })
         .catch(err => feedback('error', err.message))
       return;
@@ -45,7 +47,7 @@ const StreamCard = ({ stream, activeStream, setActiveStream }) => {
       stream: stream.name,
     })
       .then(() => {
-        getChainData('streams')
+        listStreams(multichain, reducers)
       })
       .catch(err => feedback('error', err.message))
   }
@@ -123,11 +125,19 @@ const StreamCard = ({ stream, activeStream, setActiveStream }) => {
     setActiveStream
   }
 
+  const handleSelect = () => {
+    s.selectStream(stream, reducers);
+    s.listStreamItems({ multichain, stream, count: 100, reducers });
+    s.listStreamPublishers({ multichain, stream, count: 100, reducers });
+    s.listStreamKeys({ multichain, stream, count: 100, reducers });
+  }
+
   return (
     <ListItem className={classes.listItem}>
       <Grid item xs={6}>
         <ListItemText>
           <Typography
+            onClick={handleSelect}
             className={classes.title}>
             {stream.name}
           </Typography>
@@ -136,11 +146,11 @@ const StreamCard = ({ stream, activeStream, setActiveStream }) => {
 
       <Grid item xs={4}>
         <ListItemText>
-        <StreamDetails stream={stream} />
-        <ItemsList
-          streamMethods={streamMethods}
-          streamState={streamState}
-          stream={stream} />
+          <StreamDetails stream={stream} />
+          <ItemsList
+            streamMethods={streamMethods}
+            streamState={streamState}
+            stream={stream} />
         </ListItemText>
       </Grid>
 

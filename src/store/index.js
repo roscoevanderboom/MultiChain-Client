@@ -1,41 +1,25 @@
 // Services
-import React, { useState, createContext } from 'react';
+import React, { createContext, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import getCreds from '../constants/multichain/GetCreds';
-import getLocalChains from '../constants/multichain/LocalChains';
-import * as mc_reducers from '../reducers/multichain';
+// reducers
+import mc_reducer from '../reducers/multichain';
+import app_reducer from '../reducers/app';
+import streams_reducer from '../reducers/streams';
 import create_feedback from '../components/Feedback';
+// state
+import { app, mc_state, stream_state } from './initialState';
+
 
 export const store = createContext();
 export const GlobalStatePovider = (props) => {
   // Router history
   const hist = useHistory();
-  // App State
-  const [title, setAppBarTitle] = useState('');
-  const [multichain, setMultichain] = useState(false);
-  const [chain_credentials, setChain_credentials] = useState([]);
-  const [localPaths, setLocalPaths] = useState({});
-  const [localChains, setLocaChains] = useState([]);
 
-  // Sections State
-  const [chainInfo, setChainInfo] = useState(false);
-  const [addresses, setAddresses] = useState(false);
-  const [params, setParams] = useState(false);
-  const [permissions, setPermissions] = useState(false);
-  const [peers, setPeers] = useState(false);
-  const [assets, setAssets] = useState(false);
-  const [streams, setStreams] = useState(false);
-  // Reset all section's state
-  const setStateArray = [
-    setChainInfo,
-    setAddresses,
-    setParams,
-    setPermissions,
-    setPeers,
-    setAssets,
-    setStreams
-  ];
+  // Reducers
+  const [app_state, dispatch_app_state] = useReducer(app_reducer, app);
+  const [multichain_state, dispatch_multichain_state] = useReducer(mc_reducer, mc_state);
+  const [streams_state, dispatch_streams] = useReducer(streams_reducer, stream_state);
 
   // Methods for user feedback
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -43,130 +27,41 @@ export const GlobalStatePovider = (props) => {
     create_feedback(variant, message, enqueueSnackbar, closeSnackbar);
   };
 
-  // Modals
-  const [modals, setModals] = useState({
-    CreateChain: false,
-    ConnectRemote: false,
-    SendAsset: false
-  })
-  const handleModals = (modal, value) => {
-    setModals({ ...modals, [modal]: value })
-  }
-
-  const reset_sections = () => {
-    setStateArray.map(val => val(false))
-  }
-
   // Reducers 
-  const handleLocalPaths = (pathNames) => {
-    setLocalPaths(pathNames)
-  }
   const setTitle = value => {
-    setAppBarTitle(value);
+    dispatch_app_state({
+      type: 'SET_TITLE',
+      data: value
+    })
   }
-  const load_credentials = (localChains) => {
-    localChains.forEach(chain => {
-      getCreds(chain, localPaths.blockchainsPath)
-        .then(creds => {
-          setChain_credentials(chain_credentials => [...chain_credentials, creds])
-        })
-        .catch((err) => {
-          feedback('error', err)
-        })
-    });
-  }
-  const load_Multichain_Node = (chain) => {
-    getCreds(chain, localPaths.blockchainsPath)
-      .then(creds => {
-        setMultichain(require("multichain-node")(creds))
-      })
-      .catch((err) => {
-        feedback('error', err)
-      })
-  }
-
-  const handleLocalChainList = () => {
-    let chainPath = localStorage.getItem('blockchainsPath');
-    getLocalChains(chainPath)
-      .then((chains) => {
-        setLocaChains(chains);
-      })
-  }
-
-  // Multichain data collection
-  const getChainData = (varient) => {
-    switch (varient) {
-      case 'parameters':
-        mc_reducers.getBlockchainParams(multichain, setParams)
-        break;
-      case 'stream':
-        mc_reducers.listStreams(multichain, setStreams)
-        break;
-      case 'peerInfo':
-        mc_reducers.getPeerInfo(multichain, setPeers)
-        break;
-      case 'assets':
-        mc_reducers.listAssets(multichain, setAssets)
-        break;
-      case 'permissions':
-        mc_reducers.listPermissions(multichain, setPermissions)
-        break;
-      case 'addresses':
-        mc_reducers.listAddresses(multichain, setAddresses)
-        break;
-      case 'info':
-        mc_reducers.getInfo(multichain, setChainInfo)
-        break;
-      default:
-        mc_reducers.getBlockchainParams(multichain, setParams)
-        mc_reducers.listStreams(multichain, setStreams)
-        mc_reducers.getPeerInfo(multichain, setPeers)
-        mc_reducers.listAssets(multichain, setAssets)
-        mc_reducers.listPermissions(multichain, setPermissions)
-        mc_reducers.listAddresses(multichain, setAddresses)
-        mc_reducers.getInfo(multichain, setChainInfo)
-        break
-    }
+  const handleModals = (modal) => {
+    dispatch_app_state({
+      type: 'SET_MODAL',
+      data: modal
+    })
   }
 
   // Props from provider
   const state = {
-    title,
-    multichain,
-    chain_credentials,
-    localPaths,
-    localChains,
-    // Sections
-    chainInfo,
-    addresses,
-    params,
-    permissions,
-    peers,
-    assets,
-    streams,
-    // Modals
-    modals
+    multichain_state,
+    app_state,
+    streams_state
   };
-  const setState = {
-    setChain_credentials, setMultichain
-  }
 
   const reducers = {
-    load_credentials,
-    load_Multichain_Node,
     setTitle,
-    getChainData,
-    reset_sections,
-    handleLocalPaths,
     handleModals,
     feedback,
-    handleLocalChainList
+    // New reducers
+    dispatch_multichain_state,
+    dispatch_app_state,
+    dispatch_streams
   };
 
   // Create provider
   return (
     <store.Provider
-      value={{ state, setState, reducers, hist }}>
+      value={{ state, reducers, hist }}>
       {props.children}
     </store.Provider>
   )

@@ -16,7 +16,10 @@ export default function App() {
         let { binariesPath, blockchainsPath } = checkLocalStorage();
 
         if (binariesPath !== null && blockchainsPath !== null) {
-            reducers.handleLocalPaths({ binariesPath, blockchainsPath });
+            reducers.dispatch_multichain_state({
+                type: 'SET_LOCAL_PATHS',
+                data: { binariesPath, blockchainsPath }
+            })
             hist.push('/home/streams');
             return;
         }

@@ -9,19 +9,25 @@ import styles from './styles';
 const Steams = () => {
     const classes = styles();
     const { reducers, state } = useContext(store);
+    const { multichain_state, streams_state } = state;
 
     useEffect(() => {
         reducers.setTitle('Streams');
         // eslint-disable-next-line
     }, [])
 
-    return (state.streams &&
+    useEffect(() => {
+        console.log(streams_state);
+    }, [streams_state])
+
+    return (multichain_state.streams &&
         <Section>
             <SectionToolbar
-                left={<CreateStream />} />
+                left={<CreateStream />}
+                center={<h2 className={classes.title}>{streams_state.currentStream.name}</h2>} />
 
             <div className={classes.streamCardDiv}>
-                {state.streams.map((stream, i) =>
+                {multichain_state.streams.map((stream, i) =>
                     <StreamCard key={i} stream={stream} />
                 )}
             </div>

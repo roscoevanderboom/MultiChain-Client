@@ -24,27 +24,29 @@ const useStyles = makeStyles({
 });
 
 const ChainButton = ({ chain }) => {
-  const { state, setState, reducers } = useContext(store);
-  const { chain_credentials, chainInfo, localPaths } = state;
-  const { setMultichain } = setState;
   const classes = useStyles();
+  const { state, reducers } = useContext(store);
+  const { localPaths, chain_credentials, chainInfo } = state.multichain_state;
   const [connected, setConnected] = useState(false)
   const [multichain, setMultichain_Instance] = useState(false)
 
-  const load_Multichain_Node = (setState) => {
+  const checkChainStatus = () => {
     chain_credentials.forEach(creds => {
       if (creds.name === chain) {
-        setState(require("multichain-node")(creds));
-        return;
-      }})
+        setMultichain_Instance(require("multichain-node")(creds));
+      }
+    })
   }
 
   const connect = () => {
     if (!connected) {
-      reducers.feedback('info','Daemon is not running')
+      reducers.feedback('info', 'Daemon is not running')
       return;
     }
-    load_Multichain_Node(setMultichain);
+    reducers.dispatch_multichain_state({
+      type: 'SET_ACTIVE_CHAIN',
+      data: multichain
+    })
   }
 
   const daemon = () => {
@@ -65,7 +67,7 @@ const ChainButton = ({ chain }) => {
   }
 
   useEffect(() => {
-    load_Multichain_Node(setMultichain_Instance);
+    checkChainStatus();
     //eslint-disable-next-line
   }, [chain_credentials])
 

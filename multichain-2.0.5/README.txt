@@ -1,5 +1,5 @@
 #
-# MultiChain 2.0.5 Community Edition
+# MultiChain 2.1 Community Edition
 #
 # Copyright (c) Coin Sciences Ltd - www.multichain.com
 #
@@ -26,8 +26,46 @@ Source code:
 https://github.com/MultiChain/multichain
 
 
+WINDOWS NOTES
+-------------
+
+* For multichaind anti-virus software and/or firewall may need to be disabled.
+* The multichaind -daemon flag does not work, so open another cmd prompt.
+* The multichain-cli command line tool does not yet support interactive mode.
+* The online documentation uses Linux quoting on the command line which will
+  not work on DOS. Substitute (e.g.) "{\"asset1\":100}" for '{"asset1":100}'
+* The default data directory is %APPDATA%\MultiChain instead of ~/.multichain
+
+
 CHANGELOG
 ---------
+
+Version 2.1 - 22 October 2020
+* Added new protocol version 20012 with these changes:
+- On-chain JSON variables which are accessible to Smart Filters
+- On-chain JavaScript libraries for code reuse for Smart Filters
+- Optional unrestricted reissuance for assets ("unrestrict":"issue")
+- New getfilterstream callback in stream filters
+- Fixed bug preventing access to new filter callbacks after protocol upgrade
+* Allowed array of address/amount parameters in raw transaction APIs
+* Improved performance of listassets and liststreams APIs
+* Added line/column numbers and snippets to filter compilation error messages
+
+Version 2.0.7 - 2 June 2020
+* Improved performance with large numbers of follow-on asset issuances
+* Improved miner precheck performance for long chain extensions and reindexing
+* Fixed crash in some filter API commands on long filter code
+* Fixed bug in multichain-cli when history file cannot be opened
+* Fixed support for IPv6 (broken in version 2.0.6 only)
+
+Version 2.0.6 - 13 April 2020
+* Large increase in coin selection speed by internal caching
+* Improved offchain data download performance by adjusting to throughput
+* Added additional checks for wallet database consistency during startup
+* Added -skipwalletchecks runtime parameter to skip those checks
+* Fixed stability issue with DNS resolution in addnode command
+* Fixed wallet rescanning (-rescan runtime parameter) where walletdbversion=2
+* Fixed data file corruption in case of two long enough unsalted identical chunks
 
 Version 2.0.5 - 16 January 2020
 * Fixed block signature check when protocol upgraded on disconnected node

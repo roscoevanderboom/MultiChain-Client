@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { firstToUppercase } from '../../constants/general';
 import Card from '../../components/DashboardCard';
-import { ListItemText, Grid } from '@material-ui/core';
+import { ListItemText, Grid, Divider } from '@material-ui/core';
 // Styles
 import styles from './styles';
 
@@ -29,6 +29,7 @@ const BigCard = (props) => {
                         className={classes.text}
                         primary={`${firstToUppercase(key)}`}
                         secondary={`${values[i]}`} />
+                        <Divider />
                 </Grid>
             )}
         </Grid>

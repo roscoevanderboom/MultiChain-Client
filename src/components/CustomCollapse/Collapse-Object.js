@@ -5,7 +5,7 @@ import { ListItemText } from '@material-ui/core';
 import Collapse from '../CustomCollapse';
 
 const CollapseObject = (props) => {
-    const { data, title, containerStyles, listItemStyles } = props;
+    const { data, title, containerstyles, listitemstyles } = props;
     const [dataKeys, setDataKeys] = useState([]);
     const [dataValues, setDataValues] = useState([]);
 
@@ -33,14 +33,14 @@ const CollapseObject = (props) => {
 
     return (
         <Collapse {...props} title={title}>
-            <div className={containerStyles}>
+            <div className={containerstyles}>
                 {dataKeys.map((key, i) =>
                     <ListItemText
                         key={i}
                         primary={key}
                         secondary={`${dataValues[i]}`}
                         classes={{
-                            multiline: listItemStyles
+                            multiline: listitemstyles
                         }} />
                 )}
             </div>

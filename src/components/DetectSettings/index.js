@@ -19,6 +19,7 @@ const DetectSettings = () => {
     const [blockchainsPath, setBlockchainsPath] = useState('');
 
     const handleBinaries = (fileNames, folderPath) => {
+        console.log('fileNames', fileNames);
         if (fileNames.includes('multichaind')
             && fileNames.includes('multichain-cli')
             && fileNames.length === 2) {
@@ -43,9 +44,9 @@ const DetectSettings = () => {
         let file_names = files.map(file => file.name);
         let folderPath = file_paths[0].slice(0, file_paths[0].lastIndexOf('multichain'))
 
-        if (process.platform === 'win32') {
-            file_names = files.map(file => file.name.slice(0, -4));
-        }
+        // if (process.platform === 'win32') {
+        //     file_names = files.map(file => file.name.slice(0, -4));
+        // }
 
         if (step === 'step1' && handleBinaries(file_names, folderPath)) {
             return;

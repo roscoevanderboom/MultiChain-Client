@@ -27,7 +27,7 @@ const style = {
   }
 }
 
-const CreateSteam =() => {
+const CreateSteam = () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(false);
   const [restrict, setRestrict] = useState({
@@ -38,7 +38,7 @@ const CreateSteam =() => {
   })
 
   const { state, reducers } = useContext(store);
-  const { multichain, localPaths, chainInfo } = state;
+  const { multichain, localPaths, chainInfo } = state.multichain_state;
   const { feedback, getChainData } = reducers;
 
   const handleModal = () => {
@@ -46,7 +46,7 @@ const CreateSteam =() => {
       feedback('error', 'You are not connected');
       return;
     }
-    open ? setOpen(false) : setOpen(true);
+    setOpen(open ? false : true)
   }
   const handleName = (e) => {
     setName(e.target.value);

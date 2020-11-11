@@ -65,12 +65,11 @@ const NewAsset = () => {
     const binaryPath = localPaths.binariesPath
     issue(chainInfo.chainname, assetDetails, json, binaryPath)
       .then(res => {
+        feedback('success', `${assetDetails.asset} asset created.`)
         getChainData('assets')
       })
       .catch(err => {
-        // feedback('error', err.slice(err.indexOf('error message:')))
-        console.log(err);
-
+        feedback('error', err.slice(err.indexOf('ge:') + 3))
       })
   };
 

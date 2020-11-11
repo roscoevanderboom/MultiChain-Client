@@ -37,11 +37,11 @@ const RightDrawer = () => {
                     role="presentation">
                     <Container className={classes.buttonContainer}>
                         <CustomButtom color='info'
-                            onClick={() => reducers.handleModals('CreateChain', true)}>
+                            onClick={() => reducers.handleModals('CreateChain')}>
                             New Chain
                         </CustomButtom>
                         <CustomButtom color='danger'
-                        onClick={() => reducers.handleModals('ConnectRemote', true)}>
+                        onClick={() => reducers.handleModals('ConnectRemote')}>
                             Connect Remote
                         </CustomButtom>
                     </Container>
