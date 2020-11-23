@@ -2,22 +2,22 @@ import React, { useState, useContext, useEffect } from 'react';
 
 // State
 import { store } from '../../store';
-
+// Constants
+import { listAssets } from '../../reducers/multichain';
 // Actions
-import { issue } from '../../actions/Assets';
+import { issue } from '../../reducers/assets';
 
 // Components
-import {  
+import {
   TextField,
-  Dialog,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   MenuItem,
+  Typography
 } from '@material-ui/core';
-import Button from '../../components/CustomButtons/Button';
 import Form from '../../components/CustomForm';
-import Switch from '../../components/CustomSwitch'
+import Switch from '../../components/CustomSwitch';
+import ButtonModal from '../../components/Modals/ButtonModal';
 
 // Style
 const style = {
@@ -30,8 +30,8 @@ const style = {
 const NewAsset = () => {
   const [open, setOpen] = useState(false);
   const { state, reducers } = useContext(store);
-  const { multichain, addresses, chainInfo, localPaths } = state;
-  const { feedback, getChainData } = reducers;
+  const { multichain, addresses, chainInfo, localPaths } = state.multichain_state;
+  const { feedback } = reducers;
   const [assetDetails, setAssetDetails] = useState({})
   const [available_addresses, setAvailable_addresses] = useState([])
   const [restrict, setRestrict] = useState({
@@ -62,11 +62,14 @@ const NewAsset = () => {
   }
 
   const handleNewAsset = (json) => {
-    const binaryPath = localPaths.binariesPath
-    issue(chainInfo.chainname, assetDetails, json, binaryPath)
+    issue({
+      chainName: chainInfo.chainname,
+      assetDetails, json,
+      binaryPath: localPaths.binariesPath
+    })
       .then(res => {
         feedback('success', `${assetDetails.asset} asset created.`)
-        getChainData('assets')
+        listAssets(multichain, reducers)
       })
       .catch(err => {
         feedback('error', err.slice(err.indexOf('ge:') + 3))
@@ -88,89 +91,85 @@ const NewAsset = () => {
   }, [addresses])
 
   return (
-    <React.Fragment>
-      <Button color="github" onClick={handleModal}>
-        New Asset
-      </Button>
-      <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create new native assets</DialogTitle>
-        <DialogContent
-          children={
-            <React.Fragment>
+    <ButtonModal
+      title='New Asset'
+      open={open}
+      onClose={handleModal}>
+      <DialogTitle id="form-dialog-title">Create new native assets</DialogTitle>
+
+      <DialogContent
+        children={
+          <React.Fragment>
+            <Typography paragraph>To create an asset that can be re-issued, select "Open".</Typography>
+            <TextField
+              autoFocus
+              type='text'
+              margin="dense"
+              label="Asset Name"
+              id="assetName"
+              onChange={handleChange('asset')}
+              fullWidth />
+            <TextField
+              id="issueAddress"
+              select
+              value={assetDetails.address !== undefined ? assetDetails.address : ''}
+              helperText='Select Issue Address'
+              onChange={handleChange('address')}
+              margin="normal"
+              fullWidth>
+              {available_addresses.map(add => (
+                <MenuItem key={add.address} value={add.address}>
+                  {add.address}
+                </MenuItem>
+              ))}
+            </TextField>
+            <div style={style.restrictions}>
               <TextField
-                autoFocus
+                type='number'
+                margin="dense"
+                label="Quantity"
+                id="assetQuantity"
+                onChange={handleChange('qty')} />
+              <TextField
                 type='text'
                 margin="dense"
-                label="Asset Name"
-                id="assetName"
-                onChange={handleChange('asset')}
-                fullWidth />
-              <TextField
-                id="issueAddress"
-                select
-                value={assetDetails.address !== undefined ? assetDetails.address : ''}
-                helperText='Select Issue Address'
-                onChange={handleChange('address')}
-                margin="normal"
-                fullWidth>
-                {available_addresses.map(add => (
-                  <MenuItem key={add.address} value={add.address}>
-                    {add.address}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <div style={style.restrictions}>
-                <TextField
-                  type='number'
-                  margin="dense"
-                  label="Quantity"
-                  id="assetQuantity"
-                  onChange={handleChange('qty')} />
-                <TextField
-                  type='text'
-                  margin="dense"
-                  label="Units"
-                  placeholder='0.000001 - 1'
-                  id="assetUnits"
-                  onChange={handleChange('units')} />
-              </div>
-            </React.Fragment>
-          }
-        />
-        <DialogContent
-          children={
-            <React.Fragment>
-              <DialogContentText>
-                Asset Restrictions
-              </DialogContentText>
-              <div style={style.restrictions}>
-                <Switch
-                  checkedValue={restrict.open}
-                  handleClick={handleSwitch}
-                  switchValue="open" />
-                <Switch
-                  checkedValue={restrict.send}
-                  handleClick={handleSwitch}
-                  switchValue="send" />
-                <Switch
-                  checkedValue={restrict.receive}
-                  handleClick={handleSwitch}
-                  switchValue="receive" />
-              </div>
-            </React.Fragment>
-          }
-        />
-        <DialogContent>
-          <DialogContentText>
-            Asset Details
-          </DialogContentText>
-          <Form
-            feedback={feedback}
-            handleSubmit={handleNewAsset}
-            handleModal={handleModal} />
-        </DialogContent>
-      </Dialog>
-    </React.Fragment>
+                label="Units"
+                placeholder='0.000001 - 1'
+                id="assetUnits"
+                onChange={handleChange('units')} />
+            </div>
+          </React.Fragment>
+        }
+      />
+      <DialogContent>
+        <Typography variant='h6'>
+          Asset Restrictions
+  </Typography>
+        <div style={style.restrictions}>
+          <Switch
+            checkedValue={restrict.open}
+            handleClick={handleSwitch}
+            switchValue="open" />
+          <Switch
+            checkedValue={restrict.send}
+            handleClick={handleSwitch}
+            switchValue="send" />
+          <Switch
+            checkedValue={restrict.receive}
+            handleClick={handleSwitch}
+            switchValue="receive" />
+        </div>
+      </DialogContent>
+      <DialogContent>
+        <Typography variant='h6'>
+          Asset Details
+  </Typography>
+        <Form
+          feedback={feedback}
+          handleSubmit={handleNewAsset}
+          handleModal={handleModal} />
+      </DialogContent>
+    </ButtonModal>
   );
 }
 export default NewAsset;

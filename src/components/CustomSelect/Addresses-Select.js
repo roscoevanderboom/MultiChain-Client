@@ -7,7 +7,7 @@ import { MenuItem, TextField } from '@material-ui/core';
 const CustomSelect = (props) => {
   const { value, onChange } = props;
   const { state } = useContext(store);
-  const { addresses } = state;
+  const { addresses } = state.multichain_state;
 
   return (
     <TextField

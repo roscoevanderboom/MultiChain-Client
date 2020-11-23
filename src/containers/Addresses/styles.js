@@ -36,7 +36,9 @@ const useStyles = makeStyles({
     },
     listItemText: {
         border: 'solid 1px slategray',
-        padding: 15
+        borderRadius: 2,
+        padding: 5,
+        margin: 0
     }
 })
 

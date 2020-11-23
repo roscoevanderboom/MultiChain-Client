@@ -3,8 +3,9 @@ import React, { useState, useContext, useEffect } from 'react';
 // State
 import { store } from '../../../store';
 
-// Actions
-import { createStream } from '../../../actions/Streams';
+// Reducers
+import { createStream } from '../../../reducers/streams';
+import { listStreams } from '../../../reducers/multichain';
 
 // Components
 import {
@@ -39,7 +40,7 @@ const CreateSteam = () => {
 
   const { state, reducers } = useContext(store);
   const { multichain, localPaths, chainInfo } = state.multichain_state;
-  const { feedback, getChainData } = reducers;
+  const { feedback } = reducers;
 
   const handleModal = () => {
     if (!(multichain)) {
@@ -65,7 +66,7 @@ const CreateSteam = () => {
       return;
     }
     createStream(chainInfo.chainname, options, localPaths.binariesPath)
-      .then(() => { getChainData('streams') })
+      .then(() => { listStreams(multichain, reducers) })
       .catch(err => { feedback('error', err) })
   }
 
@@ -81,7 +82,7 @@ const CreateSteam = () => {
 
   return (
     <React.Fragment>
-      <Button color="github" onClick={handleModal}>
+      <Button color="github" size='sm' onClick={handleModal}>
         New Stream
       </Button>
       <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
@@ -100,7 +101,7 @@ const CreateSteam = () => {
             fullWidth />
           <br></br>
           <br></br>
-          <Typography variant='h6'>Stream Options</Typography>
+          <Typography variant='h6'>Stream Restrictions</Typography>
           <div style={style.options}>
             {Object.keys(restrict).map((val, i) =>
               <Switch

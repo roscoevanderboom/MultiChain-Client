@@ -17,7 +17,7 @@ import routes from '../routes';
 const Home = () => {
     const { state, reducers } = useContext(store);
     const { multichain_state } = state;
-    const { localChains, localPaths, multichain, chainInfo } = multichain_state;
+    const { localChains, localPaths, multichain } = multichain_state;
 
     let chainPath = localStorage.getItem('blockchainsPath');
 
@@ -33,6 +33,7 @@ const Home = () => {
                     data: chains
                 })
             })
+        // eslint-disable-next-line
     }, []);
 
     // collect local chains credentials
@@ -51,6 +52,7 @@ const Home = () => {
                     })
             });
         }
+        // eslint-disable-next-line
     }, [localChains])
 
     useEffect(() => {
@@ -65,10 +67,6 @@ const Home = () => {
         }
         // eslint-disable-next-line
     }, [multichain]);
-
-    useEffect(() => {
-        console.log(chainInfo.chainname);
-    }, [multichain])
 
     return (
         <div>

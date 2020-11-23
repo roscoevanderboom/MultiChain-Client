@@ -8,21 +8,22 @@ import List from './List';
 
 const Parameters = () => {
     const { reducers, state } = useContext(store);
+    const { params } = state.multichain_state;
 
     useEffect(() => {
         reducers.setTitle('Parameters');
         // eslint-disable-next-line
     }, [])
 
-    return (state.params &&
+    return (params &&
         <Section>
             <SectionToolbar
                 left={
-                    <Button color='github'>
+                    <Button size='sm' color='github'>
                         Edit runtime params
                     </Button>
                 } />
-            <List params={state.params} />
+            <List params={params} />
         </Section>
     )
 }

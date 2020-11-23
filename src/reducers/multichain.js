@@ -1,6 +1,4 @@
 import { address_permissions } from '../constants/multichain/Permissions';
-import getCreds from '../constants/multichain/GetCreds';
-import getLocalChains from '../constants/multichain/LocalChains';
 import { add_if_not_included } from '../constants/general';
 
 // Multichain data collection
@@ -30,19 +28,21 @@ export const listAddresses = (multichain, reducers) => {
 }
 export const listPermissions = (multichain, reducers) => {
     multichain.listPermissions((err, res) => {
-        let obj = {}
-        address_permissions.forEach(key => {
-            obj[key] = res.filter(val => val.type === key)
-        })
-        let values = Object.values(obj);
-        let sorted_permissions = {};
-        address_permissions.forEach((key, i) => {
-            sorted_permissions[key] = values[i].map(val => val.address)
-        })
-        reducers.dispatch_multichain_state({
-            type: 'GET_PERMISSIONS',
-            data: err ? false : sorted_permissions
-        });
+        if (res !== undefined) {
+            let obj = {}
+            address_permissions.forEach(key => {
+                obj[key] = res.filter(val => val.type === key)
+            })
+            let values = Object.values(obj);
+            let sorted_permissions = {};
+            address_permissions.forEach((key, i) => {
+                sorted_permissions[key] = values[i].map(val => val.address)
+            })
+            reducers.dispatch_multichain_state({
+                type: 'GET_PERMISSIONS',
+                data: err ? false : sorted_permissions
+            });
+        }
     });
 }
 export const listAssets = (multichain, reducers) => {
@@ -97,6 +97,7 @@ const multichain_reducer = (state, action) => {
             return { ...state, peers: data }
         case 'GET_STREAMS':
             return { ...state, streams: data }
+        default:
     }
 }
 

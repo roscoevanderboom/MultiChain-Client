@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
+// Store
 import { store } from '../../store';
+// Reducers
+import { getaddressbalances, listAddressTransactions, listWalletTransactions } from '../../reducers/addresses';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -7,6 +10,7 @@ import { MoreVertOutlined } from '@material-ui/icons'
 
 function AddressMenu({ address }) {
     const { state, reducers } = useContext(store);
+    const { multichain } = state.multichain_state;
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -17,24 +21,17 @@ function AddressMenu({ address }) {
         setAnchorEl(null);
     };
 
-    const getaddressbalances = async () => {
-        let addressbalances = await state.multichain.getAddressBalances(address)
-            .catch((err) => { reducers.feedback('error', err.message) })
-        console.log(addressbalances)
-
+    const handleGetaddressbalances = () => {
+        getaddressbalances({ multichain, address, reducers });
     }
 
-    const listAddressTransactions = async () => {
-        let addressTransactions = await state.multichain.listAddressTransactions(address)
-            .catch((err) => { reducers.feedback('error', err.message) })
-        console.log(addressTransactions)
+    const handleListAddressTransactions = () => {
+        listAddressTransactions({ multichain, address, reducers });
     }
-    const listWalletTransactions = () => {
-        state.multichain.listWalletTransactions({ count: 100 }, (err, res) => {
-            if (err) { reducers.feedback('error', err.message) };
-            res.map(val => console.log(val.txid))
-        })
+    const handleListWalletTransactions = () => {
+        listWalletTransactions({ multichain, reducers });
     }
+    
     return (
         <div>
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -47,9 +44,9 @@ function AddressMenu({ address }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={getaddressbalances}>Address balances</MenuItem>
-                <MenuItem onClick={listAddressTransactions}>Address Transaction</MenuItem>
-                <MenuItem onClick={listWalletTransactions}>list Wallet Transactions</MenuItem>
+                <MenuItem onClick={handleGetaddressbalances}>Address balances</MenuItem>
+                <MenuItem onClick={handleListAddressTransactions}>Address Transaction</MenuItem>
+                <MenuItem onClick={handleListWalletTransactions}>list Wallet Transactions</MenuItem>
             </Menu>
         </div>
     );

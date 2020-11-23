@@ -1,6 +1,8 @@
 // Services
 import React, { useEffect, useContext, useState } from 'react';
 import { store } from '../../store';
+// Reducers
+import { getAddressBalances } from '../../reducers/addresses';
 // Components
 import { Grid, ListItemText, ListItem } from '@material-ui/core';
 import Collapse from '../../components/CustomCollapse';
@@ -10,17 +12,12 @@ import useStyles from './styles';
 
 const BalanceCollapse = ({ address }) => {
     const { state, reducers } = useContext(store);
+    const { multichain } = state.multichain_state;
     const classes = useStyles();
     const [list, setList] = useState([])
-
-    const getAddressBalances = async () => {
-        let addressbalances = await state.multichain.getAddressBalances(address)
-            .catch((err) => { reducers.feedback('error', err.message) })
-        setList(addressbalances);
-    }
-
+    
     useEffect(() => {
-        getAddressBalances();
+        getAddressBalances({ multichain, address, reducers, setList })
         // eslint-disable-next-line
     }, [address])
 

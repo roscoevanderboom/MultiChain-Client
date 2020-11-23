@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { store } from '../../store';
+// reducers
+import { getNewAddress } from '../../reducers/addresses';
 // Components
 import { TextField, } from '@material-ui/core';
 import Button from '../../components/CustomButtons/Button';
@@ -14,29 +16,21 @@ import useStyles from './styles';
 
 const Addresses = () => {
     const { reducers, state } = useContext(store);
-    const { multichain_state } = state;
+    const { addresses, multichain } = state.multichain_state;
     const [selected_address, set_selected_address] = useState({});
     const classes = useStyles();
 
     const handleChange = (e) => {
-        let newAddress = multichain_state.addresses.filter(add => add.address.includes(e.target.value));
+        let newAddress = addresses.filter(add => add.address.includes(e.target.value));
         if (newAddress.length > 0) {
             set_selected_address(newAddress[0]);
         } else if (newAddress.length === 0) {
             set_selected_address({});
         }
-
     }
 
-    const getNewAddress = () => {
-        multichain_state.multichain.getNewAddress()
-            .then((res) => {
-                reducers.getChainData('addresses');
-                reducers.feedback('success', 'New address created')
-            })
-            .catch((err) => {
-                reducers.feedback('error', err.message)
-            })
+    const handleGetNewAddress = () => {
+        getNewAddress({ multichain, reducers })
     }
 
     useEffect(() => {
@@ -44,11 +38,11 @@ const Addresses = () => {
         // eslint-disable-next-line
     }, [])
 
-    return (multichain_state.addresses &&
+    return (addresses &&
         <Section>
             <SectionToolbar
                 left={
-                    <Button onClick={getNewAddress} color="github" >New Address</Button>
+                    <Button onClick={handleGetNewAddress} size='sm' color="github" >New Address</Button>
                 }
                 center={
                     <React.Fragment>

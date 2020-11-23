@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 // State
 import { store } from '../../store';
-
+// reducers
+import { sendAsset } from '../../reducers/assets';
 // Components
 import { Input } from '@material-ui/core';
 import Button from '../../components/CustomButtons/Button';
@@ -13,6 +14,7 @@ const SendAsset = ({ props }) => {
     const { asset, open, handleModal } = props;
     const [address, setAddress] = useState('');
     const { state, reducers } = useContext(store);
+    const { multichain } = state.multichain_state;
     const [qty, setQty] = useState(0);
 
     const handleQTY = (e) => {
@@ -22,18 +24,7 @@ const SendAsset = ({ props }) => {
         setAddress(e.target.value);
     }
     const handleSend = () => {
-        state.multichain.sendAsset({
-            asset: asset.name,
-            address: address,
-            qty: Number(qty)
-        }, (err, res) => {
-            if (err) {
-                reducers.feedback('error', err.message);
-                return;
-            };
-            reducers.feedback('success', 'Asset has been sent');
-        })
-
+        sendAsset({ multichain, asset, address, qty, reducers })
     }
 
     useEffect(() => {

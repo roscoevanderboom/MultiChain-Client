@@ -7,6 +7,7 @@ import Button from '../../components/CustomButtons/Button';
 
 const Peers = () => {
     const { reducers, state } = useContext(store);
+    const { peers } = state.multichain_state;
 
     useEffect(() => {
         reducers.setTitle('Peers');
@@ -14,21 +15,21 @@ const Peers = () => {
     }, [])
 
     useEffect(() => {
-        if (state.peers) {
-            console.log(state.peers);
+        if (peers) {
+            console.log(peers);
 
         }
-    }, [state.peers])
+    }, [peers])
 
-    return (state.peers &&
+    return (peers &&
         <Section>
             <SectionToolbar
                 left={
-                    <Button color='github'>
+                    <Button size='sm' color='github'>
                         Add peer node
                     </Button>
                 } />
-            {state.peers.length !== 0 ? null :
+            {peers.length !== 0 ? null :
                 <SectionParagraph>
                     No peers connected
                 </SectionParagraph>

@@ -1,21 +1,21 @@
 // Services
 import React, { useState, useContext } from 'react';
-
 // State
 import { store } from '../../../store';
-
+// Constants
+import { publishItems } from '../../../reducers/streams';
 // Components
 import {
-  Button,
   Dialog,
   DialogContent,
   Input,
   Typography,
   Switch
 } from '@material-ui/core';
-
+// Custom components
 import CustomForm from '../../../components/CustomForm';
 import AddressSelect from '../../../components/CustomSelect/Addresses-Select';
+import Button from '../../../components/CustomButtons/Button';
 
 
 // Style
@@ -29,14 +29,14 @@ const style = {
   }
 }
 
-const NewStreamItem = ({ stream, updateAll }) => {
+const NewStreamItem = ({ stream }) => {
   const [open, setOpen] = useState(false);
   const [keys, setKeys] = useState([]);
   const [address, setAddress] = useState('');
   const [offchain, setOffchain] = useState(false)
 
   const { state, reducers } = useContext(store);
-  const { multichain } = state;
+  const { multichain } = state.multichain_state;
 
   const handleModal = () => {
     open ? setOpen(false) : setOpen(true);
@@ -60,25 +60,17 @@ const NewStreamItem = ({ stream, updateAll }) => {
   }
 
   const handleSubmit = (json) => {
-    multichain.publishFrom({
-      from: address,
-      stream: stream.name,
-      key: keys,
-      data: {
-        json: json
-      },
-      options: offchain ? 'offchain' : ''
-    })
-      .then(() => { updateAll() })
-      .catch(err => { reducers.feedback('error', err.message) })
+    publishItems({ multichain, stream, address, keys, json, offchain, reducers })
   }
 
   return (
     <React.Fragment>
       <Button
+        size='sm'
         variant='outlined'
+        color='warning'
         onClick={handleModal}
-        children={'Publish Detailed Item'} />
+        children={'Publish'} />
 
       <Dialog open={open} onClose={handleModal} aria-labelledby="form-dialog-title">
         <DialogContent>
@@ -100,6 +92,7 @@ const NewStreamItem = ({ stream, updateAll }) => {
             {keys.map(key =>
               <Button
                 key={key}
+                size='sm'
                 style={style.btn}
                 variant='outlined'
                 onClick={handleRemoveKey}

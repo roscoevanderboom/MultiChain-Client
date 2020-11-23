@@ -22,7 +22,10 @@ const styles = makeStyles({
         alignItems: 'center'
     },
     listItemOpen: {
-        backgroundColor: 'grey'
+        backgroundColor: 'lightgrey'
+    },
+    icon: {
+        padding: 0
     }
 })
 
@@ -38,7 +41,11 @@ const CustomCollapse = (props) => {
 
     return (
         <React.Fragment>
-            <ListItem className={open ? classes.listItemOpen : ''} {...props}>
+            <ListItem
+                button
+                {...props}
+                onClick={handleClick}
+                className={open ? classes.listItemOpen : ''} >
                 <Grid container>
 
                     <Grid item xs={4}
@@ -53,8 +60,8 @@ const CustomCollapse = (props) => {
                     </Grid>
 
                     <Grid item xs={1}>
-                        <ListItemIcon onClick={handleClick}>
-                            <IconButton>
+                        <ListItemIcon>
+                            <IconButton className={classes.icon}>
                                 {open ? <ExpandLess /> : <ExpandMore />}
                             </IconButton>
                         </ListItemIcon>

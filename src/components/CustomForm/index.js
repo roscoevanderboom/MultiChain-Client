@@ -116,7 +116,8 @@ const CustomForm = ({ feedback, handleSubmit, handleModal }) => {
         <IconButton onClick={addField}>
           <Add />
         </IconButton>
-      </div>
+        <br />
+      </div>    
       <Divider />
       <form onSubmit={handleDetails}>
         {inputFields.map((input, i) =>
@@ -131,12 +132,12 @@ const CustomForm = ({ feedback, handleSubmit, handleModal }) => {
           </ListItem>
         )}
       </form>
-      <Divider />
+    
       <div style={style.footer}>
-        <Button onClick={handleDetails} color="github">
+        <Button onClick={handleDetails} size='sm' color="github">
           Create
         </Button>
-        <Button onClick={handleModal} color="danger">
+        <Button onClick={handleModal} size='sm' color="danger">
           Cancel
         </Button>
       </div>

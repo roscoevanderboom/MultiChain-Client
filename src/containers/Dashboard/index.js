@@ -8,6 +8,7 @@ import useStyles from './styles';
 const Dashboard = () => {
     const classes = useStyles();
     const { reducers, state } = useContext(store);
+    const { streams, assets } = state.multichain_state;
 
     useEffect(() => {
         reducers.setTitle('Dashboard');
@@ -17,8 +18,8 @@ const Dashboard = () => {
     return (
         <div className={classes.body}>
             <div className={classes.mainRaised}>
-                <SmallCard title="Streams" data={state.streams} />
-                <SmallCard title="Assets" data={state.assets} />
+                <SmallCard title="Streams" data={streams} />
+                <SmallCard title="Assets" data={assets} />
             </div>
         </div>
 

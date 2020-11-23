@@ -29,7 +29,7 @@ const StreamDetails = ({ stream }) => {
       <Button color='info' size='sm' onClick={handleModal}>Details</Button>
       <Dialog open={open} onClose={handleModal}>
         <DialogContent style={{ width: 550 }}>
-          <Typography variant="h4">{`${stream.name}`}</Typography>
+          <Typography variant="h4">{stream.name}</Typography>
 
           <DetailsCollapse
             title='Details'

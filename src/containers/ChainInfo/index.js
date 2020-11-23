@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { store } from '../../store';
 import { firstToUppercase } from '../../constants/general';
-import { getInfo } from '../../reducers/multichain';
 // Components
 import { ListItemText, Grid } from '@material-ui/core';
 import Section from '../../components/Section';
@@ -11,7 +10,7 @@ import useStyles from './styles';
 const Chaininfo = () => {
     // Global state
     const { reducers, state } = useContext(store);
-    const { multichain_state } = state;
+    const { chainInfo } = state.multichain_state;
     // Component state
     const [keys, setKeys] = useState([]);
     const [values, setValues] = useState([]);
@@ -26,14 +25,14 @@ const Chaininfo = () => {
 
 
     useEffect(() => {
-        if (state.chainInfo) {
-            setKeys(Object.keys(state.chainInfo));
-            setValues(Object.values(state.chainInfo));
+        if (chainInfo) {
+            setKeys(Object.keys(chainInfo));
+            setValues(Object.values(chainInfo));
         }
         // eslint-disable-next-line
-    }, [state.chainInfo])
+    }, [chainInfo])
 
-    return (state.chainInfo &&
+    return (chainInfo &&
         <Section>
             <Grid container>
                 {keys.map((key, i) =>

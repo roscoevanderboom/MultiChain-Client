@@ -3,9 +3,10 @@ import React, { useState, useEffect, useContext } from 'react';
 
 // State
 import { store } from '../../store';
-
+// Reducers
+import { listAssets } from '../../reducers/multichain';
 // Multichain
-import { subscribe, unSubscribe } from '../../actions/Assets';
+import { subscribe, unSubscribe } from '../../reducers/assets';
 
 // Components
 import {
@@ -37,17 +38,16 @@ const AssetCard = ({ props }) => {
   const classes = useStyles();
   const [subscribed, setSubscribed] = useState(false);
   const { state, reducers } = useContext(store);
-  const { chainInfo } = state;
-  const { getChainData } = reducers;
+  const { chainInfo, multichain, localPaths } = state.multichain_state;
 
   const subscribeToAsset = () => {
     if (!asset.subscribed) {
-      subscribe(chainInfo.chainname, asset, state.localPaths.binariesPath)
-        .then(() => getChainData('assets'))
+      subscribe({ chainName: chainInfo.chainname, asset, binaryPath: localPaths.binariesPath })
+        .then(() => listAssets(multichain, reducers))
       return;
     }
-    unSubscribe(chainInfo.chainname, asset, state.localPaths.binariesPath)
-      .then(() => getChainData('assets'))
+    unSubscribe({ chainName: chainInfo.chainname, asset, binaryPath: localPaths.binariesPath })
+      .then(() => listAssets(multichain, reducers))
   }
 
   useEffect(() => {

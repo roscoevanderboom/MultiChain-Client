@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CustomModal = ({ name, body, closeModal }, props) => {
+const CustomModal = ({ name, body, closeModal }) => {
   const classes = useStyles();
 
   const handleClose = () => {

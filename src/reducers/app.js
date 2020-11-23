@@ -8,6 +8,7 @@ const reducer = (state, action) => {
             return { ...state, user: data }
         case 'SET_MODAL':
             return { ...state, modals: { ...state.modals, [data]: state.modals[data] ? false : true } }
+        default:
     }
 }
 

@@ -1,6 +1,8 @@
 // Services
 import React, { useEffect, useContext, useState } from 'react';
 import { store } from '../../store';
+// Reducers
+import { listAddressTransactions } from '../../reducers/addresses';
 // Components
 import { ListItemText, List } from '@material-ui/core'
 import Collapse from '../../components/CustomCollapse';
@@ -10,17 +12,12 @@ import useStyles from './styles';
 
 const TransactionCollapse = ({ address }) => {
     const { state, reducers } = useContext(store);
+    const { multichain } = state.multichain_state;
     const classes = useStyles();
     const [transactions, setTransactions] = useState([]);
 
-    const listAddressTransactions = async () => {
-        let addressTransactions = await state.multichain.listAddressTransactions(address)
-            .catch((err) => { reducers.feedback('error', err.message) })
-        setTransactions(addressTransactions);
-    }
-
     useEffect(() => {
-        listAddressTransactions();
+        listAddressTransactions({ multichain, address, reducers, setTransactions })
         // eslint-disable-next-line
     }, [address])
 
