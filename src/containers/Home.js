@@ -21,11 +21,8 @@ const Home = () => {
 
     let chainPath = localStorage.getItem('blockchainsPath');
 
-    useEffect(() => {
-        ipcRenderer.send('window:homeWindow');
-    }, []);
     // Collect local chains list
-    useEffect(() => {
+    const handleLocalChainList = () => {
         getLocalChains(chainPath)
             .then((chains) => {
                 reducers.dispatch_multichain_state({
@@ -33,24 +30,42 @@ const Home = () => {
                     data: chains
                 })
             })
-        // eslint-disable-next-line
+    }
+    // collect local chains credentials
+    const handleCredentials = () => {
+        localChains.forEach(chain => {
+            getCreds(chain, localPaths.blockchainsPath)
+                .then(creds => {
+                    reducers.dispatch_multichain_state({
+                        type: 'SET_CHAIN_CREDENTIALS',
+                        data: creds
+                    })
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        });
+    }
+
+    useEffect(() => {
+        ipcRenderer.send('window:homeWindow');
     }, []);
 
-    // collect local chains credentials
+
+    useEffect(() => {
+        if (localPaths.blockchainsPath !== undefined && localPaths.blockchainsPath !== null) {
+            console.log('checking for chains');
+            handleLocalChainList()
+        } else if (localPaths.blockchainsPath === null) {
+            reducers.handleModals('CreateChain');
+        }
+        // eslint-disable-next-line
+    }, [localPaths]);
+
+
     useEffect(() => {
         if (localChains.length > 0) {
-            localChains.forEach(chain => {
-                getCreds(chain, localPaths.blockchainsPath)
-                    .then(creds => {
-                        reducers.dispatch_multichain_state({
-                            type: 'SET_CHAIN_CREDENTIALS',
-                            data: creds
-                        })
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-            });
+            handleCredentials()
         }
         // eslint-disable-next-line
     }, [localChains])

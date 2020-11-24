@@ -1,8 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import extract from 'extract-zip';
-import { exec } from 'child_process';
-import fs from 'fs';
-import path from 'path';
 import { ipcRenderer } from 'electron';
 import { store } from '../../store';
 // Multichain constants
@@ -16,7 +12,7 @@ import useStyles from './styles';
 
 const DownloadLatest = () => {
   const classes = useStyles();
-  const { hist } = useContext(store);
+  const { reducers } = useContext(store);
 
   const [progress, setProgress] = useState(0);
   const [current_action, setCurrent_action] = useState('Click confirm to start download');
@@ -30,57 +26,32 @@ const DownloadLatest = () => {
       setCurrent_action('Downloading...')
       setProgress((data * 100).toFixed(0));
     });
-    ipcRenderer.on('download:complete', () => {
+
+    ipcRenderer.on('download:complete', (e, zipFile) => {
       setProgress(100)
       setCurrent_action('Download complete');
+      ipcRenderer.send('unzip:begin', zipFile);
     });
-    ipcRenderer.on('unzip:begin', (e, zipfile) => {
-      setCurrent_action('Extracting source files...');
-      let resourcesPath = path.join(process.resourcesPath);
-      let file_path = path.join(resourcesPath, zipfile);
 
-      switch (process.platform) {
-        case
-          'win32':
-          fs.readdir(resourcesPath, (err, res) => {
-            if (err) {
-              console.log(err);
-              return;
-            }
-            res.forEach(file => {
-              if (file.includes('.zip')) {
-                let source = path.join(resourcesPath, file);
-                let target = path.join(resourcesPath, 'multichain');
-                extract(source, { dir: target }, function (err) {
-                  if (err) {
-                    console.log(err)
-                    return;
-                  }
-                  setCurrent_action('Extraction complete');
-                })
-              }
-            })
-          })
-          break;
+    ipcRenderer.on('unzip:begin', () => {
+      setCurrent_action('Extracting files...');
+    });
 
-        default:
-          exec(`tar -xvzf ${file_path}`, (err, stdout) => {
-            if (err) throw err;
-            console.log(stdout);            
-            hist.push('/setup/detectCurrentSettings')
-          })
-          break;
-      }
+    ipcRenderer.on('unzip:complete', (e, binariesDir) => {
+      localStorage.setItem("binariesPath", binariesDir);
+      setCurrent_action('Extraction complete');
 
+      reducers.dispatch_multichain_state({
+        type: 'SET_LOCAL_PATHS',
+        data: { binariesPath: binariesDir, blockchainsPath: null }
+      })
     });
-    ipcRenderer.on('unzip:complete', (e, { chainpaths, target }) => {
-      localStorage.setItem("binariesPath", target);
-      localStorage.setItem("blockchainsPath", chainpaths);
-      hist.push('/home/dashboard');
+
+    ipcRenderer.on('unzip:error', (e, error) => {
+      setCurrent_action('Extraction error. Check console');
+      console.log(error);
     });
-    ipcRenderer.on('unzip:error', (e, err) => {
-      console.log(err);
-    });
+
     return () => {
       ipcRenderer.removeAllListeners('download:progress');
       ipcRenderer.removeAllListeners('download:complete');
@@ -116,12 +87,14 @@ const DownloadLatest = () => {
       </Typography>
       <Container className={classes.actions}>
         <Button
+          size='sm'
           color='github'
           onClick={handleConfirm}>
           Confirm
         </Button>
         <GoBack path='/setup/about'>
           <Button
+            size='sm'
             color='danger'>
             back
           </Button>

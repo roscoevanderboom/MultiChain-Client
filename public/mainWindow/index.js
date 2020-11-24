@@ -73,6 +73,7 @@ function createWindow() {
     IPC.control_window(mainWindow);
     // Handle multichain ipc  
     IPC.download_lastest_multichain(mainWindow);
+    IPC.handleExtractFiles(mainWindow);
 }
 
 module.exports = createWindow;

@@ -1,7 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ipcRenderer, shell } from 'electron';
+import { shell } from 'electron';
 import path from 'path';
+// Constants
+import chainPath from '../../../constants/multichain/Chainpaths';
 import { createChain } from '../../../constants/multichain/Daemons'
 // State
 import { store } from '../../../store';
@@ -59,6 +61,7 @@ function tabProps(index) {
 const CustomTabPanel = () => {
   const { reducers, state } = useContext(store);
   const { feedback } = reducers;
+  const { localPaths } = state.multichain_state;
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -69,7 +72,7 @@ const CustomTabPanel = () => {
   const handle_chain = (data) => {
     // Send request to create new chain
     const { chainName, option } = data;
-    const binariesPath = state.localPaths.binariesPath;
+    const binariesPath = localPaths.binariesPath;
     createChain(chainName, binariesPath)
       .then(() => {
         switch (option) {
@@ -81,31 +84,20 @@ const CustomTabPanel = () => {
             break;
           default:
             feedback('info', `${chainName} has been created. Remember to edit params.dat before starting chain.`);
-            shell.openExternal(path.join(state.localPaths.blockchainsPath, chainName, 'params.dat'));
             break;
+        }        
+      })
+      .then(() => {
+        if (localPaths.blockchainsPath === null) {
+          // reducers.dispatch_multichain_state({
+          //   type: 'SET_LOCAL_PATHS',
+          //   data: { ...localPaths, blockchainsPath: chainPath }
+          // })
         }
-        reducers.handleLocalChainList();
       })
       .catch(err => feedback('error', err.message));
   }
-
-  useEffect(() => {
-    // Receive success / fail response
-    ipcRenderer.on('chain-create:success', (e, response) => {
-      feedback('success', response);
-
-    });
-    ipcRenderer.on('chain-create:fail', (e, response) => {
-      feedback('error', response);
-    });
-
-    return () => {
-      ipcRenderer.removeAllListeners('chain-create:success');
-      ipcRenderer.removeAllListeners('chain-create:fail');
-    }
-    // eslint-disable-next-line
-  }, []);
-
+  
   return (
     <div className={classes.root}>
       <Tabs

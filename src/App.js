@@ -9,34 +9,34 @@ import Setup from './containers/Setup';
 import Home from './containers/Home';
 
 export default function App() {
-    const { hist, reducers } = React.useContext(store);
+    const { hist, reducers, state } = React.useContext(store);
+    const { localPaths } = state.multichain_state;
 
     const handleLocalStorage = () => {
 
         let { binariesPath, blockchainsPath } = checkLocalStorage();
 
-        if (binariesPath !== null && blockchainsPath !== null) {
-            reducers.dispatch_multichain_state({
-                type: 'SET_LOCAL_PATHS',
-                data: { binariesPath, blockchainsPath }
-            })
-            hist.push('/home/streams');
-            return;
-        }
-        hist.push('/setup/about');        
+        reducers.dispatch_multichain_state({
+            type: 'SET_LOCAL_PATHS',
+            data: { binariesPath, blockchainsPath }
+        })
     }
 
-    React.useEffect(() => {
-        ipcRenderer.on('multichain:mainWindow', (e, activeChain) => {
-            reducers.load_Multichain_Node(activeChain);
-        })
-        // eslint-disable-next-line
-    }, []);
 
     React.useEffect(() => {
         handleLocalStorage();
         // eslint-disable-next-line
     }, [])
+
+    React.useEffect(() => {
+        console.log(localPaths);
+        if (localPaths.binariesPath === null) {
+            hist.push('/setup/about')
+        } else if (localPaths.binariesPath !== null) {
+            hist.push('/home/dashboard')
+        }
+        // eslint-disable-next-line
+    }, [localPaths])
 
     return (
         <div>

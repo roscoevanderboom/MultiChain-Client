@@ -2,6 +2,7 @@ const electron = require('electron');
 const { ipcMain, app } = electron;
 const { readdir } = require('fs');
 const { download } = require('electron-dl');
+const extractFiles = require('../../src/constants/multichain/ExtractFiles');
 
 const greet = () => {
     ipcMain.handle('greet', async () => {
@@ -53,16 +54,14 @@ const download_lastest_multichain = (mainWindow) => {
             let zipFile = url.slice(url.indexOf('download/') + 9);
             let ipfsFile = 'QmUH4ykeQhEAtapxnaE792F4hiAYsrRrCGpXJuc1nHE6Vy.zip';
             if (res.includes(zipFile) || res.includes(ipfsFile)) {
-                mainWindow.webContents.send('download:complete');
-                mainWindow.send('unzip:begin', zipFile);
+                mainWindow.webContents.send('download:complete', zipFile);
                 return;
             }
             download(mainWindow, url, {
                 directory: process.resourcesPath,
                 onProgress: (progress) => {
                     if (progress.percent === 1) {
-                        mainWindow.webContents.send('download:complete');
-                        mainWindow.send('unzip:begin', zipFile);
+                        mainWindow.webContents.send('download:complete', zipFile);
                         return;
                     }
                     mainWindow.webContents.send('download:progress', progress.percent);
@@ -72,7 +71,13 @@ const download_lastest_multichain = (mainWindow) => {
     })
 };
 
+const handleExtractFiles = (mainWindow) => {
+    ipcMain.on('unzip:begin', (e, zipFile) => {
+        extractFiles(zipFile, mainWindow);
+    })
+}
+
 module.exports = {
     greet, show_Window_Title, control_window, browserWindows,
-    download_lastest_multichain
+    download_lastest_multichain, handleExtractFiles
 }
