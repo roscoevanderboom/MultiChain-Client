@@ -1,5 +1,4 @@
 import React from "react";
-import { ipcRenderer } from 'electron';
 import { Switch, Route } from "react-router-dom";
 import { store } from './store';
 import checkLocalStorage from './constants/multichain/CheckLocalStorage';

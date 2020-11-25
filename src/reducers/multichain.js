@@ -1,5 +1,7 @@
 import { address_permissions } from '../constants/multichain/Permissions';
 import { add_if_not_included } from '../constants/general';
+import getLocalChains from '../constants/multichain/LocalChains';
+import getCreds from '../constants/multichain/GetCreds';
 
 // Multichain data collection
 export const getInfo = (multichain, reducers) => {
@@ -67,6 +69,29 @@ export const listStreams = (multichain, reducers) => {
             type: 'GET_STREAMS',
             data: err ? false : res
         });
+    });
+}
+export const getChainsList = ({ chainPath, reducers }) => {
+    getLocalChains(chainPath)
+        .then((chains) => {
+            reducers.dispatch_multichain_state({
+                type: 'SET_LOCAL_CHAINS_LIST',
+                data: chains
+            })
+        })
+}
+export const setCredentials = ({ localChains, localPaths, reducers }) => {
+    localChains.forEach(chain => {
+        getCreds(chain, localPaths.blockchainsPath)
+            .then(creds => {
+                reducers.dispatch_multichain_state({
+                    type: 'SET_CHAIN_CREDENTIALS',
+                    data: creds
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     });
 }
 

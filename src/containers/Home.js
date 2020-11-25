@@ -3,8 +3,7 @@ import { ipcRenderer } from 'electron';
 import { Switch, Route } from "react-router-dom";
 import { store } from '../store';
 // Data collection methods
-import getLocalChains from '../constants/multichain/LocalChains';
-import getCreds from '../constants/multichain/GetCreds';
+import chainPath from '../constants/multichain/Chainpaths';
 // Multichain State
 import * as mc from '../reducers/multichain';
 // custom components
@@ -19,32 +18,13 @@ const Home = () => {
     const { multichain_state } = state;
     const { localChains, localPaths, multichain } = multichain_state;
 
-    let chainPath = localStorage.getItem('blockchainsPath');
-
     // Collect local chains list
     const handleLocalChainList = () => {
-        getLocalChains(chainPath)
-            .then((chains) => {
-                reducers.dispatch_multichain_state({
-                    type: 'SET_LOCAL_CHAINS_LIST',
-                    data: chains
-                })
-            })
+        mc.getChainsList({ chainPath, reducers });
     }
     // collect local chains credentials
     const handleCredentials = () => {
-        localChains.forEach(chain => {
-            getCreds(chain, localPaths.blockchainsPath)
-                .then(creds => {
-                    reducers.dispatch_multichain_state({
-                        type: 'SET_CHAIN_CREDENTIALS',
-                        data: creds
-                    })
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-        });
+        mc.setCredentials({ localChains, localPaths, reducers });
     }
 
     useEffect(() => {
@@ -54,9 +34,8 @@ const Home = () => {
 
     useEffect(() => {
         if (localPaths.blockchainsPath !== undefined && localPaths.blockchainsPath !== null) {
-            console.log('checking for chains');
             handleLocalChainList()
-        } else if (localPaths.blockchainsPath === null) {
+        } else if (localPaths.blockchainsPath !== undefined && localPaths.blockchainsPath === null) {
             reducers.handleModals('CreateChain');
         }
         // eslint-disable-next-line

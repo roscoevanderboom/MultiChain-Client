@@ -5,12 +5,8 @@ let chainpath;
 
 switch (process.platform) {
   case 'win32':
-    console.log(process.env)
-    
-    if (process.env.APPDATA !== undefined) {
-      console.log(process.env.APPDATA)
-    }
-    // chainpath = path.join(process.env.APPDATA, 'Multichain', '/');
+    const rootpath = process.argv[0].slice(0, process.argv[0].indexOf('Documents'));
+    chainpath = path.join(rootpath, 'AppData/Roaming/MultiChain');
     break;
   case 'linux':
     chainpath = path.join('/home/user', '.multichain', '/');

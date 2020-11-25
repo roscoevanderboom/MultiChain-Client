@@ -4,7 +4,9 @@ import { shell } from 'electron';
 import path from 'path';
 // Constants
 import chainPath from '../../../constants/multichain/Chainpaths';
-import { createChain } from '../../../constants/multichain/Daemons'
+import { createChain } from '../../../constants/multichain/Daemons';
+import { getChainsList } from '../../../reducers/multichain';
+import checkLocalStorage from '../../../constants/multichain/CheckLocalStorage';
 // State
 import { store } from '../../../store';
 
@@ -85,19 +87,19 @@ const CustomTabPanel = () => {
           default:
             feedback('info', `${chainName} has been created. Remember to edit params.dat before starting chain.`);
             break;
-        }        
-      })
-      .then(() => {
-        if (localPaths.blockchainsPath === null) {
-          // reducers.dispatch_multichain_state({
-          //   type: 'SET_LOCAL_PATHS',
-          //   data: { ...localPaths, blockchainsPath: chainPath }
-          // })
+        }
+        let { blockchainsPath } = checkLocalStorage();
+        if (blockchainsPath === null) {
+          localStorage.setItem("binariesPath", chainPath);
+          reducers.dispatch_multichain_state({
+            type: 'SET_LOCAL_PATHS',
+            data: { ...localPaths, blockchainsPath: chainPath }
+          })
         }
       })
       .catch(err => feedback('error', err.message));
   }
-  
+
   return (
     <div className={classes.root}>
       <Tabs
