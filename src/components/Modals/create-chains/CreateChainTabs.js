@@ -6,7 +6,6 @@ import path from 'path';
 import chainPath from '../../../constants/multichain/Chainpaths';
 import { createChain } from '../../../constants/multichain/Daemons';
 import { getChainsList } from '../../../reducers/multichain';
-import checkLocalStorage from '../../../constants/multichain/CheckLocalStorage';
 // State
 import { store } from '../../../store';
 
@@ -88,14 +87,7 @@ const CustomTabPanel = () => {
             feedback('info', `${chainName} has been created. Remember to edit params.dat before starting chain.`);
             break;
         }
-        let { blockchainsPath } = checkLocalStorage();
-        if (blockchainsPath === null) {
-          localStorage.setItem("binariesPath", chainPath);
-          reducers.dispatch_multichain_state({
-            type: 'SET_LOCAL_PATHS',
-            data: { ...localPaths, blockchainsPath: chainPath }
-          })
-        }
+        getChainsList({ chainPath, reducers });
       })
       .catch(err => feedback('error', err.message));
   }

@@ -10,6 +10,7 @@ import PermissionSelect from '../../components/CustomSelect/Permission-Select';
 
 const Permissions = () => {
     const { reducers, state } = useContext(store);
+    const { permissions } = state.multichain_state;
     const [selectedPermission, setSelectedPermission] = useState('')
 
     const handlePermissionSelect = (e) => {
@@ -21,7 +22,7 @@ const Permissions = () => {
         // eslint-disable-next-line
     }, [])
 
-    return (state.permissions &&
+    return (permissions &&
         <Section>
             <br />
             <SectionToolbar
@@ -38,7 +39,7 @@ const Permissions = () => {
                     <Grid item md={6}>
                         <Card>
                             <List>
-                                {state.permissions[selectedPermission].map((value, i) =>
+                                {permissions[selectedPermission].map((value, i) =>
                                     <ListItem button key={i}>
                                         <ListItemText>
                                             {value}

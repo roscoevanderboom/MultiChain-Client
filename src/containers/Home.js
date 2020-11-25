@@ -16,7 +16,7 @@ import routes from '../routes';
 const Home = () => {
     const { state, reducers } = useContext(store);
     const { multichain_state } = state;
-    const { localChains, localPaths, multichain } = multichain_state;
+    const { localChains, localPaths, multichain, chain_credentials } = multichain_state;
 
     // Collect local chains list
     const handleLocalChainList = () => {
@@ -33,34 +33,32 @@ const Home = () => {
 
 
     useEffect(() => {
-        if (localPaths.blockchainsPath !== undefined && localPaths.blockchainsPath !== null) {
-            handleLocalChainList()
-        } else if (localPaths.blockchainsPath !== undefined && localPaths.blockchainsPath === null) {
-            reducers.handleModals('CreateChain');
+        if (localPaths.binariesPath !== null && localPaths.blockchainsPath !== null) {
+            handleLocalChainList();
         }
         // eslint-disable-next-line
     }, [localPaths]);
 
-
     useEffect(() => {
-        if (localChains.length > 0) {
-            handleCredentials()
+        if (localPaths.binariesPath !== null
+            && localPaths.blockchainsPath !== null
+            && localChains.length > 0) {
+            handleCredentials();
         }
         // eslint-disable-next-line
-    }, [localChains])
+    }, [localChains, localPaths]);
 
     useEffect(() => {
         if (multichain) {
-            mc.getInfo(multichain, reducers);
-            mc.getBlockchainParams(multichain, reducers);
-            mc.listAddresses(multichain, reducers);
-            mc.listPermissions(multichain, reducers);
-            mc.listAssets(multichain, reducers);
-            mc.getPeerInfo(multichain, reducers);
-            mc.listStreams(multichain, reducers);
+            mc.collectAllData(multichain, reducers);
         }
         // eslint-disable-next-line
     }, [multichain]);
+
+    useEffect(() => {
+      console.log(chain_credentials);
+        // eslint-disable-next-line
+    }, [chain_credentials]);
 
     return (
         <div>

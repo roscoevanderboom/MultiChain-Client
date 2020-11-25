@@ -79,6 +79,9 @@ export const getChainsList = ({ chainPath, reducers }) => {
                 data: chains
             })
         })
+        .catch((err) => {
+            console.log(err)
+        })
 }
 export const setCredentials = ({ localChains, localPaths, reducers }) => {
     localChains.forEach(chain => {
@@ -93,6 +96,15 @@ export const setCredentials = ({ localChains, localPaths, reducers }) => {
                 console.log(err)
             })
     });
+}
+export const collectAllData = (multichain, reducers) => {
+    getInfo(multichain, reducers);
+    getBlockchainParams(multichain, reducers);
+    listAddresses(multichain, reducers);
+    listPermissions(multichain, reducers);
+    listAssets(multichain, reducers);
+    getPeerInfo(multichain, reducers);
+    listStreams(multichain, reducers);
 }
 
 const multichain_reducer = (state, action) => {

@@ -28,7 +28,6 @@ export default function App() {
     }, [])
 
     React.useEffect(() => {
-        console.log(localPaths);
         if (localPaths.binariesPath === null) {
             hist.push('/setup/about')
         } else if (localPaths.binariesPath !== null) {

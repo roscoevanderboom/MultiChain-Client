@@ -3,6 +3,7 @@ import { ipcRenderer } from 'electron';
 import { store } from '../../store';
 // Multichain constants
 import download_url from '../../constants/multichain/Download-URLS';
+import chainpaths from '../../constants/multichain/Chainpaths';
 // Components
 import { Container, Typography } from '@material-ui/core';
 import Button from '../CustomButtons/Button';
@@ -39,11 +40,12 @@ const DownloadLatest = () => {
 
     ipcRenderer.on('unzip:complete', (e, binariesDir) => {
       localStorage.setItem("binariesPath", binariesDir);
+      localStorage.setItem("blockchainsPath", chainpaths);
       setCurrent_action('Extraction complete');
 
       reducers.dispatch_multichain_state({
         type: 'SET_LOCAL_PATHS',
-        data: { binariesPath: binariesDir, blockchainsPath: null }
+        data: { binariesPath: binariesDir, blockchainsPath: chainpaths }
       })
     });
 
