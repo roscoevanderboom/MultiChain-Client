@@ -30,19 +30,21 @@ const ChainButton = ({ chain }) => {
   const [connected, setConnected] = useState(false)
   const [multichain, setMultichain_Instance] = useState(false)
 
-  const setChainCreds = () => {   
-    console.log('Set credentials for...' + chain);
+  const setChainCreds = () => {
     chain_credentials.forEach(creds => {
-      if (creds.name === chain) {        
+      if (creds.name === chain) {
         setMultichain_Instance(require("multichain-node")(creds));
       }
     })
   }
 
   const checkChainStatus = () => {
-    console.log('Checking multichain for...' + chain);
     multichain.getInfo((err, res) => {
-      err ? setConnected(false) : setConnected(true)
+      if (err) {
+        console.log(err);
+      } else if(res) {
+        console.log(res);
+      }
     })
   }
 
@@ -59,17 +61,21 @@ const ChainButton = ({ chain }) => {
 
   const daemon = () => {
     if (connected) {
-      stopMultichain(chain, localPaths.binariesPath)
-        .then(res => {
+      multichain.stop()
+        .then(() => {
+          console.log('Chain stopped');
           setConnected(false);
           setMultichain_Instance(false);
         })
-        .catch(err => reducers.feedback('error', err))
+        .catch((err) => {
+          console.log(err);
+        })
       return;
     }
     startMultichain(chain, localPaths.binariesPath)
       .then(res => {
         setConnected(true);
+        setChainCreds()
       })
       .catch(err => reducers.feedback('error', err))
   }
@@ -80,12 +86,11 @@ const ChainButton = ({ chain }) => {
   }, [chain_credentials])
 
   useEffect(() => {
-    console.log(multichain);    
-    if (multichain) {      
+    if (multichain) {
       checkChainStatus();
     }
-     //eslint-disable-next-line
-  }, [multichain, chain_credentials, connected])
+    //eslint-disable-next-line
+  }, [multichain])
 
   return (
     <ListItem button

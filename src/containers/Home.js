@@ -20,17 +20,18 @@ const Home = () => {
 
     // Collect local chains list
     const handleLocalChainList = () => {
+        console.log('Handle Chains');
         mc.getChainsList({ chainPath, reducers });
     }
     // collect local chains credentials
     const handleCredentials = () => {
+        console.log('Handle Credentials');
         mc.setCredentials({ localChains, localPaths, reducers });
     }
 
     useEffect(() => {
         ipcRenderer.send('window:homeWindow');
     }, []);
-
 
     useEffect(() => {
         if (localPaths.binariesPath !== null && localPaths.blockchainsPath !== null) {
@@ -40,13 +41,11 @@ const Home = () => {
     }, [localPaths]);
 
     useEffect(() => {
-        if (localPaths.binariesPath !== null
-            && localPaths.blockchainsPath !== null
-            && localChains.length > 0) {
+        if (localChains.length > 0) {
             handleCredentials();
         }
         // eslint-disable-next-line
-    }, [localChains, localPaths]);
+    }, [localChains]);
 
     useEffect(() => {
         if (multichain) {
@@ -56,7 +55,12 @@ const Home = () => {
     }, [multichain]);
 
     useEffect(() => {
-      console.log(chain_credentials);
+        console.log(localChains);
+        // eslint-disable-next-line
+    }, [localChains]);
+
+    useEffect(() => {
+        console.log(chain_credentials);
         // eslint-disable-next-line
     }, [chain_credentials]);
 

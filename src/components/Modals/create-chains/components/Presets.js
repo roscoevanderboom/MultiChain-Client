@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 // Components
-import {Input, Button, Typography} from '@material-ui/core';
+import Button from '../../../CustomButtons/Button';
+import {Input, Typography} from '@material-ui/core';
 
 const Preset = ({ createChain }) => {
   const [chainName, setChainName] = useState(''); ;
@@ -33,7 +34,7 @@ const Preset = ({ createChain }) => {
       <br></br>
       <br></br>
       <Typography gutterBottom>
-        <Button onClick={presetChain} variant="outlined">Create</Button>
+         <Button onClick={presetChain} size='sm' color="github">Create</Button>
       </Typography>
     </React.Fragment>
   );
