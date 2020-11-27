@@ -19,3 +19,10 @@ export const mapFromNumber = (num) => {
     }
     return arr
 }
+export const update_credentials_array = ({ chain_credentials, data }) => {
+    const current = chain_credentials.map(cred => cred.name);
+    if (!current.includes(data.name)) {
+        chain_credentials.push(data);
+    }
+    return chain_credentials
+}

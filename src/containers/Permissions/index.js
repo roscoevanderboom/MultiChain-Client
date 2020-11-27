@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { store } from '../../store';
 // Components
 import {
-    Card, Grid, ListItemText, List, ListItem
+    Card, Grid, ListItemText, List, ListItem, Typography
 } from '@material-ui/core';
 import Section from '../../components/Section';
 import SectionToolbar from '../../components/SectionToolbar';
 import PermissionSelect from '../../components/CustomSelect/Permission-Select';
+import styles from './styles';
 
 const Permissions = () => {
+    const classes = styles();
     const { reducers, state } = useContext(store);
     const { permissions } = state.multichain_state;
     const [selectedPermission, setSelectedPermission] = useState('')
@@ -24,6 +26,11 @@ const Permissions = () => {
 
     return (permissions &&
         <Section>
+            <Typography
+                align='center'
+                className={classes.title}>
+                Generate a list of addresses with selected permission.
+                </Typography>
             <br />
             <SectionToolbar
                 center={

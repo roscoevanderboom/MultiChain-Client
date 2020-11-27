@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { store } from '../../store';
 // Multichain
-import { startMultichain, stopMultichain } from '../../constants/multichain/Daemons';
+import { startMultichain } from '../../constants/multichain/Daemons';
 
 // Components
 import {
@@ -41,21 +41,28 @@ const ChainButton = ({ chain }) => {
   const checkChainStatus = () => {
     multichain.getInfo((err, res) => {
       if (err) {
-        console.log(err);
-      } else if(res) {
-        console.log(res);
+        setConnected(false);
+        return;
       }
+      setConnected(true);
     })
   }
 
   const connect = () => {
-    if (!connected) {
-      reducers.feedback('info', 'Daemon is not running')
+    if (!multichain) {
+      setChainCreds();;
       return;
     }
-    reducers.dispatch_multichain_state({
-      type: 'SET_ACTIVE_CHAIN',
-      data: multichain
+
+    multichain.getInfo((err, res) => {
+      if (err) {
+        reducers.feedback('info', 'Daemon is not running')
+        return;
+      }
+      reducers.dispatch_multichain_state({
+        type: 'SET_ACTIVE_CHAIN',
+        data: multichain
+      })
     })
   }
 
@@ -63,7 +70,6 @@ const ChainButton = ({ chain }) => {
     if (connected) {
       multichain.stop()
         .then(() => {
-          console.log('Chain stopped');
           setConnected(false);
           setMultichain_Instance(false);
         })
@@ -75,9 +81,10 @@ const ChainButton = ({ chain }) => {
     startMultichain(chain, localPaths.binariesPath)
       .then(res => {
         setConnected(true);
-        setChainCreds()
       })
-      .catch(err => reducers.feedback('error', err))
+      .catch(err => {
+        reducers.feedback('error', err)
+      })
   }
 
   useEffect(() => {

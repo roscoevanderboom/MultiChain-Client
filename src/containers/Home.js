@@ -16,16 +16,14 @@ import routes from '../routes';
 const Home = () => {
     const { state, reducers } = useContext(store);
     const { multichain_state } = state;
-    const { localChains, localPaths, multichain, chain_credentials } = multichain_state;
+    const { localChains, localPaths, multichain } = multichain_state;
 
     // Collect local chains list
     const handleLocalChainList = () => {
-        console.log('Handle Chains');
         mc.getChainsList({ chainPath, reducers });
     }
     // collect local chains credentials
     const handleCredentials = () => {
-        console.log('Handle Credentials');
         mc.setCredentials({ localChains, localPaths, reducers });
     }
 
@@ -53,16 +51,6 @@ const Home = () => {
         }
         // eslint-disable-next-line
     }, [multichain]);
-
-    useEffect(() => {
-        console.log(localChains);
-        // eslint-disable-next-line
-    }, [localChains]);
-
-    useEffect(() => {
-        console.log(chain_credentials);
-        // eslint-disable-next-line
-    }, [chain_credentials]);
 
     return (
         <div>

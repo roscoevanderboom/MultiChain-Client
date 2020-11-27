@@ -1,5 +1,5 @@
 import { address_permissions } from '../constants/multichain/Permissions';
-import { add_if_not_included } from '../constants/general';
+import { update_credentials_array } from '../constants/general';
 import getLocalChains from '../constants/multichain/LocalChains';
 import getCreds from '../constants/multichain/GetCreds';
 
@@ -117,7 +117,8 @@ const multichain_reducer = (state, action) => {
         case 'SET_LOCAL_CHAINS_LIST':
             return { ...state, localChains: data }
         case 'SET_CHAIN_CREDENTIALS':
-            return { ...state, chain_credentials: add_if_not_included(chain_credentials, data) }
+            const updated_credentials = update_credentials_array({ chain_credentials, data});
+            return { ...state, chain_credentials: updated_credentials }
         case 'SET_ACTIVE_CHAIN':
             return { ...state, multichain: data }
         case 'GET_INFO':

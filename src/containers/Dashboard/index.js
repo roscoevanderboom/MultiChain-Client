@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { store } from '../../store';
 // Components
-import SmallCard from './SmallCard';
+import Streams from './SmallCard';
+import Assets from './SmallCard';
+import Stats from './BigCard';
 // Styles
 import useStyles from './styles';
 
@@ -18,8 +20,9 @@ const Dashboard = () => {
     return (
         <div className={classes.body}>
             <div className={classes.mainRaised}>
-                <SmallCard title="Streams" data={streams} />
-                <SmallCard title="Assets" data={assets} />
+                <Streams title="Streams" data={streams} />
+                <Assets title="Assets" data={assets} />
+                <Stats title="Statistics" data={assets} />
             </div>
         </div>
 

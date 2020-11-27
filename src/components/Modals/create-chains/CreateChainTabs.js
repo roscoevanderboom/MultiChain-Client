@@ -74,6 +74,7 @@ const CustomTabPanel = () => {
     // Send request to create new chain
     const { chainName, option } = data;
     const binariesPath = localPaths.binariesPath;
+
     createChain(chainName, binariesPath)
       .then(() => {
         switch (option) {
@@ -85,6 +86,8 @@ const CustomTabPanel = () => {
             break;
           default:
             feedback('info', `${chainName} has been created. Remember to edit params.dat before starting chain.`);
+            const params = path.join(chainPath, chainName, 'params.dat');
+            shell.openExternal(params);
             break;
         }
         getChainsList({ chainPath, reducers });
