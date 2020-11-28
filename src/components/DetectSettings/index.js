@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ipcRenderer } from 'electron';
+import React, { useContext, useState } from 'react';
 import { store } from '../../store';
 // Components
 import { Container, Typography, ListItemText } from '@material-ui/core';
@@ -59,13 +58,12 @@ const DetectSettings = () => {
     const handleApplySettings = () => {
         localStorage.setItem("binariesPath", binariesPath);
         localStorage.setItem("blockchainsPath", blockchainsPath);
-        reducers.handleLocalPaths({ binariesPath, blockchainsPath });
+        reducers.dispatch_multichain_state({
+            type: 'SET_LOCAL_PATHS',
+            data: { binariesPath: binariesPath, blockchainsPath: blockchainsPath }
+          })
         hist.push('/home/dashboard');
     }
-
-    useEffect(() => {
-        ipcRenderer.send('location:installation-page');
-    }, [])
 
     return (
         <Container className={classes.body}>

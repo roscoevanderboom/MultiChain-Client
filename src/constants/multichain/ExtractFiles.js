@@ -22,11 +22,15 @@ const winExtract = (resourcesPath, mainWindow) => {
     })
 }
 
-const linuxExtract = (file_path, mainWindow) => {
-    exec(`tar -xvzf ${file_path}`, (err, stdout) => {
+const linuxExtract = (resourcesPath, file_path, mainWindow) => {
+
+    exec(`tar -xvzf ${file_path} -C ${resourcesPath}`, (err, stdout) => {
         if (err) throw err;
-        console.log(stdout);
-        mainWindow.webContents.send('unzip:complete');
+        let dirPath = '';
+        fs.readdir(resourcesPath, (err, res) => {
+            dirPath = res.filter(fileNames => fileNames.includes('multichain') && !fileNames.includes('tar'));
+            mainWindow.webContents.send('unzip:complete', dirPath);
+        })
     })
 }
 
@@ -41,7 +45,7 @@ const extractFiles = (zipFile, mainWindow) => {
             winExtract(resourcesPath, mainWindow);
             break;
         default:
-            linuxExtract(file_path, mainWindow);
+            linuxExtract(resourcesPath, file_path, mainWindow);
             break;
     }
 }
